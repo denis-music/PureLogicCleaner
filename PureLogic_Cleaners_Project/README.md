@@ -1,0 +1,1 @@
+This folder include source code for backend created in .NET and frontend created in Angular framework.

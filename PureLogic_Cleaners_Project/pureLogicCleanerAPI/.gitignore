@@ -1,0 +1,73 @@
+﻿# Ignore Visual Studio files
+.vscode/
+.vs/
+/bin/
+/obj/
+/*.dbmdl
+/*.jfm
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build output
+/bin/
+obj/
+/[Dd]ebug/
+/[Rr]elease/
+/x64/
+/x86/
+/[Aa][Rr][Mm]/
+/[Aa][Rr][Mm]64/
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.rdl.data
+*.rdl.nav
+*.rdl.obj
+*.rdl.par
+*.suo
+*.user
+*.userosscache
+
+# Ignore NuGet packages
+/packages/
+
+# Ignore User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore Rider settings
+.idea/
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore Tye specific files
+.tye/
+tye-debug.yaml
+tye.yaml
+
+# Ignore local publish output
+/publish/
+
+# Ignore Resharper
+_ReSharper/
+
+# Ignore SQL Server files
+*.mdf
+*.ldf
+
+# Ignore local application data folder
+App_Data/
+
+# Ignore logs and other generated files
+logs/
+*.log
+*.swp
+
+# Ignore Node.js generated files
+node_modules/
+npm-debug.log

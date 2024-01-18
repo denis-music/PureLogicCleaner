@@ -1,0 +1,6 @@
+@pureLogicCleanerAPI_HostAddress = http://localhost:5295
+
+GET {{pureLogicCleanerAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
