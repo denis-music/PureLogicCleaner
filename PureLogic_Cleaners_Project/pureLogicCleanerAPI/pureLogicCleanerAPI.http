@@ -1,6 +1,21 @@
-@pureLogicCleanerAPI_HostAddress = http://localhost:5295
+@pureLogicCleanerAPI_HostAddress = https://localhost:7079
 
 GET {{pureLogicCleanerAPI_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+POST {{pureLogicCleanerAPI_HostAddress}}/openclaim
+Content-Type: Application/json
+
+{
+  "id": "1",
+  "firstName": "Ime",
+  "subsId": "2",
+  "ages": 23
+}
+###
+
+POST {{pureLogicCleanerAPI_HostAddress}}/openclaim
 
 ###

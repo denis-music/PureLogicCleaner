@@ -1,5 +1,5 @@
 using Microsoft.OpenApi.Models;
-using Microsoft.Azure.Cosmos;
+using pureLogicCleanerAPI.Repository;
 
 namespace pureLogicCleanerAPI
 {
@@ -9,15 +9,7 @@ namespace pureLogicCleanerAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
-            {
-                return new CosmosClient("https://localhost:8081/",
-                     "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
-            });
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -40,7 +32,14 @@ namespace pureLogicCleanerAPI
                 });
             });
 
+            builder.Services.AddTransient<ICosmosDBRepo, CosmosDBRepo>();
+
             var app = builder.Build();
+
+            //initializing DB
+            var iCosmosDBRepo = app.Services.GetService<ICosmosDBRepo>();
+            iCosmosDBRepo?.SetAsync();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -51,8 +50,7 @@ namespace pureLogicCleanerAPI
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
-
+            //app.UseAuthorization();
 
             app.MapControllers();
 
