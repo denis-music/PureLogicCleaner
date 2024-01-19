@@ -4,7 +4,7 @@ REM Create virtual environment
 python -m venv azureml-env
 
 REM Activate virtual environment
-azureml-env\Scripts\activate.bat
+azureml-env\Scripts\activate
 
 REM Install requirements
 pip install -r requirements.txt

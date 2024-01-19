@@ -2,34 +2,61 @@ import pandas as pd
 import numpy as np
 import datetime
 
-def random_multiple_indexes(num_choices, n_samples, max_selections=3):
-    return [np.random.choice(range(num_choices), size=np.random.randint(1, max_selections+1), replace=False).tolist() for _ in range(n_samples)]
-
-def process_real_user_data(user_data, mlb_days, mlb_rooms):
+def transform_data_to_model_format(user_data, training_columns, mlb_days, mlb_rooms):
+    # Convert the user data to a DataFrame
     user_df = pd.DataFrame([user_data])
-    one_hot_preferred_days = pd.DataFrame(mlb_days.transform([user_data['preferred_days']]),
-                                          columns=['day_' + str(i) for i in mlb_days.classes_])
-    one_hot_priority_rooms = pd.DataFrame(mlb_rooms.transform([user_data['priority_rooms']]),
-                                          columns=['room_' + str(i) for i in mlb_rooms.classes_])
-    user_df = pd.concat([user_df.drop(['preferred_days', 'priority_rooms'], axis=1), 
-                         one_hot_preferred_days, one_hot_priority_rooms], axis=1)
-    return user_df.values[0]
 
-def find_next_preferred_day(predicted_days, preferred_days):
-    predicted_date = datetime.datetime.today() + datetime.timedelta(days=predicted_days)
-    predicted_weekday = predicted_date.weekday()  # Monday is 0, Sunday is 6
+    # Add feature engineering
+    user_df = combine_room_size_type(user_df)
+    user_df = add_seasonal_cleaning_factor(user_df)
+    user_df = room_usage_indicator(user_df)
+    user_df = allergy_pet_impact(user_df)
 
-    # Find the next preferred day
-    days_until_next_preferred = min([(preferred_day - predicted_weekday) % 7 for preferred_day in preferred_days])
+    # Binarize 'preferred_cleaning_days' and 'priority_rooms' for user data
+    days_binarized_user = mlb_days.transform(user_df['preferred_cleaning_days'])
+    rooms_binarized_user = mlb_rooms.transform(user_df['priority_rooms'])
 
-    # If the predicted day is already a preferred day, keep the original prediction
-    if days_until_next_preferred == 0:
-        return predicted_days
-    else:
-        return predicted_days + days_until_next_preferred
+    # Create dataframes from the binarized arrays
+    days_df_user = pd.DataFrame(days_binarized_user, columns=mlb_days.classes_)
+    rooms_df_user = pd.DataFrame(rooms_binarized_user, columns=mlb_rooms.classes_)
 
-def adjust_for_pets_allergies(predicted_days, has_pets_allergies):
-    if has_pets_allergies:
-        return max(1, predicted_days - 2)  
-    else:
-        return predicted_days
+    # Concatenate the new dataframes with the user_df
+    user_df = pd.concat([user_df.drop(['preferred_cleaning_days', 'priority_rooms'], axis=1), days_df_user, rooms_df_user], axis=1)
+
+    # Apply one-hot encoding to categorical variables
+    user_df = pd.get_dummies(user_df)
+
+    # Ensure the user_df has all the columns from the training data
+    missing_cols = set(training_columns) - set(user_df.columns)
+    for c in missing_cols:
+        user_df[c] = 0
+
+    # Reorder the columns to match the training data
+    user_df = user_df[training_columns]
+
+    return user_df
+
+def combine_room_size_type(df):
+    df['room_size_type'] = df['room_type'] + '_' + df['room_size']
+
+    return df
+
+def add_seasonal_cleaning_factor(df):
+    season_factors = {'Spring': 1, 'Summer': 1.2, 'Autumn': 1.1, 'Winter': 1.3}
+
+    df['seasonal_cleaning_factor'] = df['season'].map(season_factors)
+
+    return df
+
+def room_usage_indicator(df):
+    size_map = {'Small': 1, 'Medium': 2, 'Large': 3}
+    frequency_map = {'Low': 1, 'Medium': 2, 'High': 3}
+
+    df['room_usage_indicator'] = df['room_size'].map(size_map) * df['usage_frequency'].map(frequency_map)
+
+    return df
+
+def allergy_pet_impact(df):
+    df['allergy_pet_impact'] = df['pets'].astype(int) + df['allergies'].astype(int)
+
+    return df

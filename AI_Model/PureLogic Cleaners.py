@@ -1,101 +1,105 @@
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MultiLabelBinarizer
 import datetime
 
-from utils import random_multiple_indexes, process_real_user_data, find_next_preferred_day, adjust_for_pets_allergies
+from utils import transform_data_to_model_format, combine_room_size_type, add_seasonal_cleaning_factor, room_usage_indicator, allergy_pet_impact
 
-# Survey data setup
-n_samples = 20000
+n_samples = 10000
 np.random.seed(0)
-rooms = ['Kitchen', 'Living Room', 'Bathroom', 'Bedroom', 'Dining Room', 'Study', 'Hallway', 'Garage']
-days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-frequencies = ['Daily', 'Weekly', 'Bi-Weekly', 'Monthly', 'Bi-Monthly', 'Quarterly', 'Yearly']
-time_spent = ['<30 mins', '30-60 mins', '1-2 hours', '>2 hours']
-pets_allergies = ['Pets', 'Allergies', 'None', 'Both']
-
-cleaning_frequency_indexes = np.random.choice(range(len(frequencies)), n_samples)
-time_spent_cleaning_indexes = np.random.choice(range(len(time_spent)), n_samples)
-selected_pets_allergies_indexes = np.random.choice(range(len(pets_allergies)), n_samples)
-number_of_occupants_indexes = np.random.randint(1, 6, n_samples)
-preferred_days_indexes = random_multiple_indexes(len(days), n_samples, 7)
-priority_rooms_indexes = random_multiple_indexes(len(rooms), n_samples)
 
 survey_df = pd.DataFrame({
-    'preferred_days': preferred_days_indexes,
-    'priority_rooms': priority_rooms_indexes,
-    'cleaning_frequency': cleaning_frequency_indexes,
-    'time_spent_cleaning': time_spent_cleaning_indexes,
-    'pets_allergies': selected_pets_allergies_indexes,
-    'number_of_occupants': number_of_occupants_indexes,
-    'days_until_next_cleaning': np.random.randint(1, 30, size=n_samples),
-    'target_room': [np.random.choice(rooms) for _ in range(n_samples)]
+    'room_type': np.random.choice(['Kitchen', 'Living Room', 'Bathroom', 'Bedroom', 'Dining Room', 'Study', 'Hallway', 'Garage'], n_samples),
+    'room_size': np.random.choice(['Small', 'Medium', 'Large'], n_samples),
+    'surface_type': np.random.choice(['Carpet', 'Hardwood', 'Tile'], n_samples),
+    'usage_frequency': np.random.choice(['High', 'Medium', 'Low'], n_samples),
+    'days_since_last_cleaning': np.random.randint(1, 15, n_samples),
+    'cleaning_duration': np.random.randint(15, 120, n_samples),
+    'cleaning_quality': np.random.choice(['Thorough', 'Basic', 'Quick'], n_samples),
+    'number_of_occupants': np.random.randint(1, 6, n_samples),
+    'pets': np.random.choice([True, False], n_samples),
+    'allergies': np.random.choice([True, False], n_samples),
+    'preferred_cleaning_days': np.random.choice(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], n_samples),
+    'preferred_cleaning_frequency': np.random.choice([
+        'Daily', 'Every 3 Days', 'Twice a Week', 'Weekly', 'Fortnightly', 
+        'Bi-Weekly', 'Twice a Month', 'Monthly', 'Bi-Monthly', 
+        'Quarterly', 'Seasonally', 'Yearly', 'As Needed'
+    ], n_samples),
+    'priority_rooms': np.random.choice(['Kitchen', 'Living Room', 'Bathroom', 'Bedroom', 'Dining Room', 'Study', 'Hallway', 'Garage'], n_samples),
+    'season': np.random.choice(['Spring', 'Summer', 'Autumn', 'Winter'], n_samples),
+    'days_until_next_cleaning': np.random.randint(1, 15, n_samples)
 })
 
-mlb_days = MultiLabelBinarizer(classes=range(len(days)))
-mlb_rooms = MultiLabelBinarizer(classes=range(len(rooms)))
+survey_df['preferred_cleaning_days'] = survey_df['preferred_cleaning_days'].apply(lambda x: [x])
+survey_df['priority_rooms'] = survey_df['priority_rooms'].apply(lambda x: [x])
 
-one_hot_preferred_days = pd.DataFrame(mlb_days.fit_transform(survey_df.pop('preferred_days')),
-                                      columns=['day_' + str(i) for i in mlb_days.classes_],
-                                      index=survey_df.index)
+# Implement Feature Engineering
+survey_df = combine_room_size_type(survey_df)
+survey_df = add_seasonal_cleaning_factor(survey_df)
+survey_df = room_usage_indicator(survey_df)
+survey_df = allergy_pet_impact(survey_df)
 
-survey_df = survey_df.join(one_hot_preferred_days)
+# Initialize MultiLabelBinarizer
+mlb_days = MultiLabelBinarizer()
+mlb_rooms = MultiLabelBinarizer()
 
-one_hot_priority_rooms = pd.DataFrame(mlb_rooms.fit_transform(survey_df.pop('priority_rooms')),
-                                      columns=['room_' + str(i) for i in mlb_rooms.classes_],
-                                      index=survey_df.index)
-survey_df = survey_df.join(one_hot_priority_rooms)
+# Binarize 'preferred_cleaning_days' and 'priority_rooms'
+days_binarized = mlb_days.fit_transform(survey_df['preferred_cleaning_days'])
+rooms_binarized = mlb_rooms.fit_transform(survey_df['priority_rooms'])
+
+# Create dataframes from the binarized arrays and add them back to the survey_df
+days_df = pd.DataFrame(days_binarized, columns=mlb_days.classes_)
+rooms_df = pd.DataFrame(rooms_binarized, columns=mlb_rooms.classes_)
+
+# Concatenate the new dataframes with the original survey_df
+survey_df = pd.concat([survey_df.drop(['preferred_cleaning_days', 'priority_rooms'], axis=1), days_df, rooms_df], axis=1)
 
 # Preparing the features and targets
-X = survey_df.drop(['days_until_next_cleaning', 'target_room'], axis=1).to_numpy()
-y_days = survey_df['days_until_next_cleaning']
-y_room = survey_df['target_room']
+X = pd.get_dummies(survey_df.drop(['days_until_next_cleaning'], axis=1))
+Y = survey_df['days_until_next_cleaning']
 
 # Splitting the dataset
-X_train_days, X_test_days, y_train_days, y_test_days = train_test_split(X, y_days, test_size=0.2, random_state=42)
-X_train_room, X_test_room, y_train_room, y_test_room = train_test_split(X, y_room, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 # Training the models
-model_days = RandomForestRegressor(n_estimators=100, random_state=42)
-model_days.fit(X_train_days, y_train_days)
-
-model_room = RandomForestClassifier(n_estimators=100, random_state=42)
-model_room.fit(X_train_room, y_train_room)
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
 
 # Example real user data
 real_user_data = {
-    'preferred_days': [0, 1, 2, 3, 4],
-    'priority_rooms': [0, 2], 
-    'cleaning_frequency': 1, 
-    'time_spent_cleaning': 2,
-    'pets_allergies': 3,
-    'number_of_occupants': 2
+    'room_type': 'Kitchen',
+    'room_size': 'Small',
+    'surface_type': 'Tile',
+    'usage_frequency': 'Medium',
+    'days_since_last_cleaning': 3,
+    'cleaning_duration': 25,
+    'cleaning_quality': 'Basic',
+    'number_of_occupants': 4,
+    'pets': True,
+    'allergies': False,
+    'preferred_cleaning_days': ['Monday','Saturday', 'Sunday'],
+    'preferred_cleaning_frequency': 'Weekly',
+    'priority_rooms':['Bedroom'],
+    'season': 'Summer',
 }
 
-# Process real user data
-processed_user_data = process_real_user_data(real_user_data, mlb_days, mlb_rooms)
-
-# Check for pets or allergies in real user data
-has_pets_allergies = real_user_data['pets_allergies'] in [0, 3]  # Assuming 0 is 'Pets' and 3 is 'Both'
+# Match new input data with the AI model
+processed_user_data = transform_data_to_model_format(real_user_data, X_train.columns, mlb_days, mlb_rooms)
 
 # Predicting for the real user
-predicted_days_until_next_cleaning = model_days.predict([processed_user_data])[0]
+predicted_days_until_next_cleaning = model.predict(processed_user_data)
 
-rounded_prediction_days = round(predicted_days_until_next_cleaning)
-
-# Adjust for pets or allergies
-adjusted_days_for_pets_allergies = adjust_for_pets_allergies(rounded_prediction_days, has_pets_allergies)
-
-# Adjusting to the next preferred day
-adjusted_days_until_next_cleaning = find_next_preferred_day(adjusted_days_for_pets_allergies, real_user_data['preferred_days'])
+# Round prediction number
+rounded_prediction_days = round(predicted_days_until_next_cleaning[0])
 
 # Calculate the adjusted cleaning date
-adjusted_cleaning_date = datetime.datetime.today() + datetime.timedelta(days=adjusted_days_until_next_cleaning)
+adjusted_cleaning_date = datetime.datetime.today() + datetime.timedelta(days=rounded_prediction_days)
 
-# Predict the room
-predicted_room = model_room.predict([processed_user_data])[0]
+# Output
+room_type = real_user_data['room_type']
+predicted_cleaning_days = rounded_prediction_days
+cleaning_date = adjusted_cleaning_date.strftime('%A, %d-%m-%Y')
 
-print(f"Predicted days until next cleaning: {rounded_prediction_days}, Date: {adjusted_cleaning_date.strftime('%d-%m-%Y')}")
-print(f"Predicted room to clean next: {predicted_room}")
+print(f"For the {room_type}, the next predicted cleaning is in {predicted_cleaning_days} days, scheduled for {cleaning_date}.")
