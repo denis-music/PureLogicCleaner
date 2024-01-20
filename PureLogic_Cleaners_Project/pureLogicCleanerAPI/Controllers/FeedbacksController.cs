@@ -25,26 +25,13 @@ namespace pureLogicCleanerAPI.Controllers
                     .Where(obj => obj is not null)
                     .ToList() : [];
 
-            var filterResults = result;
-            if (searchRequest.CleaningScheduleId is not null)
-            {
-                filterResults = filterResults.Where(p => p.CleaningScheduleId == searchRequest.CleaningScheduleId).ToList();
-            }
-
-            if (searchRequest.MemberId is not null)
-            {
-                filterResults = filterResults.Where(p => p.MemberId == searchRequest.MemberId).ToList();
-            }
-
-            if (searchRequest.FeedbackType is not null)
-            {
-                filterResults = filterResults.Where(p => p.FeedbackType == searchRequest.FeedbackType).ToList();
-            }
-
-            if (searchRequest.Rating is not null)
-            {
-                filterResults = filterResults.Where(p => p.Rating == searchRequest.Rating).ToList();
-            }
+            var filterResults = result
+                .Where(p =>
+                (searchRequest.CleaningScheduleId == null || p.CleaningScheduleId == searchRequest.CleaningScheduleId) &&
+                (searchRequest.MemberId == null || p.MemberId == searchRequest.MemberId) &&
+                (searchRequest.FeedbackType == null || p.FeedbackType == searchRequest.FeedbackType) &&
+                (searchRequest.Rating == null || p.Rating == searchRequest.Rating))
+                .ToList();
 
             return filterResults.Any() ? filterResults : result;
         }
