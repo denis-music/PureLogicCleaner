@@ -101,13 +101,13 @@ namespace pureLogicCleanerAPI.Repository
                 : [];
         }
 
-        public async Task<bool> UpdateFeedbackAsync<T>(T updatedFeedback, string containerName, string id) where T : class
+        public async Task<bool> UpdateAsync<T>(T updatedItem, string containerName, string id) where T : class
         {
             try
             {
                 Container? container = _cosmosDatabase?.GetContainer(containerName);
                 ItemResponse<T> response = await container.ReplaceItemAsync(
-                    updatedFeedback,
+                    updatedItem,
                     id,
                     new PartitionKey(id));
                 return true;
@@ -119,7 +119,7 @@ namespace pureLogicCleanerAPI.Repository
             }
         }
 
-        public async Task<bool> DeleteFeedbackAsync<T>(string containerName, string id) where T : class
+        public async Task<bool> DeleteAsync<T>(string containerName, string id) where T : class
         {
             try
             {

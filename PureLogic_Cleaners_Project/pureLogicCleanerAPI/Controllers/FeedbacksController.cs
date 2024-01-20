@@ -18,16 +18,36 @@ namespace pureLogicCleanerAPI.Controllers
         public async Task<IList<Feedbacks>> GetAsync([FromQuery] FeedbacksSearchRequest searchRequest)
         {
             var iterator = _cosmosDBRepo.GetContainerIterator<Feedbacks>(databaseName) ?? null;
-            return iterator is not null ?
+            var result = iterator is not null ?
                 (await iterator.ReadNextAsync())
                     .Select(feedback => JsonConvert.SerializeObject(feedback))
                     .Select(JsonConvert.DeserializeObject<Feedbacks>)
                     .Where(userObj => userObj is not null)
-                    .Where(p => p.FeedbackType == searchRequest.FeedbackType ||
-                        p.MemberId == searchRequest.MemberId ||
-                        p.CleaningScheduleId == searchRequest.CleaningScheduleId ||
-                        p.Rating == searchRequest.Rating)
+                    //.Where(p => p.FeedbackType == (searchRequest.FeedbackType) ||
+                    //    p.MemberId == searchRequest.MemberId ||
+                    //    p.CleaningScheduleId == searchRequest.CleaningScheduleId ||
+                    //    p.Rating == searchRequest.Rating)
                     .ToList() : [];
+
+            var filterResults = new List<Feedbacks>();
+            if (searchRequest.CleaningScheduleId is not null)
+            {
+                filterResults.AddRange(result.Where(p => p.CleaningScheduleId == searchRequest.CleaningScheduleId));
+            }
+            if (searchRequest.MemberId is not null)
+            {
+                filterResults.AddRange(result.Where(p => p.MemberId == searchRequest.MemberId));
+            }
+            if (searchRequest.FeedbackType is not null)
+            {
+                filterResults.AddRange(result.Where(p => p.FeedbackType == searchRequest.FeedbackType));
+            }
+            if (searchRequest.Rating is not null)
+            {
+                filterResults.AddRange(result.Where(p => p.Rating == searchRequest.Rating));
+            }
+
+            return filterResults.Count == 0 ? result : filterResults;
         }
 
         [HttpGet("{id}")]
@@ -66,13 +86,13 @@ namespace pureLogicCleanerAPI.Controllers
                 Rating = payload.Rating,
                 Text = payload.Text
             };
-            return await _cosmosDBRepo.UpdateFeedbackAsync<Feedbacks>(updatedFeedback, databaseName, feedback.Id);
+            return await _cosmosDBRepo.UpdateAsync<Feedbacks>(updatedFeedback, databaseName, feedback.Id);
         }
 
         [HttpDelete("{id}")]
         public async Task<bool> DeleteAsync(string id)
         {
-            return await _cosmosDBRepo.DeleteFeedbackAsync<Feedbacks>(databaseName, id);
+            return await _cosmosDBRepo.DeleteAsync<Feedbacks>(databaseName, id);
         }
     }
 }
