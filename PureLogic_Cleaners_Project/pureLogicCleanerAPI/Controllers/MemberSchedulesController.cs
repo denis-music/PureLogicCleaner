@@ -70,5 +70,27 @@ namespace pureLogicCleanerAPI.Controllers
             };
             return await _cosmosDBRepo.UpdateAsync(updateMs, containerName, ms.Id);
         }
+
+        [HttpGet("countCompletion")]
+        public async Task<IList<MemberSchedules>> GetCountAsync([FromQuery]MemberSchedulesSearchRequest searchRequest)
+        {
+            var iterator = _cosmosDBRepo.GetContainerIterator<MemberSchedules>(containerName) ?? null;
+            var result = iterator is not null ?
+                (await iterator.ReadNextAsync())
+                    .Select(ms => JsonConvert.SerializeObject(ms))
+                    .Select(JsonConvert.DeserializeObject<MemberSchedules>)
+                    .Where(obj => obj is not null)
+                    .ToList() : [];
+
+            var filterResults = result
+                .Where(p =>
+                 (searchRequest.Room == null || p.Room == searchRequest.Room) &&
+                 (searchRequest.MemberId == null || p.MemberId == searchRequest.MemberId) &&
+                 (searchRequest.Completed == null || p.Completed == searchRequest.Completed))
+                .ToList();
+
+            return filterResults.Any() ? filterResults : result;
+
+        }
     }
 }
