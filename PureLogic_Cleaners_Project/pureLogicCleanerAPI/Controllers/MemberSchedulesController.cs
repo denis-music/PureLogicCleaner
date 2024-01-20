@@ -26,7 +26,7 @@ namespace pureLogicCleanerAPI.Controllers
                     .ToList() : [];
 
             var filterResults = result
-                .Where(p => (searchRequest.ScheduleId == null || p.CleaningScheduleId == searchRequest.ScheduleId) &&
+                .Where(p => (searchRequest.Room == null || p.Room == searchRequest.Room) &&
                 (searchRequest.MemberId == null || p.MemberId == searchRequest.MemberId))
                 .ToList();
 
@@ -42,14 +42,14 @@ namespace pureLogicCleanerAPI.Controllers
         [HttpPost(Name = "SendMemberSchedule")]
         public async Task<bool> PostAsync(MemberSchedulesVM payload)
         {
-            if (payload.MemberId == null || payload.CleaningScheduleId == null ||
+            if (payload.MemberId == null || payload.Room == null ||
                 payload.Completed == null) return false;
             string msId = Guid.NewGuid().ToString();
             var newMS = new MemberSchedules
             {
                 Id = msId,
                 MemberId = payload.MemberId,
-                CleaningScheduleId = payload.CleaningScheduleId,
+                Room = payload.Room,
                 Completed = (bool)payload.Completed
             };
             return await _cosmosDBRepo.CreateItemAsync(newMS, containerName, newMS.Id);
@@ -63,7 +63,7 @@ namespace pureLogicCleanerAPI.Controllers
             MemberSchedules updateMs = new()
             {
                 Id = ms.Id,
-                CleaningScheduleId = ms.CleaningScheduleId,
+                Room = ms.Room,
                 MemberId = ms.MemberId,
                 Completed = (bool)(payload.Completed == null ? false : payload.Completed),
                 UpdatedDate = DateTime.Now
