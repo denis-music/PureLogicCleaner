@@ -4,10 +4,10 @@ namespace pureLogicCleanerAPI.VMs
 {
     public class FeedbacksVM
     {
-        public required string MemberId { get; set; }
-        public required string CleaningScheduleId { get; set; }
-        public required FeedbackType FeedbackType { get; set; }
-        public required int Rating { get; set; }
-        public string? Text { get; set; }
+        public string? MemberId { get; set; } = null;
+        public string? CleaningScheduleId { get; set; } = null;
+        public FeedbackType? FeedbackType { get; set; } = null;
+        public int? Rating { get; set; } = null;
+        public string? Text { get; set; } = null;
     }
 }
