@@ -45,14 +45,16 @@ namespace pureLogicCleanerAPI.Controllers
         [HttpPost(Name = "SendFeedback")]
         public async Task<bool> PostAsync(FeedbacksVM payload)
         {
+            if (payload.CleaningScheduleId == null || payload.FeedbackType == null ||
+                payload.MemberId == null || payload.Rating == null) return false;
             string feedbackId = Guid.NewGuid().ToString();
             var newFeedback = new Feedbacks
             {
                 Id = feedbackId,
                 MemberId = payload.MemberId,
                 CleaningScheduleId = payload.CleaningScheduleId,
-                FeedbackType = payload.FeedbackType,
-                Rating = payload.Rating,
+                FeedbackType = (Models.Enums.FeedbackType)payload.FeedbackType,
+                Rating = (int)payload.Rating,
                 Text = payload.Text != null ? payload.Text : ""
             };
             return await _cosmosDBRepo.CreateItemAsync(newFeedback, containerName, newFeedback.Id);
@@ -69,8 +71,8 @@ namespace pureLogicCleanerAPI.Controllers
                 MemberId = feedback.MemberId,
                 CleaningScheduleId = feedback.CleaningScheduleId,
                 FeedbackType = feedback.FeedbackType,
-                Rating = payload.Rating,
-                Text = payload.Text
+                Rating = (int)(payload.Rating == null ? feedback.Rating : payload.Rating),
+                Text = payload.Text == null ? feedback.Text : payload.Text
             };
             return await _cosmosDBRepo.UpdateAsync<Feedbacks>(updatedFeedback, containerName, feedback.Id);
         }
