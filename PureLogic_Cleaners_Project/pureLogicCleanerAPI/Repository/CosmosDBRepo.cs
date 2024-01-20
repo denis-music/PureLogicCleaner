@@ -5,8 +5,8 @@ namespace pureLogicCleanerAPI.Repository
 {
     public class CosmosDBRepo : ICosmosDBRepo
     {
-        private readonly CosmosClient _cosmosClient;
-        private readonly Database? _cosmosDatabase;
+        public readonly CosmosClient _cosmosClient;
+        public readonly Database? _cosmosDatabase;
 
         public CosmosDBRepo(IConfiguration config)
         {
@@ -54,6 +54,27 @@ namespace pureLogicCleanerAPI.Repository
             );
         }
 
+        public FeedIterator<T>? GetContainerIterator<T>(string containerName) where T : class
+        {
+            Container? cosmosDbContainer = _cosmosDatabase?.GetContainer(containerName);
+
+            return cosmosDbContainer?.GetItemQueryIterator<T>() ?? null;
+        }
+
+        public async Task<T>? GetItemByIdAsync<T>(string containerName, string id) where T : class
+        {
+            Container? container = _cosmosDatabase?.GetContainer(containerName);
+            try
+            {
+                var response = await container.ReadItemAsync<T>(id, new PartitionKey(id));
+                return response.Resource;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<bool> CreateItemAsync<T>(T data, string containerName, string partitionKey) where T : class
         {
             Container? cosmosDbContainer = _cosmosDatabase?.GetContainer(containerName);
@@ -69,9 +90,7 @@ namespace pureLogicCleanerAPI.Repository
 
         public async Task<IList<T>> GetItemsAsync<T>(string containerName) where T : class
         {
-            Container? cosmosDbContainer = _cosmosDatabase?.GetContainer(containerName);
-
-            var iterator = cosmosDbContainer?.GetItemQueryIterator<T>() ?? null;
+            var iterator = GetContainerIterator<T>(containerName);
 
             return iterator is not null
                 ? (await iterator.ReadNextAsync())
@@ -80,6 +99,40 @@ namespace pureLogicCleanerAPI.Repository
                     .Where(userObj => userObj is not null)
                     .ToList()
                 : [];
+        }
+
+        public async Task<bool> UpdateFeedbackAsync<T>(T updatedFeedback, string containerName, string id) where T : class
+        {
+            try
+            {
+                Container? container = _cosmosDatabase?.GetContainer(containerName);
+                ItemResponse<T> response = await container.ReplaceItemAsync(
+                    updatedFeedback,
+                    id,
+                    new PartitionKey(id));
+                return true;
+            }
+            catch (Exception)
+            {
+                // Handle other exceptions
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteFeedbackAsync<T>(string containerName, string id) where T : class
+        {
+            try
+            {
+                Container? container = _cosmosDatabase?.GetContainer(containerName);
+                ItemResponse<T> response = await container.DeleteItemAsync<T>(
+                id,
+                new PartitionKey(id));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
