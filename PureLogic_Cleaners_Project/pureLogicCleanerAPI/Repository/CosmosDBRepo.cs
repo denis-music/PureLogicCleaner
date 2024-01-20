@@ -52,6 +52,10 @@ namespace pureLogicCleanerAPI.Repository
                 id: "Statistics",
                 partitionKeyPath: "/id"
             );
+            await database.CreateContainerIfNotExistsAsync(
+                id: "MemberSchedules",
+                partitionKeyPath: "/id"
+            );
         }
 
         public FeedIterator<T>? GetContainerIterator<T>(string containerName) where T : class
@@ -114,7 +118,6 @@ namespace pureLogicCleanerAPI.Repository
             }
             catch (Exception)
             {
-                // Handle other exceptions
                 return false;
             }
         }
