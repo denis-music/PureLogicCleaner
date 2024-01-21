@@ -71,6 +71,19 @@ def calculate_days_between_given_date_and_today(given_date):
 
         return difference
 
+def get_room_names_from_ids(room_ids_list, rooms_list):
+    room_names = []
+
+    for room_id in room_ids_list:
+        found_room = next((room for room in rooms_list if room['id'] == room_id), None)
+
+        if found_room:
+            room_names.append(found_room.get('name', 'Unknown Room'))
+        else:
+            room_names.append("Unknown Room")
+
+    return room_names
+
 def combine_room_size_type(df):
     df['room_size_type'] = df['room_type'] + '_' + df['room_size']
 

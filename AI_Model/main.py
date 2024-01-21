@@ -5,8 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MultiLabelBinarizer
 import datetime
 
-from utils import transform_data_to_model_format, get_current_season, map_day_indexes_to_names, combine_room_size_type, add_seasonal_cleaning_factor, room_usage_indicator, allergy_pet_impact, calculate_days_between_given_date_and_today
-from db import get_users, get_user_rooms, get_user_room_cleaning_history, get_room, add_to_cleaning_schedule, get_user_room_active_cleaning_predictions
+from utils import transform_data_to_model_format, get_current_season, map_day_indexes_to_names, combine_room_size_type, add_seasonal_cleaning_factor, room_usage_indicator, allergy_pet_impact, calculate_days_between_given_date_and_today, get_room_names_from_ids
+from db import get_users, get_rooms, get_user_rooms, get_user_room_cleaning_history, get_room, add_to_cleaning_schedule, get_user_room_active_cleaning_predictions
 
 n_samples = 10000
 np.random.seed(0)
@@ -69,6 +69,7 @@ model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
 user_data_iterator = get_users()
+rooms_iterator = get_rooms()
 
 for user_data in user_data_iterator:
 
@@ -98,7 +99,7 @@ for user_data in user_data_iterator:
             "allergies": user_data['allergies'],
             "preferred_cleaning_days": map_day_indexes_to_names(user_data['preferred_cleaning_days']),
             "preferred_cleaning_frequency": user_data['preferred_cleaning_frequency'],
-            "priority_rooms": user_data['priority_room_ids'],
+            "priority_rooms": get_room_names_from_ids(user_data['priority_room_ids'], rooms_iterator),
             "season": get_current_season()
         }
 

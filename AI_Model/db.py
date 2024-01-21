@@ -23,6 +23,19 @@ def get_users():
         return None
 
 
+def get_rooms():
+    try:
+        container = cosmos_client.get_database_client(database_name).get_container_client('Rooms')
+
+        query = f"SELECT * FROM c"
+        
+        rooms = list(container.query_items(query, enable_cross_partition_query=True))
+
+        return rooms
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 def get_user_rooms(user_id):
     try:
         container = cosmos_client.get_database_client(database_name).get_container_client('UserRooms')
