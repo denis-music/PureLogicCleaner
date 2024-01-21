@@ -68,5 +68,16 @@ namespace pureLogicCleanerAPI.Controllers
             }
             );
         }
+
+        [HttpPut("/member/{userId}/subscription/{subsId}")]
+        public async Task<bool> AddMembersSubs(string userId, string subsId)
+        {
+            var subs = await _cosmosDBRepo.GetItemByIdAsync<Subscriptions>("Subscriptions", subsId);
+            if (subs == null) return false;
+            var user = await _cosmosDBRepo.GetItemByIdAsync<Users>(containerName, userId);
+            user.SubsId = subsId;
+            user.SubscriptionDateBought = DateTime.Now;
+            return await _cosmosDBRepo.UpdateAsync<Users>(user, containerName, user.Id);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace pureLogicCleanerAPI.Models
         public required CleaningQuality CleaningQuality { get; set; }
         public required int CleaningDurationInMins { get; set; }
         public required DateTime Date { get; set; }
-        public required DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }
 }
