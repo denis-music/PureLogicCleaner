@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import datetime
+from datetime import datetime, date
 
 def transform_data_to_model_format(user_data, training_columns, mlb_days, mlb_rooms):
     # Convert the user data to a DataFrame
@@ -35,6 +35,41 @@ def transform_data_to_model_format(user_data, training_columns, mlb_days, mlb_ro
     user_df = user_df[training_columns]
 
     return user_df
+
+def map_day_indexes_to_names(indexes):
+    day_index_to_name = {
+        0: "Monday",
+        1: "Tuesday",
+        2: "Wednesday",
+        3: "Thursday",
+        4: "Friday",
+        5: "Saturday",
+        6: "Sunday"
+    }
+
+    day_names = [day_index_to_name.get(index, "Invalid Index") for index in indexes]
+    return day_names
+
+def get_current_season():
+    now = datetime.now()
+
+    month = now.month
+    if 3 <= month <= 5:
+        return 'Spring'
+    elif 6 <= month <= 8:
+        return 'Summer'
+    elif 9 <= month <= 11:
+        return 'Autumn'
+    else:
+        return 'Winter'
+
+def calculate_days_between_given_date_and_today(given_date):
+        date_format = "%d-%m-%Y"
+        given_date_obj = datetime.strptime(given_date, date_format).date()
+        today_date_obj = date.today()
+        difference = (today_date_obj - given_date_obj).days
+
+        return difference
 
 def combine_room_size_type(df):
     df['room_size_type'] = df['room_type'] + '_' + df['room_size']
