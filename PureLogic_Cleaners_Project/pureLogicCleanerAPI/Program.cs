@@ -1,4 +1,7 @@
 using Microsoft.OpenApi.Models;
+using pureLogicCleanerAPI.Mapper;
+using pureLogicCleanerAPI.Extenssions;
+using pureLogicCleanerAPI.Services;
 using pureLogicCleanerAPI.Repository;
 
 namespace pureLogicCleanerAPI
@@ -31,16 +34,19 @@ namespace pureLogicCleanerAPI
                     }
                 });
             });
-
             builder.Services.AddTransient<ICosmosDBRepo, CosmosDBRepo>();
+            //JWT
+            builder.Services.ConfigureJWT(builder.Configuration);
+
+            // Add AutoMapper
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+
+            // Services
+            builder.Services.AddScoped<IUserService, UserService>();
 
             var app = builder.Build();
-
-            //initializing DB
             var iCosmosDBRepo = app.Services.GetService<ICosmosDBRepo>();
             iCosmosDBRepo?.SetAsync();
-
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -50,7 +56,9 @@ namespace pureLogicCleanerAPI
 
             app.UseHttpsRedirection();
 
-            //app.UseAuthorization();
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.MapControllers();
 

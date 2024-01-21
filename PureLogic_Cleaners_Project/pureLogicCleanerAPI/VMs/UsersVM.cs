@@ -9,10 +9,19 @@ namespace pureLogicCleanerAPI.Models
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public int Ages { get; set; }
-        public Boolean Allergies { get; set; } = false;
-        public Boolean Pets { get; set; } = false;
-        public required List<DaysOfWeek> PreferredCleaningDays { get; set; }
-        public required CleaningFrequency PreferredCleaningFrequency { get; set; }
-        public required List<string> PriorityRoomIds { get; set; }
+        public bool Allergies { get; set; } = false;
+        public bool? Pets { get; set; } = false;
+        public List<DaysOfWeek> PreferredCleaningDays { get; set; } = null;
+        public CleaningFrequency? PreferredCleaningFrequency { get; set; } = null;
+        public List<string>? PriorityRoomIds { get; set; } = null;
+
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string PasswordConfirm { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Adrress { get; set; } = string.Empty;
+        public int? Age { get; set; } = null;
+
+        public DateTime? SubscriptionDateBought { get; set; } = null;
     }
 }
