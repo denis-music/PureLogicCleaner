@@ -34,9 +34,7 @@ namespace pureLogicCleanerAPI
                     }
                 });
             });
-
-
-
+            builder.Services.AddTransient<ICosmosDBRepo, CosmosDBRepo>();
             //JWT
             builder.Services.ConfigureJWT(builder.Configuration);
 
@@ -45,10 +43,10 @@ namespace pureLogicCleanerAPI
 
             // Services
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<ICosmosDBRepo, CosmosDBRepo>();
 
             var app = builder.Build();
-
+            var iCosmosDBRepo = app.Services.GetService<ICosmosDBRepo>();
+            iCosmosDBRepo?.SetAsync();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
