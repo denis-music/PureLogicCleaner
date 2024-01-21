@@ -30,7 +30,13 @@ namespace pureLogicCleanerAPI.Controllers
                 Id = payload.Id,
                 SubsId = payload.SubsId,
                 Ages = payload.Ages,
-                FirstName = payload.FirstName
+                FirstName = payload.FirstName,
+                LastName = payload.LastName,
+                Allergies = payload.Allergies,
+                Pets = payload.Pets,
+                PreferredCleaningDays = payload.PreferredCleaningDays,
+                PreferredCleaningFrequency = payload.PreferredCleaningFrequency,
+                PriorityRoomIds = payload.PriorityRoomIds,
             };
             return await _cosmosDBRepo.CreateItemAsync(newUser, databaseName, newUser.SubsId);
         }

@@ -37,10 +37,6 @@ namespace pureLogicCleanerAPI.Repository
                 partitionKeyPath: "/id"
             );
             await database.CreateContainerIfNotExistsAsync(
-                id: "CleaningSchedules",
-                partitionKeyPath: "/id"
-            );
-            await database.CreateContainerIfNotExistsAsync(
                 id: "Feedbacks",
                 partitionKeyPath: "/id"
             );
@@ -54,6 +50,19 @@ namespace pureLogicCleanerAPI.Repository
             );
             await database.CreateContainerIfNotExistsAsync(
                 id: "MemberSchedules",
+                partitionKeyPath: "/id"
+            );
+
+            await database.CreateContainerIfNotExistsAsync(
+                id: "Rooms",
+                partitionKeyPath: "/id"
+            );
+            await database.CreateContainerIfNotExistsAsync(
+                id: "UserRooms",
+                partitionKeyPath: "/id"
+            );
+            await database.CreateContainerIfNotExistsAsync(
+                id: "CleaningHistory",
                 partitionKeyPath: "/id"
             );
         }

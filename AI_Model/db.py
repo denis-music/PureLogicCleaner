@@ -72,7 +72,7 @@ def get_room(room_id):
 
 def get_user_room_cleaning_history(user_room_id):
     try:
-        container = cosmos_client.get_database_client(database_name).get_container_client('UserHistory')
+        container = cosmos_client.get_database_client(database_name).get_container_client('CleaningHistory')
 
         query = "SELECT * FROM c WHERE c.user_room_id = @user_room_id AND c.completed = true ORDER BY c.id DESC"
         parameters = [{"name": "@user_room_id", "value": user_room_id}]
@@ -93,7 +93,7 @@ def get_user_room_cleaning_history(user_room_id):
 
 def get_user_room_active_cleaning_predictions(user_room_id):
     try:
-        container = cosmos_client.get_database_client(database_name).get_container_client('UserHistory')
+        container = cosmos_client.get_database_client(database_name).get_container_client('CleaningHistory')
 
         query = "SELECT * FROM c WHERE c.user_room_id = @user_room_id AND c.completed = false"
         parameters = [{"name": "@user_room_id", "value": user_room_id}]
@@ -111,7 +111,7 @@ def get_user_room_active_cleaning_predictions(user_room_id):
 
 def add_to_cleaning_schedule(data):
     try:
-        container = cosmos_client.get_database_client(database_name).get_container_client('UserHistory')
+        container = cosmos_client.get_database_client(database_name).get_container_client('CleaningHistory')
 
         if 'id' not in data:
             data['id'] = str(uuid.uuid4())
