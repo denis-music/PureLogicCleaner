@@ -1,9 +1,8 @@
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
-using pureLogicCleanerAPI.Context;
 using pureLogicCleanerAPI.Mapper;
-using pureLogicCleanerAPI.Services;
 using pureLogicCleanerAPI.Extenssions;
+using pureLogicCleanerAPI.Services;
+using pureLogicCleanerAPI.Repository;
 
 namespace pureLogicCleanerAPI
 {
@@ -36,6 +35,8 @@ namespace pureLogicCleanerAPI
                 });
             });
 
+
+
             //JWT
             builder.Services.ConfigureJWT(builder.Configuration);
 
@@ -44,6 +45,7 @@ namespace pureLogicCleanerAPI
 
             // Services
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICosmosDBRepo, CosmosDBRepo>();
 
             var app = builder.Build();
 

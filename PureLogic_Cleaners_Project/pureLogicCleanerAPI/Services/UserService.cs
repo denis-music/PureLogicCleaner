@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using pureLogicCleanerAPI.Context;
 using pureLogicCleanerAPI.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,55 +9,27 @@ using pureLogicCleanerAPI.Models;
 
 namespace pureLogicCleanerAPI.Services;
 
-public class UserService : IUserService
+public class UserService(IMapper mapper, IConfiguration configuration) : IUserService
 {
-    private readonly dbContext _dbContext;
-    private  readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
+    private  readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+    private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-    public UserService(dbContext dbContext, IMapper mapper, IConfiguration configuration)
-    {
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-    }
+    //public bool IsUsernameTaken(string username)
+    //{
+    //    var users = _dbContext.Users.FirstOrDefault(x => x.Username == username);
 
-    public async Task<List<UserDto?>> GetAll()
-    {
-        var users = await _dbContext.Users.ToListAsync();
+    //    if (users == null)
+    //        return false;
 
-        if(users == null)
-            throw new NullReferenceException($"Users list is empty.");
+    //    return true;
+    //}
 
-        return _mapper.Map<List<UserDto?>>(users);
-    }
-
-    public async Task<UserDto?> GetById(int id)
-    {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-
-        if (user is null)
-            throw new NullReferenceException($"User with Id={id} was null.");
-
-        return _mapper.Map<UserDto?>(user);
-    }
-
-    public bool IsUsernameTaken(string username)
-    {
-        var users = _dbContext.Users.FirstOrDefault(x => x.Username == username);
-
-        if (users == null)
-            return false;
-
-        return true;
-    }
-
-    public async Task RegisterUser(UserUpsert userDto)
+    public async Task<Users> RegisterUser(UserUpsert userDto)
     {
         if(userDto is null)
             throw new ArgumentNullException(nameof(userDto));
 
-        var entity = _mapper.Map<Models.User>(userDto);
+        var entity = _mapper.Map<Users>(userDto);
 
         if (userDto.Password != userDto.PasswordConfirm)
         {
@@ -68,31 +38,11 @@ public class UserService : IUserService
         entity.PasswordSalt = HashGenerator.GenerateSalt();
         entity.PasswordHash = HashGenerator.GenerateHash(entity.PasswordSalt, userDto.Password);
 
-        await _dbContext.Users.AddAsync(entity);
-
-        await _dbContext.SaveChangesAsync();
+        return entity;
     }
 
-    public async Task<UserUpsert> Update(int id, UserUpsert userDto)
+    public Users ValidateUser(UserForAuthenticationDto userForAuth, Users user)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-
-        if (user is null)
-            throw new NullReferenceException($"User with Id={id} was null.");
-
-        _dbContext.Users.Attach(user);
-        _dbContext.Users.Update(user);
-        _mapper.Map(userDto, user);
-
-        await _dbContext.SaveChangesAsync();
-        return _mapper.Map<UserUpsert>(user);
-    }
-
-
-    public async Task<User> ValidateUser(UserForAuthenticationDto userForAuth)
-    {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x =>x.Username == userForAuth.Username);
-
         if (user != null)
         {
             var newHash = HashGenerator.GenerateHash(user.PasswordSalt, userForAuth.Password);
@@ -106,7 +56,7 @@ public class UserService : IUserService
     }
 
     // Create Token method
-    public async Task<string> CreateToken(User user)
+    public async Task<string> CreateToken(Users user)
     {
         var signingCredentials = GetSigningCredentials();
         var claims = await GetClaims(user);
@@ -126,7 +76,7 @@ public class UserService : IUserService
     }
 
     // Creates a list of claims with the user
-    private async Task<List<Claim>> GetClaims(User user)
+    private async Task<List<Claim>> GetClaims(Users user)
     {
         var claims = new List<Claim>
         {

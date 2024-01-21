@@ -8,9 +8,10 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
-        CreateMap<UserDto, User>().ReverseMap();
-        CreateMap<User, UserForAuthenticationDto>().ReverseMap();
-        CreateMap<UserUpsert, User>().ReverseMap();
+        CreateMap<UserDto, Users>().ReverseMap();
+        CreateMap<Users, UserForAuthenticationDto>().ReverseMap();
+        CreateMap<UserUpsert, Users>().ReverseMap();
+        CreateMap<UsersVM, Users>().ReverseMap();
 
     }
 }
