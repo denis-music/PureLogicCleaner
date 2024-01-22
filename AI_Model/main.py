@@ -4,8 +4,6 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MultiLabelBinarizer
 import datetime
-import os
-from joblib import dump, load
 from dotenv import load_dotenv
 
 load_dotenv()   
@@ -123,8 +121,6 @@ for user_data in user_data_iterator:
 
         # Calculate the adjusted cleaning date
         adjusted_cleaning_date = datetime.datetime.today() + datetime.timedelta(days=rounded_prediction_days)
-
-        print(1)
 
         add_to_cleaning_schedule({
             "userRoomId" : user_rooms['id'],
