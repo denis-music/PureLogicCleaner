@@ -2,12 +2,13 @@ from azure.cosmos import CosmosClient
 import uuid
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+import os
 
 # Initialize Cosmos DB client
-cosmos_client = CosmosClient('https://localhost:8081', 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==')
+cosmos_client = CosmosClient(os.environ.get('DB_URL'), os.environ.get('DB_KEY'))
 
 # Define the Cosmos DB database and container
-database_name = 'purelogic_cleaner'
+database_name = os.environ.get('DB_NAME')
 
 def get_users():
     try:
@@ -40,7 +41,7 @@ def get_user_rooms(user_id):
     try:
         container = cosmos_client.get_database_client(database_name).get_container_client('UserRooms')
 
-        query = f"SELECT * FROM c WHERE c.user_id = '{user_id}'"
+        query = f"SELECT * FROM c WHERE c.userId = '{user_id}'"
         
         rooms = list(container.query_items(query, enable_cross_partition_query=True))
 
@@ -74,7 +75,7 @@ def get_user_room_cleaning_history(user_room_id):
     try:
         container = cosmos_client.get_database_client(database_name).get_container_client('CleaningHistory')
 
-        query = "SELECT * FROM c WHERE c.user_room_id = @user_room_id AND c.completed = true ORDER BY c.id DESC"
+        query = "SELECT * FROM c WHERE c.userRoomId = @user_room_id AND c.completed = true ORDER BY c.id DESC"
         parameters = [{"name": "@user_room_id", "value": user_room_id}]
 
         history = list(container.query_items(
@@ -95,7 +96,7 @@ def get_user_room_active_cleaning_predictions(user_room_id):
     try:
         container = cosmos_client.get_database_client(database_name).get_container_client('CleaningHistory')
 
-        query = "SELECT * FROM c WHERE c.user_room_id = @user_room_id AND c.completed = false"
+        query = "SELECT * FROM c WHERE c.userRoomId = @user_room_id AND c.completed = false"
         parameters = [{"name": "@user_room_id", "value": user_room_id}]
 
         history = list(container.query_items(

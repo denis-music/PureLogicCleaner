@@ -2,3 +2,4 @@ config.json
 azureml-env
 __pycache__
 purelogic_cleaners.joblib
+.env
