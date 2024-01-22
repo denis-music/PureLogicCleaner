@@ -1,34 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Statistics Page</title>
-</head>
-<body>
+<!-- Inside your component template (stats.component.html) -->
+<div class="container">
+  <div class="form-group">
+    <label for="selectCleaningType">Select Room:</label>
+    <select id="selectCleaningType" class="form-control" [(ngModel)]="selectedCleaningType">
+      <!-- Manually added default option -->
+      <option value="" disabled selected>Select an option</option>
 
-  <header>
-    <h1>PureLogic Cleaner Statistics</h1>
-  </header>
-
-  <div class="container">
-    <div class="statistics">
-      <div class="stat-item">
-        <div class="stat-number"><img id="performance" class="icon" src="/assets/performance.png" /></div>
-        <div class="stat-label">Cleaning Performance</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number"><img id="Optimizations" class="icon" src="/assets/web-optimization.png" /></div>
-        <div class="stat-label">Lead Optimizations</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number"><img id="Recommendations" class="icon" src="/assets/reward.png" /></div>
-        <div class="stat-label">AI Recommendations</div>
-      </div>
-    </div>
+      <!-- Dynamically generated options -->
+      <option *ngFor="let option of optionList" [value]="option">{{ option }}</option>
+    </select>
   </div>
 
-  <!-- Your page content goes here -->
+  <!-- Button to trigger the second API call -->
+  <button (click)="onButtonClick()" class="btn btn-primary">Get Cleaning Results</button>
 
-</body>
-</html>
+  <!-- Display the results in a table below the button -->
+  <div *ngIf="apiResults.length == 0 && isDataNeverLoaded"><p>
+    Loading or no results.
+  </p></div>
+  <table *ngIf="apiResults.length > 0" class="table mt-3">
+    <thead class="thead-dark">
+      <tr>
+        <th>User Room</th>
+        <th>Completed</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let result of apiResults">
+        <td>{{ result.userRoomId }}</td>
+        <td>{{ result.completed }}</td>
+        <td>{{ result.date }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Display the circular chart below the button -->
+  <div *ngIf="apiResults.length > 0" class="mt-3">
+    <h3>Completion Status Circular Chart:</h3>
+    <ejs-chart id="circular-chart" title="Circuar Chart">
+      <e-series-collection>
+          <e-series [dataSource]='doughnutData' xName='x' yName='y' type='Doughnut'></e-series>
+      </e-series-collection>
+  </ejs-chart>
+  
+</div>
