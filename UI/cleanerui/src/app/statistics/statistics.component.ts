@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StatisticsService } from './statistics.service';
 
 @Component({
   selector: 'app-statistics',
@@ -7,9 +8,65 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StatisticsComponent implements OnInit {
 
-  constructor() { }
+  public doughnutData: Object[] = [
+    { x: 'Completed', y: 60 },
+    { x: 'Not Completed', y: 40 }
+  ];
 
-  ngOnInit(): void {
+  public primaryXAxis: Object = { valueType: 'Category' };
+  public title: string = 'Completion Status Circular Chart';
+
+  // Add the property for selectedCleaningType
+  selectedCleaningType: string = 'cleaned';
+  // Inside your component class
+  optionList: string[] = [];
+  doughnutChartData: number[] = [];
+  doughnutChartLabels: string[] = ['Completed', 'Not Completed'];
+  chartOptions = {
+    responsive: true,
+  };
+  isDataNeverLoaded: boolean = false;
+  constructor(private statisticsService: StatisticsService) {}
+
+  ngOnInit() {
+    this.loadData();
   }
 
+  private loadData() {
+    this.statisticsService.getCleaningType().subscribe(
+      (data) => {
+        data.forEach ((item) => {
+          this.optionList.push(item.name);
+        });
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+  apiResults: any[] = []; // Assuming the type of your API results, replace 'any' with the actual type
+
+  onButtonClick() {
+    this.isDataNeverLoaded = true;
+    this.apiResults = [];
+    // Check if a cleaning type is selected
+    if (this.selectedCleaningType) {
+      // Make the second API call using the selected cleaning type
+      this.statisticsService.getCleaningStatus().subscribe(
+        // this.selectedCleaningType
+        (results) => {
+          results.forEach((item) => {
+            if (item.userRoomId == this.selectedCleaningType)
+            {
+              this.apiResults.push(item);
+              this.isDataNeverLoaded = false;
+            }
+          })
+        },
+        (error) => {
+          console.error('Error fetching API results:', error);
+        }
+      );
+    }
+  }
 }
