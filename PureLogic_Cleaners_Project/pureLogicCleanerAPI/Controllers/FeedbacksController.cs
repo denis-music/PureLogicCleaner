@@ -27,7 +27,7 @@ namespace pureLogicCleanerAPI.Controllers
 
             var filterResults = result
                 .Where(p =>
-                (searchRequest.CleaningScheduleId == null || p.CleaningScheduleId == searchRequest.CleaningScheduleId) &&
+                (searchRequest.CleaningHistoryId == null || p.CleaningHistoryId == searchRequest.CleaningHistoryId) &&
                 (searchRequest.MemberId == null || p.MemberId == searchRequest.MemberId) &&
                 (searchRequest.FeedbackType == null || p.FeedbackType == searchRequest.FeedbackType) &&
                 (searchRequest.Rating == null || p.Rating == searchRequest.Rating))
@@ -45,14 +45,14 @@ namespace pureLogicCleanerAPI.Controllers
         [HttpPost(Name = "SendFeedback")]
         public async Task<bool> PostAsync(FeedbacksVM payload)
         {
-            if (payload.CleaningScheduleId == null || payload.FeedbackType == null ||
+            if (payload.CleaningHistoryId == null || payload.FeedbackType == null ||
                 payload.MemberId == null || payload.Rating == null) return false;
             string feedbackId = Guid.NewGuid().ToString();
             var newFeedback = new Feedbacks
             {
                 Id = feedbackId,
                 MemberId = payload.MemberId,
-                CleaningScheduleId = payload.CleaningScheduleId,
+                CleaningHistoryId = payload.CleaningHistoryId,
                 FeedbackType = (Models.Enums.FeedbackType)payload.FeedbackType,
                 Rating = (int)payload.Rating,
                 Text = payload.Text != null ? payload.Text : ""
@@ -69,7 +69,7 @@ namespace pureLogicCleanerAPI.Controllers
             {
                 Id = feedback.Id,
                 MemberId = feedback.MemberId,
-                CleaningScheduleId = feedback.CleaningScheduleId,
+                CleaningHistoryId = feedback.CleaningHistoryId,
                 FeedbackType = feedback.FeedbackType,
                 Rating = (int)(payload.Rating == null ? feedback.Rating : payload.Rating),
                 Text = payload.Text == null ? feedback.Text : payload.Text

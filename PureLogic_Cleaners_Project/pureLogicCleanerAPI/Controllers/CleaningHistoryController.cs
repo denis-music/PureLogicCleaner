@@ -58,5 +58,39 @@ namespace pureLogicCleanerAPI.Controllers
             };
             return await _cosmosDBRepo.CreateItemAsync(newCH, containerName, newCH.Id);
         }
+
+        [HttpGet("memberRoom/{userId}")]
+        public async Task<List<CleaningHistory>>? GetByMemberAsync(string userId)
+        {
+            var user = await _cosmosDBRepo.GetItemByIdAsync<Users>("Users", userId);
+            if (user == null) return null;
+
+            var iteratorUR = _cosmosDBRepo.GetContainerIterator<UserRooms>("UserRooms") ?? null;
+            var resultsUR = iteratorUR is not null ?
+                (await iteratorUR.ReadNextAsync())
+                    .Select(ur => JsonConvert.SerializeObject(ur))
+                    .Select(JsonConvert.DeserializeObject<UserRooms>)
+                    .Where(obj => obj is not null && obj.UserId == user.Id)
+                    .ToList() : [];
+            if (resultsUR == null) return null;
+
+            var iteratorCH = _cosmosDBRepo.GetContainerIterator<CleaningHistory>(containerName) ?? null;
+            var resultCH = iteratorCH is not null ?
+                (await iteratorCH.ReadNextAsync())
+                    .Select(ch => JsonConvert.SerializeObject(ch))
+                    .Select(JsonConvert.DeserializeObject<CleaningHistory>)
+                    .Where(obj => obj is not null)
+                    .ToList() : [];
+
+            if (resultCH == null) return null;
+
+            return resultsUR
+                 .Join(resultCH,
+                    userRoom => userRoom.RoomId,
+                    cleaningHistory => cleaningHistory.UserRoomId,
+                    (userRoom, cleaningHistory) => cleaningHistory)
+                    .ToList();
+        }
+
     }
 }
