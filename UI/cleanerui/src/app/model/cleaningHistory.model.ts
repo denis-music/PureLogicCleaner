@@ -1,4 +1,4 @@
-import { CleaningQuality } from "../enum/cleaningQualityEnum.model";
+import { CleaningQuality } from "../enum/cleaningQuality.enum";
 
 export class CleaningHistory {
     id!: string;
@@ -9,5 +9,4 @@ export class CleaningHistory {
     date!: Date;
     createdAt?: Date;
     updatedAt?: Date;
-    
 }
