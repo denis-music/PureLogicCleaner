@@ -2,11 +2,10 @@ import { Component, OnInit, Type } from '@angular/core';
 import { FeedbacksService } from './feedbacks.service';
 import { Feedback } from '../model/feedback.model';
 import { FeedbackType } from '../enum/feedbackType.enum';
-import { StatisticsComponent } from '../statistics/statistics.component';
 import { StatisticsService } from '../statistics/statistics.service';
-import { CleaningHistory } from '../model/cleaningHistory.model';
 import { RoomDate } from '../model/roomDate.model';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-feedbacks',
@@ -26,8 +25,11 @@ export class FeedbacksComponent implements OnInit {
   rating: number = 0;
   feedbackText: string = '';
 
+  showForm: boolean = true;
   constructor(private feedbackService: FeedbacksService,
-    private statisticsService: StatisticsService, private router: Router) {
+    private statisticsService: StatisticsService, private router: Router,
+    private snackBar: MatSnackBar) 
+    {
   this.feedbackTypeOptions = Object.entries(this.feedbackType)
   .filter(([key, value]) => !isNaN(Number(value)))
   .map(([key, value]) => ({ key, value: Number(value) }));
@@ -57,12 +59,18 @@ export class FeedbacksComponent implements OnInit {
     // Make a POST request to the API endpoint
     this.feedbackService.saveFeedback(feedback).subscribe(
       response => {
-        console.log('Feedback submitted successfully!', response);
-            // Navigate to home page TO DO
+        this.snackBar.open('Feedback submitted successfully!', 'Close', {
+          duration: 5000, // Duration in milliseconds
+        });
+        this.showForm = false;
       },
       error => {
         console.error('Error submitting feedback:', error);
       }
     );
+  }
+
+    showPopup() {
+      this.showForm = true;
   }
 }

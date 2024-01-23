@@ -8,7 +8,15 @@
 </head>
 <body>
 
-<div class="container mt-5">
+  
+<div class="container mt-5" *ngIf="!showForm">
+  <h2 class="mb-4">Provide Feedback</h2>
+
+  <!-- Add your button or trigger to show the popup -->
+  <button class="btn btn-primary" (click)="showPopup()">Submit another feedback!</button>
+</div>
+
+<div class="container mt-5" *ngIf="showForm">
   <h2 class="mb-4">Provide Feedback</h2>
   
   <form id="feedbackForm">
@@ -43,6 +51,9 @@
     <button type="button" class="btn btn-primary" (click)="saveFeedback()">Submit Feedback</button>
   </form>
 </div>
+
+<!-- feedbacks.component.html -->
+<!-- ... other HTML code ... -->
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

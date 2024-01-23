@@ -11,6 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartModule } from '@syncfusion/ej2-angular-charts';
 import { FeedbacksComponent } from './feedback/feedbacks.component';
+import { HomeComponent } from './home/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [			
@@ -20,13 +23,16 @@ import { FeedbacksComponent } from './feedback/feedbacks.component';
       SubscriptionComponent,
       StatisticsComponent,
       FeedbacksComponent,
+      HomeComponent,
    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ChartModule
+    ChartModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
