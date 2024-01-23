@@ -10,6 +10,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartModule } from '@syncfusion/ej2-angular-charts';
+import { FeedbacksComponent } from './feedback/feedbacks.component';
 
 @NgModule({
   declarations: [			
@@ -18,6 +19,7 @@ import { ChartModule } from '@syncfusion/ej2-angular-charts';
       UserComponent,
       SubscriptionComponent,
       StatisticsComponent,
+      FeedbacksComponent,
    ],
   imports: [
     BrowserModule,
