@@ -9,3 +9,19 @@ For a `TimerTrigger` to work, you provide a schedule in the form of a [cron expr
 ## Learn more
 
 <TODO> Documentation
+
+1. Install Azurite
+
+```npm install -g azurite```
+
+2. Run Azurite in separate terminal: 
+
+```azurite --silent --location . --debug azurite-debug.log```
+
+Azurite is an open-source Azure Storage emulator, primarily used for local development and testing of applications that use Azure Storage services. 
+
+3. Run function on local env:
+
+```func start --verbose```
+
+NOTE: Ensure enviroment variables are set in .env file.
