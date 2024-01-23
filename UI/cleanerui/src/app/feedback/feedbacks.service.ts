@@ -11,7 +11,6 @@ export class FeedbacksService {
   constructor(private http: HttpClient) {}
 
   saveFeedback(feedback: Feedback): Observable<Feedback> {
-    console.log("here", feedback);
     return this.http.post<Feedback>(this.apiUrl, feedback);
   }
 

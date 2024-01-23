@@ -19,4 +19,8 @@ export class StatisticsService {
   getCleaningStatus(): Observable<CleaningHistory[]> {
     return this.http.get<CleaningHistory[]>(this.apiUrlClean);
   }
+
+  changeCleaningStatus(id: string): Observable<boolean> {
+    return this.http.put<boolean>(`https://localhost:7079/CleaningHistory/${id}/completed`, id);
+  }
 }

@@ -14,6 +14,7 @@ import { FeedbacksComponent } from './feedback/feedbacks.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CleaningComponent } from './cleaning/cleaning.component';
 
 @NgModule({
   declarations: [			
@@ -24,6 +25,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
       StatisticsComponent,
       FeedbacksComponent,
       HomeComponent,
+      CleaningComponent
    ],
   imports: [
     BrowserModule,
