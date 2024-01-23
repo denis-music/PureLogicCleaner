@@ -2,7 +2,7 @@ import datetime
 import logging
 
 import azure.functions as func
-# from AI_Model.main import run_prediction
+from AI_Model.main import run_prediction
 
 
 def main(mytimer: func.TimerRequest) -> None:
@@ -12,5 +12,5 @@ def main(mytimer: func.TimerRequest) -> None:
     if mytimer.past_due:
         logging.info('The timer is past due!')
 
-    # run_prediction()
+    run_prediction()
     logging.info('Python timer trigger function ran at %s', utc_timestamp)
