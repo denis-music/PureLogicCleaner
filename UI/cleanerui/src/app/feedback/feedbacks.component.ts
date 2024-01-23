@@ -58,8 +58,7 @@ export class FeedbacksComponent implements OnInit {
     this.feedbackService.saveFeedback(feedback).subscribe(
       response => {
         console.log('Feedback submitted successfully!', response);
-            // Navigate to home page
-          this.router.navigate(['']);
+            // Navigate to home page TO DO
       },
       error => {
         console.error('Error submitting feedback:', error);
