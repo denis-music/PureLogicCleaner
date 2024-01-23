@@ -49,7 +49,6 @@ export class FeedbacksComponent implements OnInit {
   }
 
     saveFeedback(): void {
-    console.log(this.selectedCleaningType);
     let feedbackTypeNumber = parseInt(this.selectedFeedbackType, 10);
 
     const feedback = new Feedback(this.selectedCleaningType, feedbackTypeNumber,

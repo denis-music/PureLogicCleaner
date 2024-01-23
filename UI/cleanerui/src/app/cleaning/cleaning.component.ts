@@ -41,8 +41,6 @@ export class CleaningComponent implements OnInit {
     this.cleaningHistoryList.forEach((item) => {
       const itemDate = new Date(item.date);
 
-      console.log(itemDate, today, itemDate  <= today, "manje");
-      console.log(itemDate, today, itemDate > today, "veci");
       if (itemDate <= today) {
         // Date is today or in the past
         this.pastCleaningHistoryList.push(item);
@@ -50,7 +48,6 @@ export class CleaningComponent implements OnInit {
         // Date is in the future
         this.futureCleaningHistoryList.push(item);
       }
-      // If the date is in the past but not today, you might want to handle it differently
     });
   }
 
@@ -59,12 +56,9 @@ export class CleaningComponent implements OnInit {
 
       this.statisticsService.changeCleaningStatus(cleaning.id).subscribe(
         (result) => {
-        console.log('Success fetching API results:', result);
         this.loadData();
         this.showWaitingMessage = false;
-
         },(error) => {
-        console.error('Error fetching API results:', error);
         this.showWaitingMessage = false;
       });
   }
