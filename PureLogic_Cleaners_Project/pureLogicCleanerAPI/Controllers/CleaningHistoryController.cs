@@ -92,5 +92,14 @@ namespace pureLogicCleanerAPI.Controllers
                     .ToList();
         }
 
+        [HttpPut("{id}/completed")]
+        public async Task<bool>? PutAsync(string id)
+        {
+            var ch = await _cosmosDBRepo.GetItemByIdAsync<CleaningHistory>(containerName, id);
+            if (ch == null) return false;
+            ch.Completed = !ch.Completed;
+            return await _cosmosDBRepo.UpdateAsync(ch, containerName, ch.Id);
+        }
+
     }
 }
