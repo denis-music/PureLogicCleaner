@@ -27,6 +27,12 @@ namespace pureLogicCleanerAPI.Controllers
             return await _cosmosDBRepo.GetItemsAsync<Users>(containerName);
         }
 
+        [HttpGet("{id}")]
+        public async Task<Users>? GetAsyncById(string id)
+        {
+            return await _cosmosDBRepo.GetItemByIdAsync<Users>(containerName, id);
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserUpsert userDto)
         {
