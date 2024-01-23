@@ -1,6 +1,117 @@
 import pandas as pd
-import numpy as np
 from datetime import datetime, date
+from enum import Enum
+
+# ENUMS
+
+class RoomSize(Enum):
+    Small = 0
+    Medium = 1
+    Large = 2
+
+class SurfaceType(Enum):
+    Carpet = 0
+    Hardwood = 1
+    Tile = 2
+
+class UsageFrequency(Enum):
+    Low = 0
+    Medium = 1
+    High = 2
+    
+class CleaningQuality(Enum):
+    Quick = 0
+    Basic = 1
+    Thorough = 2
+
+class CleaningFrequency(Enum):
+    Daily = 0
+    EveryThreeDays = 1
+    TwiceAWeek = 2
+    Weekly = 3
+    Fortnightly = 4
+    BiWeekly = 5
+    TwiceAMonth = 6
+    Monthly = 7
+    BiMonthly = 8
+    Quarterly = 9
+    Seasonally = 10
+    Yearly = 11
+    AsNeeded = 12
+
+# MAPPERS
+    
+def map_day_indexes_to_names(indexes):
+    day_index_to_name = {
+        0: "Monday",
+        1: "Tuesday",
+        2: "Wednesday",
+        3: "Thursday",
+        4: "Friday",
+        5: "Saturday",
+        6: "Sunday"
+    }
+
+    day_names = [day_index_to_name.get(index, "Invalid Index") for index in indexes]
+    return day_names
+
+def map_room_size(value):
+    try:
+        return RoomSize(value).name
+    except ValueError:
+        return "Invalid Value" 
+
+def map_surface_type(value):
+    try:
+        return SurfaceType(value).name
+    except ValueError:
+        return "Invalid Value" 
+
+def map_usage_frequency(value):
+    try:
+        return UsageFrequency(value).name
+    except ValueError:
+        return "Invalid Value"
+
+def map_cleaning_quality(value):
+    try:
+        return CleaningQuality(value).name
+    except ValueError:
+        return "Invalid Value"
+
+def map_cleaning_frequency(value):
+    try:
+        return CleaningFrequency(value).name
+    except ValueError:
+        return "Invalid Value" 
+
+def get_current_season():
+    now = datetime.now()
+
+    month = now.month
+    if 3 <= month <= 5:
+        return 'Spring'
+    elif 6 <= month <= 8:
+        return 'Summer'
+    elif 9 <= month <= 11:
+        return 'Autumn'
+    else:
+        return 'Winter'
+    
+def get_room_names_from_ids(room_ids_list, rooms_list):
+    room_names = []
+
+    for room_id in room_ids_list:
+        found_room = next((room for room in rooms_list if room['id'] == room_id), None)
+
+        if found_room:
+            room_names.append(found_room.get('name', 'Unknown Room'))
+        else:
+            room_names.append("Unknown Room")
+
+    return room_names
+
+# DATA TRANSFORMATION AND FEATURE ENGINEERING
 
 def transform_data_to_model_format(user_data, training_columns, mlb_days, mlb_rooms):
     # Convert the user data to a DataFrame
@@ -36,33 +147,6 @@ def transform_data_to_model_format(user_data, training_columns, mlb_days, mlb_ro
 
     return user_df
 
-def map_day_indexes_to_names(indexes):
-    day_index_to_name = {
-        0: "Monday",
-        1: "Tuesday",
-        2: "Wednesday",
-        3: "Thursday",
-        4: "Friday",
-        5: "Saturday",
-        6: "Sunday"
-    }
-
-    day_names = [day_index_to_name.get(index, "Invalid Index") for index in indexes]
-    return day_names
-
-def get_current_season():
-    now = datetime.now()
-
-    month = now.month
-    if 3 <= month <= 5:
-        return 'Spring'
-    elif 6 <= month <= 8:
-        return 'Summer'
-    elif 9 <= month <= 11:
-        return 'Autumn'
-    else:
-        return 'Winter'
-
 def calculate_days_between_given_date_and_today(given_date):
         date_format = "%d-%m-%Y"
         given_date_obj = datetime.strptime(given_date, date_format).date()
@@ -70,19 +154,6 @@ def calculate_days_between_given_date_and_today(given_date):
         difference = (today_date_obj - given_date_obj).days
 
         return difference
-
-def get_room_names_from_ids(room_ids_list, rooms_list):
-    room_names = []
-
-    for room_id in room_ids_list:
-        found_room = next((room for room in rooms_list if room['id'] == room_id), None)
-
-        if found_room:
-            room_names.append(found_room.get('name', 'Unknown Room'))
-        else:
-            room_names.append("Unknown Room")
-
-    return room_names
 
 def combine_room_size_type(df):
     df['room_size_type'] = df['room_type'] + '_' + df['room_size']
