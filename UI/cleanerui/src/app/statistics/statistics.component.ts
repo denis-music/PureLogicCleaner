@@ -55,6 +55,7 @@ export class StatisticsComponent implements OnInit {
       this.statisticsService.getCleaningStatus().subscribe(
         // this.selectedCleaningType
         (results) => {
+          if (results !== null) {
           results.forEach((item) => {
             if (item.userRoomId == this.selectedCleaningType)
             {
@@ -62,6 +63,11 @@ export class StatisticsComponent implements OnInit {
               this.isDataNeverLoaded = false;
             }
           })
+        }
+        else {
+          console.error('No cleaning history API results:');
+
+        }
         },
         (error) => {
           console.error('Error fetching API results:', error);

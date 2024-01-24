@@ -9,22 +9,22 @@ import { UserSearch } from '../model/user.search.model';
   providedIn: 'root'
 })
 export class UserService {
+  apiUrl = environment.baseUrl + "Users/";
+
   constructor(private http: HttpClient) { }
 
-  // getUser(id: string): Observable<User | null> {
-  //   const item = localStorage.getItem('user');
-
-  //   if (item) {
-  //     const user: User[] = JSON.parse(item);
-  //     return this.http.get<User>(environment.baseUrl + `Users/${user[0].id}`);
-  //   } else {
-  //     return of(null); // or throwError(new Error('No user data found in localStorage'));
-  //   }
-  // }
-
   getUserByUsername(username: string): Observable<User | null> {
-    const item = this.http.get<User>(environment.baseUrl + `username/${username}`);
-    console.log(item);
-    return item;
+    return this.http.get<User>(environment.baseUrl + `username/${username}`);
+  }
+
+  getUser(): Observable<User | null> {
+    const item = localStorage.getItem('user');
+    if (item) {
+      const user: User[] = JSON.parse(item);
+      return this.http.get<User>(this.apiUrl + `${user[0].id}`);
+    } else {
+      console.log('No user data found in localStorage');
+      return of(null);
+    }
   }
 }

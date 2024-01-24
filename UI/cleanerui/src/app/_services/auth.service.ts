@@ -13,7 +13,6 @@ import { UserService } from './user.service';
 export class AuthService {
 
   apiUrl = environment.baseUrl + "Users/";
-
   helper = new JwtHelperService();
   decodedToken: any;
 
@@ -33,14 +32,13 @@ export class AuthService {
       )
   }
 
-  saveUser(username: string){
-    this.userService.getUserByUsername(username).subscribe (
+  saveUser(username: string) {
+    this.userService.getUserByUsername(username).subscribe(
       (result) => {
-      localStorage.removeItem('user'); // Stringify the user object
-      localStorage.setItem('user', JSON.stringify(result)); // Stringify the user object
-      console.log("user set");
+        localStorage.removeItem('user'); // Stringify the user object
+        localStorage.setItem('user', JSON.stringify(result)); // Stringify the user object
       });
-    }
+  }
 
   register(model: UserUpsert) {
     return this.http.post(this.apiUrl + 'register', model);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from './subscription.service';
 import { Subscription } from '../model/subs.model';
-import { error } from 'console';
+import { UserService } from '../_services/user.service';
 
 
 @Component({
@@ -11,7 +11,8 @@ import { error } from 'console';
 })
 export class SubscriptionComponent implements OnInit {
 
-  constructor(private subsService: SubscriptionService) { }
+  constructor(private subsService: SubscriptionService,
+    private userService: UserService) { }
   subscriptions: Subscription[] = [];
 
   ngOnInit() {
@@ -30,7 +31,7 @@ export class SubscriptionComponent implements OnInit {
 
   userSubId: string = '';
   loadMemberSub() {
-    this.subsService.getUserSub().subscribe(
+    this.userService.getUser().subscribe(
       (result) => {
         if (result !== null) {
           this.userSubId = result.subsId;
@@ -46,11 +47,11 @@ export class SubscriptionComponent implements OnInit {
       (result) => {
         this.loadMemberSub();
         this.loadData();
-        this.loading = false; // Set loading to false on success
+        this.loading = false;
       },
       (error) => {
         console.error('Error fetching data:', error);
-        this.loading = false; // Set loading to false on error
+        this.loading = false;
       }
     );
   }

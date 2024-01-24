@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Feedback } from '../model/feedback.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedbacksService {
-  private apiUrl = 'https://localhost:7079/Feedbacks'; // Update this URL as needed
+  private apiUrl = environment.baseUrl + 'Feedbacks';
   constructor(private http: HttpClient) {}
 
   saveFeedback(feedback: Feedback): Observable<Feedback> {

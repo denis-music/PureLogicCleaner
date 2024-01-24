@@ -36,9 +36,13 @@ export class FeedbacksComponent implements OnInit {
   ngOnInit(): void {
     this.statisticsService.getCleaningStatus().subscribe(
       (data) => {
-        data.forEach((item) => {
-          this.optionList.push(new RoomDate(item.userRoomId, item.id, item.date));
-        });
+        if (data !== null) {
+          data.forEach((item) => {
+            this.optionList.push(new RoomDate(item.userRoomId, item.id, item.date));
+          });
+        } else {
+          console.error('There is no data.');
+        }
       },
       (error) => {
         console.error('Error fetching API results:', error);
