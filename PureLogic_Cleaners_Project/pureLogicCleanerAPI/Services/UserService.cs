@@ -14,16 +14,6 @@ public class UserService(IMapper mapper, IConfiguration configuration) : IUserSe
     private  readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-    //public bool IsUsernameTaken(string username)
-    //{
-    //    var users = _dbContext.Users.FirstOrDefault(x => x.Username == username);
-
-    //    if (users == null)
-    //        return false;
-
-    //    return true;
-    //}
-
     public async Task<Users> RegisterUser(UserUpsert userDto)
     {
         if(userDto is null)

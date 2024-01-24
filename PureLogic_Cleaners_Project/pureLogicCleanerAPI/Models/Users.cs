@@ -8,11 +8,13 @@ namespace pureLogicCleanerAPI.Models
         public required string SubsId { get; set; } = string.Empty;
         public required string FirstName { get; set; } = string.Empty;
         public required string LastName { get; set; } = string.Empty;
-        public required List<DaysOfWeek> PreferredCleaningDays { get; set; }
-        public required CleaningFrequency PreferredCleaningFrequency { get; set; }
-        public required List<string> PriorityRoomIds { get; set; }
-        public required bool Pets { get; set; }
-        public required bool Allergies { get; set; }
+
+        // data for AI
+        public List<DaysOfWeek>? PreferredCleaningDays { get; set; } = null;
+        public CleaningFrequency? PreferredCleaningFrequency { get; set; } = null;
+        public List<string>? PriorityRoomIds { get; set; } = null;
+        public bool? Pets { get; set; } = null;
+        public bool? Allergies { get; set; } = null;
 
         public string Username { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;

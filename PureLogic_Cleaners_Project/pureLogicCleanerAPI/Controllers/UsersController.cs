@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using pureLogicCleanerAPI.DTOs;
 using pureLogicCleanerAPI.Models;
@@ -28,7 +30,6 @@ namespace pureLogicCleanerAPI.Controllers
             return await _cosmosDBRepo.GetItemsAsync<Users>(containerName);
         }
 
-
         [HttpGet("/username/{username}")]
         public async Task<IList<Users>> GetAsync(string username)
         {
@@ -56,6 +57,19 @@ namespace pureLogicCleanerAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserUpsert userDto)
         {
+            var iterator = _cosmosDBRepo.GetContainerIterator<Users>(containerName) ?? null;
+            var user = iterator is not null ?
+                (await iterator.ReadNextAsync())
+                    .Select(feedback => JsonConvert.SerializeObject(feedback))
+                    .Select(JsonConvert.DeserializeObject<Users>)
+                    .FirstOrDefault(obj => obj is not null &&
+                    obj.Username == userDto.Username)
+            : null;
+
+            if (user != null)
+            {
+                return BadRequest("Username already taken.");
+            }
             var newUser = await _userService.RegisterUser(userDto);
             string id = Guid.NewGuid().ToString();
             newUser.Id = id;
@@ -64,12 +78,17 @@ namespace pureLogicCleanerAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpsert userDto)
+        [HttpPut("{id}/habits")]
+        public async Task<bool?> UpdateUser(string id, [FromBody] UserHabitsUpsertRequest userDto)
         {
-            //await _userService.Update(id, userDto);
-
-            return Ok();
+            var user = await _cosmosDBRepo.GetItemByIdAsync<Users>(containerName, id);
+            if (user == null) return null;
+            user.Allergies = userDto.Allergies;
+            user.Pets = userDto.Pets;
+            user.PreferredCleaningFrequency = userDto.PreferredCleaningFrequency;
+            user.PreferredCleaningDays = userDto.PreferredCleaningDays;
+            user.PriorityRoomIds = userDto.PriorityRoomIds;
+            return await _cosmosDBRepo.UpdateAsync(user, containerName, user.Id);
         }
 
         [HttpPost("login")]
