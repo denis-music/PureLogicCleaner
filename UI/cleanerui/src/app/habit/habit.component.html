@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Preferences Form</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -40,15 +39,6 @@
                 </select>
             </div>
 
-            <!-- <div class="form-group mb-3">
-                <label for="priorityRoomIds">Priority Room IDs (comma-separated):</label>
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    id="priorityRoomIds" 
-                    [(ngModel)]="userPreferences.priorityRoomIds" 
-                    name="rooms" />
-            </div> -->
             <label>Add your rooms:</label>
             <form [formGroup]="myForm">
                 <div formArrayName="rooms" class="mb-3">
@@ -88,7 +78,6 @@
         </form>
     </div>
 
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

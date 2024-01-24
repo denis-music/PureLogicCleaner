@@ -56,7 +56,6 @@ export class FeedbacksComponent implements OnInit {
       this.rating, this.feedbackText);
     feedback.memberId = "d55bd14c-c380-42d5-a9c6-aa1c0b050804";
 
-    // Make a POST request to the API endpoint
     this.feedbackService.saveFeedback(feedback).subscribe(
       response => {
         this.showForm = false;

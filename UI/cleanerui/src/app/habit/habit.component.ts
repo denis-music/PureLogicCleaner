@@ -103,7 +103,6 @@ export class HabitComponent implements OnInit {
   onSubmit() {
     // Implement your logic to handle the form submission
     console.log('User Preferences submitted:', this.userPreferences);
-    // You can send the data to your API or perform any other actions here
   }
 
 }

@@ -16,9 +16,7 @@ export class StatisticsComponent implements OnInit {
   public primaryXAxis: Object = { valueType: 'Category' };
   public title: string = 'Completion Status Circular Chart';
 
-  // Add the property for selectedCleaningType
   selectedCleaningType: string = 'cleaned';
-  // Inside your component class
   optionList: string[] = [];
   doughnutChartData: number[] = [];
   doughnutChartLabels: string[] = ['Completed', 'Not Completed'];
@@ -44,7 +42,7 @@ export class StatisticsComponent implements OnInit {
       }
     );
   }
-  apiResults: any[] = []; // Assuming the type of your API results, replace 'any' with the actual type
+  apiResults: any[] = [];
 
   onButtonClick() {
     this.isDataNeverLoaded = true;
