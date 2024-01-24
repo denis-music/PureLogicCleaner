@@ -4,6 +4,7 @@ import { User } from '../_models/User';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
 import { Observable } from 'rxjs';
+import { UserAuth } from '../model/user.auth.model';
 
 @Component({
   selector: 'app-login',
@@ -13,37 +14,33 @@ import { Observable } from 'rxjs';
 export class LoginComponent {
 
   loginForm: FormGroup;
-  model: any;
+  model: UserAuth = new UserAuth;
 
-  constructor(private fb:FormBuilder, private router:Router, private authService: AuthService)
-  {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.required]],
       password: ['', [Validators.required, Validators.required]]
     });
-   }
+  }
 
-   get username() { return this.loginForm.get('username'); }
-   get password() { return this.loginForm.get('password'); }
+  get username() { return this.loginForm.get('username'); }
+  get password() { return this.loginForm.get('password'); }
 
 
-   onSubmit()
-  {
-    this.model.Username = this.username?.value;
-    this.model.Password = this.password?.value;
+  onSubmit() {
+    this.model.username = this.username?.value;
+    this.model.password = this.password?.value;
+    console.log(this.model);
 
     this.authService.loginMethod(this.model).subscribe(x => {
-
       this.loginForm.reset();
       this.router.navigate(['/home']);
-
-    },error =>{
+    }, error => {
       console.log(error);
     })
   }
 
-  cancelLogin()
-  {
+  cancelLogin() {
     this.router.navigate(['/home'])
   }
 }
