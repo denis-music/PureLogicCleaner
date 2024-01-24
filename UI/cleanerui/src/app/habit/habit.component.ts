@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CleaningFrequency } from '../enum/cleaningFrequency.enum';
 import { DaysOfWeek } from '../enum/daysOfWeek.enum';
 import { Habit } from '../model/habit.model';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { UserRoomsService } from '../_services/user-rooms.service';
+import { UserRoom } from '../model/userRoom.model';
+import { error } from 'console';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-habit',
@@ -11,7 +15,8 @@ import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 })
 export class HabitComponent implements OnInit {
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userroomService: UserRoomsService,
+    private userService: UserService) {
     this.myForm = this.fb.group({
       rooms: this.fb.array([this.createRoom()])
     });
@@ -26,13 +31,13 @@ export class HabitComponent implements OnInit {
 
   myForm: FormGroup;
 
-  get rooms(): FormArray {
-    return this.myForm.get('rooms') as FormArray;
-  }
-
   createRoom(): FormGroup {
     return this.fb.group({
-      roomName: ''
+      room: [null, Validators.required],
+      roomSize: [null, Validators.required],
+      surfaceType: [null, Validators.required],
+      usageFrequency: [null, Validators.required],
+      numberOfOccupants: [null, Validators.required]
     });
   }
 
@@ -44,6 +49,10 @@ export class HabitComponent implements OnInit {
     this.rooms.removeAt(index);
   }
 
+  get rooms(): FormArray {
+    return this.myForm.get('rooms') as FormArray;
+  }
+
   ngOnInit(): void {
     this.cleaningFrequencyOptions = Object.entries(CleaningFrequency)
       .filter(([key, value]) => !isNaN(Number(value)))
@@ -52,6 +61,9 @@ export class HabitComponent implements OnInit {
     this.daysOfWeekOptions = Object.entries(this.daysOfWeekType)
       .filter(([key, value]) => !isNaN(Number(value)))
       .map(([key, value]) => ({ key, value: Number(value) }));
+
+      this.userPreferences.allergies = false;
+      this.userPreferences.pets = false;
   }
 
   toFriendlyString(frequency: CleaningFrequency): string {
@@ -88,21 +100,60 @@ export class HabitComponent implements OnInit {
   }
 
   selectedCleaningFrequencyOptions: any = 0;
-  selectedDayOfTheWeekOptions: string[] = [];
+  selectedDayOfTheWeekOptions: number[] = [];
 
-  toggleDaySelection(day: string) {
-    const index = this.selectedDayOfTheWeekOptions.indexOf(day);
+  toggleDaySelection(dayValue: number) {
+    const index = this.selectedDayOfTheWeekOptions.indexOf(dayValue);
 
     if (index === -1) {
-      this.selectedDayOfTheWeekOptions.push(day);
+      this.selectedDayOfTheWeekOptions.push(dayValue);
     } else {
       this.selectedDayOfTheWeekOptions.splice(index, 1);
     }
   }
 
-  onSubmit() {
-    // Implement logic to handle the form submission
-    console.log('User Preferences submitted:', this.userPreferences);
+  getSelectedDayIds() {
+    return this.selectedDayOfTheWeekOptions;
   }
 
+  listOfRooms: string[] = [];
+
+  onSubmit() {
+    const formArray = this.myForm.get('rooms') as FormArray;
+    formArray.controls.forEach((roomControl: AbstractControl) => {
+      if (roomControl instanceof FormGroup) {
+        const roomName = roomControl.get('room')?.value;
+        const roomSize = parseInt(roomControl.get('roomSize')?.value);
+        const surfaceType = parseInt(roomControl.get('surfaceType')?.value);
+        const usageFrequency = parseInt(roomControl.get('usageFrequency')?.value);
+        const numberOfOccupants = roomControl.get('numberOfOccupants')?.value;
+        // add dropdowns
+        this.listOfRooms.push(roomName);
+        var userrom = new UserRoom(
+          roomName, roomSize, surfaceType, usageFrequency, numberOfOccupants
+        )
+        this.userroomService.saveUserRoom(userrom).subscribe(
+          (data) => {
+            console.log("Success Room!");
+          }, (error) => {
+            console.error('Error fetching API results:', error);
+          });
+      }
+    })
+      
+
+    var habit = new Habit(
+      this.getSelectedDayIds(),
+      this.selectedCleaningFrequencyOptions,
+      this.listOfRooms,
+      this.userPreferences.pets,
+      this.userPreferences.allergies
+    )
+    this.userService.saveUserHabit(habit).subscribe(
+      (data) => {
+        console.log("Success Habit!");
+      }, (error) => {
+        console.error('Error fetching API results:', error);
+      });
+  }
 }

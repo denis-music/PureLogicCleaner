@@ -10,4 +10,18 @@ export class UserRoom {
     surfaceType?: SurfaceType;
     usageFrequency?: UsageFrequency;
     numberOfOccupants?: number;
+
+    constructor(
+        roomId: string,
+        roomSize: RoomSize,
+        surfaceType: SurfaceType,
+        usageFrequency: UsageFrequency,
+        numberOfOccupants: number
+    ) {
+        this.roomId = roomId;
+        this.roomSize = roomSize;
+        this.surfaceType = surfaceType;
+        this.usageFrequency = usageFrequency;
+        this.numberOfOccupants = numberOfOccupants;
+    }
 }
