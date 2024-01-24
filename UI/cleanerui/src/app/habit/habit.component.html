@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Preferences Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5 mb-5 border p-4">
+        <h2 class="mb-4">User Preferences</h2>
+
+        <form class="mt-4">
+            <div class="form-group mb-3">
+                <label>Preferred Cleaning Days:</label>
+                <div *ngFor="let day of daysOfWeekOptions" class="form-check">
+                    <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        [id]="day.value" 
+                        [checked]="selectedDayOfTheWeekOptions.includes(day.key)" 
+                        (change)="toggleDaySelection(day.key)">
+                    <label class="form-check-label" [for]="day.value">
+                        {{ day.key }}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="preferredCleaningFrequency">Preferred Cleaning Frequency:</label>
+                <select 
+                    class="form-control" 
+                    id="preferredCleaningFrequency" 
+                    [(ngModel)]="selectedCleaningFrequencyOptions" 
+                    name="cleaningFrequency">
+                    <option *ngFor="let frequency of cleaningFrequencyOptions" [value]="frequency.value">
+                        {{ frequency.key }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- <div class="form-group mb-3">
+                <label for="priorityRoomIds">Priority Room IDs (comma-separated):</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="priorityRoomIds" 
+                    [(ngModel)]="userPreferences.priorityRoomIds" 
+                    name="rooms" />
+            </div> -->
+            <label>Add your rooms:</label>
+            <form [formGroup]="myForm">
+                <div formArrayName="rooms" class="mb-3">
+                    <div *ngFor="let room of rooms.controls; let i = index" class="form-group" [formGroupName]="i">
+                        <div class="input-group mb-2">
+                            <input formControlName="roomName" type="text" class="form-control" placeholder="Enter Room">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-danger" type="button" (click)="removeRoom(i)" [disabled]="!room.value.roomName">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="button" (click)="addRoom()">Add Room</button>
+                </div>
+            </form>
+
+            <div class="form-check mb-3">
+                <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    id="pets" 
+                    [(ngModel)]="userPreferences.pets" 
+                    name="pets" />
+                <label class="form-check-label" for="pets">Do you have pets?</label>
+            </div>
+
+            <div class="form-check mb-4">
+                <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    id="allergies" 
+                    [(ngModel)]="userPreferences.allergies" 
+                    name="allergies" />
+                <label class="form-check-label" for="allergies">Do you have allergies?</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Preferences</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
