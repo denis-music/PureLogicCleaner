@@ -7,7 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { UserComponent } from './user/user.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartModule } from '@syncfusion/ej2-angular-charts';
 import { FeedbacksComponent } from './feedback/feedbacks.component';
@@ -15,9 +15,10 @@ import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CleaningComponent } from './cleaning/cleaning.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
-  declarations: [			
+  declarations: [				
     AppComponent,
       NavbarComponent,
       UserComponent,
@@ -25,12 +26,14 @@ import { CleaningComponent } from './cleaning/cleaning.component';
       StatisticsComponent,
       FeedbacksComponent,
       HomeComponent,
-      CleaningComponent
+      CleaningComponent,
+      LoginComponent
    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     ChartModule,
     BrowserAnimationsModule,

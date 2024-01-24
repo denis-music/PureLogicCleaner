@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
+    "@auth0/angular-jwt": "~5.0.2",
     "@syncfusion/ej2-angular-charts": "^24.1.46",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
