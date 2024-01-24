@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserAuth } from '../model/user.auth.model';
+import { UserUpsert } from '../model/user.upsert.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class AuthService {
       )
   }
 
-  register(model: any) {
+  register(model: UserUpsert) {
     return this.http.post(this.apiUrl + 'register', model);
   }
 }

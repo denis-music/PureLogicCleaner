@@ -13,9 +13,9 @@ import { ChartModule } from '@syncfusion/ej2-angular-charts';
 import { FeedbacksComponent } from './feedback/feedbacks.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CleaningComponent } from './cleaning/cleaning.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [				
@@ -27,7 +27,9 @@ import { LoginComponent } from './login/login.component';
       FeedbacksComponent,
       HomeComponent,
       CleaningComponent,
-      LoginComponent
+      LoginComponent,
+      CleaningComponent,
+      RegisterComponent
    ],
   imports: [
     BrowserModule,
@@ -36,8 +38,7 @@ import { LoginComponent } from './login/login.component';
     ReactiveFormsModule,
     HttpClientModule,
     ChartModule,
-    BrowserAnimationsModule,
-    MatSnackBarModule
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
