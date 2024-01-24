@@ -17,9 +17,6 @@ export class RegisterComponent implements OnInit {
 
   model: UserUpsert = {};
 
-  apiUrl = environment.baseUrl + "register";
-
-
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       firstname: ['', [Validators.required]],
