@@ -4,6 +4,7 @@ using pureLogicCleanerAPI.DTOs;
 using pureLogicCleanerAPI.Models;
 using pureLogicCleanerAPI.Repository;
 using pureLogicCleanerAPI.Services;
+using pureLogicCleanerAPI.VMs.Requests;
 
 namespace pureLogicCleanerAPI.Controllers
 {
@@ -25,6 +26,25 @@ namespace pureLogicCleanerAPI.Controllers
         public async Task<IList<Users>> GetAsync()
         {
             return await _cosmosDBRepo.GetItemsAsync<Users>(containerName);
+        }
+
+
+        [HttpGet("/username/{username}")]
+        public async Task<IList<Users>> GetAsync(string username)
+        {
+            var iterator = _cosmosDBRepo.GetContainerIterator<Users>(containerName) ?? null;
+            var result = iterator is not null ?
+                (await iterator.ReadNextAsync())
+                    .Select(u => JsonConvert.SerializeObject(u))
+                    .Select(JsonConvert.DeserializeObject<Users>)
+                    .Where(obj => obj is not null)
+                    .ToList() : [];
+
+            var filterResults = result
+                .Where(p => (username == null || p.Username == username))
+                .ToList();
+
+            return filterResults.Any() ? filterResults : result;
         }
 
         [HttpGet("{id}")]

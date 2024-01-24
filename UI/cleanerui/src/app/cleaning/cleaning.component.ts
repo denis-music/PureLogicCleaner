@@ -12,19 +12,22 @@ export class CleaningComponent implements OnInit {
   constructor(private statisticsService: StatisticsService) { }
 
   showWaitingMessage = false;
-
   cleaningHistoryList: CleaningHistory[] = [];
 
   ngOnInit(): void {
     this.loadData();
   }
 
-  loadData(){
-    this.cleaningHistoryList  = [];
+  loadData() {
+    this.cleaningHistoryList = [];
     this.statisticsService.getCleaningStatus().subscribe(
       (data) => {
-        this.cleaningHistoryList = data;
-        this.splitHistoryLists();
+        if (data !== null) {
+          this.cleaningHistoryList = data;
+          this.splitHistoryLists();
+        } else {
+          console.error('There is no data');
+        }
       },
       (error) => {
         console.error('Error fetching API results:', error);
@@ -54,11 +57,11 @@ export class CleaningComponent implements OnInit {
   onButtonClick(cleaning: CleaningHistory) {
     this.showWaitingMessage = true;
 
-      this.statisticsService.changeCleaningStatus(cleaning.id).subscribe(
-        (result) => {
+    this.statisticsService.changeCleaningStatus(cleaning.id).subscribe(
+      (result) => {
         this.loadData();
         this.showWaitingMessage = false;
-        },(error) => {
+      }, (error) => {
         this.showWaitingMessage = false;
       });
   }

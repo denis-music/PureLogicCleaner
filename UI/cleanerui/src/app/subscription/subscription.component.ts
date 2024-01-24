@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from './subscription.service';
 import { Subscription } from '../model/subs.model';
-import { error } from 'console';
+import { UserService } from '../_services/user.service';
 
 
 @Component({
@@ -11,47 +11,48 @@ import { error } from 'console';
 })
 export class SubscriptionComponent implements OnInit {
 
-  constructor(private subsService: SubscriptionService) { }
+  constructor(private subsService: SubscriptionService,
+    private userService: UserService) { }
   subscriptions: Subscription[] = [];
-  
+
   ngOnInit() {
     this.loadData();
     this.loadMemberSub();
   }
 
-  loadData()  {
+  loadData() {
     this.subscriptions = [];
     this.subsService.getSubs().subscribe(
-      (result)=> {
+      (result) => {
         this.subscriptions = result;
       }
-    )};
+    )
+  };
 
-    userSubId: string = '';
-    userId: string = "d55bd14c-c380-42d5-a9c6-aa1c0b050804";
-    loadMemberSub(){
-      this.subsService.getUserSub(this.userId).subscribe (
-        (result) => {
+  userSubId: string = '';
+  loadMemberSub() {
+    this.userService.getUser().subscribe(
+      (result) => {
+        if (result !== null) {
           this.userSubId = result.subsId;
-          console.log(this.userSubId);
         }
-      )
-    }
+      }
+    )
+  }
 
-    loading: boolean = false;
-    subscribe(subscription: Subscription){
-      this.loading = true;
-      this.subsService.changeUserSub(this.userId, subscription.id).subscribe(
-        (result) => {
-          console.log("nice");
-          this.loadMemberSub();
-          this.loadData();
-          this.loading = false; // Set loading to false on success
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
-          this.loading = false; // Set loading to false on error
-        }
-      );
-    }
+  loading: boolean = false;
+  subscribe(subscription: Subscription) {
+    this.loading = true;
+    this.subsService.changeUserSub(subscription.id).subscribe(
+      (result) => {
+        this.loadMemberSub();
+        this.loadData();
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.loading = false;
+      }
+    );
+  }
 }

@@ -26,7 +26,7 @@ export class StatisticsComponent implements OnInit {
     responsive: true,
   };
   isDataNeverLoaded: boolean = false;
-  constructor(private statisticsService: StatisticsService) {}
+  constructor(private statisticsService: StatisticsService) { }
 
   ngOnInit() {
     this.loadData();
@@ -35,7 +35,7 @@ export class StatisticsComponent implements OnInit {
   private loadData() {
     this.statisticsService.getCleaningType().subscribe(
       (data) => {
-        data.forEach ((item) => {
+        data.forEach((item) => {
           this.optionList.push(item.name);
         });
       },
@@ -49,19 +49,20 @@ export class StatisticsComponent implements OnInit {
   onButtonClick() {
     this.isDataNeverLoaded = true;
     this.apiResults = [];
-    // Check if a cleaning type is selected
     if (this.selectedCleaningType) {
-      // Make the second API call using the selected cleaning type
       this.statisticsService.getCleaningStatus().subscribe(
-        // this.selectedCleaningType
         (results) => {
-          results.forEach((item) => {
-            if (item.userRoomId == this.selectedCleaningType)
-            {
-              this.apiResults.push(item);
-              this.isDataNeverLoaded = false;
-            }
-          })
+          if (results !== null) {
+            results.forEach((item) => {
+              if (item.userRoomId == this.selectedCleaningType) {
+                this.apiResults.push(item);
+                this.isDataNeverLoaded = false;
+              }
+            })
+          }
+          else {
+            console.error('No cleaning history API results:');
+          }
         },
         (error) => {
           console.error('Error fetching API results:', error);
