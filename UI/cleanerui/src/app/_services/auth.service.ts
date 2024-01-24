@@ -35,8 +35,8 @@ export class AuthService {
   saveUser(username: string) {
     this.userService.getUserByUsername(username).subscribe(
       (result) => {
-        localStorage.removeItem('user'); // Stringify the user object
-        localStorage.setItem('user', JSON.stringify(result)); // Stringify the user object
+        localStorage.removeItem('user');
+        localStorage.setItem('user', JSON.stringify(result));
       });
   }
 

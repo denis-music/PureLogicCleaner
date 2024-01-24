@@ -1,4 +1,3 @@
-/* Add this to your existing styles */
 .subscription-box {
     transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
@@ -13,19 +12,19 @@
   }
   
   .btn-primary {
-    margin-top: 10px; /* Spacing above the button */
+    margin-top: 10px; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .card {
-    border-radius: 20px; /* Adjust the border-radius as needed */
-    overflow: hidden; /* Ensures that the child elements respect the border-radius */
+    border-radius: 20px;
+    overflow: hidden; 
   }
   
   .card-header {
-    border-top-left-radius: 20px; /* Match the border-radius of the card */
-    border-top-right-radius: 20px; /* Match the border-radius of the card */
-    background-color: #343a40; /* Dark gray color */
+    border-top-left-radius: 20px; 
+    border-top-right-radius: 20px; 
+    background-color: #343a40;
     color: white;
     border-bottom: none;
   }
@@ -39,12 +38,11 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-5px);
   }
-  
-  /* Add this to your styles */
+
 .disabled {
-  background-color: #6c757d; /* Grey background color */
-  color: #fff; /* White text color */
-  cursor: not-allowed; /* Change cursor to not-allowed */
+  background-color: #6c757d;
+  color: #fff;
+  cursor: not-allowed;
 }
 
   

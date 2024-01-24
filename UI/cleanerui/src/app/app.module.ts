@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CleaningComponent } from './cleaning/cleaning.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { HabitComponent } from './habit/habit.component';
 
 @NgModule({
   declarations: [				
@@ -29,7 +30,8 @@ import { RegisterComponent } from './register/register.component';
       CleaningComponent,
       LoginComponent,
       CleaningComponent,
-      RegisterComponent
+      RegisterComponent,
+      HabitComponent
    ],
   imports: [
     BrowserModule,

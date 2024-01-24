@@ -16,7 +16,7 @@ export class FeedbacksComponent implements OnInit {
   text: string = '';
   ratingError: string = '';
 
-  selectedFeedbackType: any = 0; // This will hold the selected value
+  selectedFeedbackType: any = 0;
   feedbackType = FeedbackType;
   feedbackTypeOptions: { key: string, value: number }[];
   selectedCleaningType: string = '';
@@ -56,7 +56,6 @@ export class FeedbacksComponent implements OnInit {
       this.rating, this.feedbackText);
     feedback.memberId = "d55bd14c-c380-42d5-a9c6-aa1c0b050804";
 
-    // Make a POST request to the API endpoint
     this.feedbackService.saveFeedback(feedback).subscribe(
       response => {
         this.showForm = false;

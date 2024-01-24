@@ -7,6 +7,7 @@ import { CleaningComponent } from './cleaning/cleaning.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { HabitComponent } from './habit/habit.component';
 
 const routes: Routes = [
   { path: 'statistics', component: StatisticsComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'habit', component: HabitComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home page if no path specified
   { path: '**', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home page if the URL doesn't match any route
 ];

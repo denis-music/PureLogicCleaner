@@ -10,7 +10,7 @@ import { User } from '../model/users.model';
   providedIn: 'root',
 })
 export class StatisticsService {
-  private apiUrl = 'https://localhost:7079/Rooms'; // Update this URL as needed
+  private apiUrl = environment.baseUrl + 'Rooms';
   constructor(private http: HttpClient) {}
 
   getCleaningType(): Observable<Rooms[]> {
@@ -30,6 +30,6 @@ export class StatisticsService {
   }
 
   changeCleaningStatus(id: string): Observable<boolean> {
-    return this.http.put<boolean>(`https://localhost:7079/CleaningHistory/${id}/completed`, id);
+    return this.http.put<boolean>(environment.baseUrl + `CleaningHistory/${id}/completed`, id);
   }
 }

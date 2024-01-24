@@ -1,5 +1,3 @@
-// user.model.ts
-
 import { CleaningFrequency } from "../enum/cleaningFrequency.enum";
 import { DaysOfWeek } from "../enum/daysOfWeek.enum";
 
