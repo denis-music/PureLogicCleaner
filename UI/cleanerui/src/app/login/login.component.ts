@@ -29,7 +29,6 @@ export class LoginComponent {
   onSubmit() {
     this.model.username = this.username?.value;
     this.model.password = this.password?.value;
-    console.log(this.model);
 
     this.authService.loginMethod(this.model).subscribe(x => {
       this.loginForm.reset();

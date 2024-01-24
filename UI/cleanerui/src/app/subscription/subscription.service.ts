@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Subscription } from '../model/subs.model';
 import { User } from '../model/users.model';
 
@@ -9,17 +9,32 @@ import { User } from '../model/users.model';
 })
 export class SubscriptionService {
   private apiUrl = 'https://localhost:7079/Subscriptions'; // Update this URL as needed
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getSubs(): Observable<Subscription[]> {
     return this.http.get<Subscription[]>(this.apiUrl);
   }
 
-  getUserSub(id: string): Observable<User> {
-    return this.http.get<User>(`https://localhost:7079/Users/${id}`);
+  getUserSub(): Observable<User | null> {
+    const item = localStorage.getItem('user');
+    if (item) {
+      const user: User[] = JSON.parse(item);
+      return this.http.get<User>(`https://localhost:7079/Users/${user[0].id}`);
+    } else {
+      console.log('No user data found in localStorage');
+      return of(null);
+    }
   }
 
-  changeUserSub(userId: string, subsId: string): Observable<boolean> {
-    return this.http.put<boolean>(`https://localhost:7079/member/${userId}/subscription/${subsId}`, {});
+  changeUserSub(subsId: string): Observable<boolean> {
+    const item = localStorage.getItem('user');
+    if (item) {
+      const user: User[] = JSON.parse(item);
+      console.log("get user in subs", user[0]);
+      return this.http.put<boolean>(`https://localhost:7079/member/${user[0].id}/subscription/${subsId}`, {});
+    } else {
+      console.log('No user data found in localStorage');
+      return of(false);
+    }
   }
 }
