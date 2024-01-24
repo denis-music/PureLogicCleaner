@@ -1,5 +1,4 @@
-export enum CleaningQuality
-{
+export enum CleaningQuality {
     Quick,
     Basic,
     Thorough
