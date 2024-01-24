@@ -5,7 +5,6 @@ import { FeedbackType } from '../enum/feedbackType.enum';
 import { StatisticsService } from '../statistics/statistics.service';
 import { RoomDate } from '../model/roomDate.model';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-feedbacks',
@@ -24,22 +23,20 @@ export class FeedbacksComponent implements OnInit {
 
   rating: number = 0;
   feedbackText: string = '';
-
   showForm: boolean = true;
+
   constructor(private feedbackService: FeedbacksService,
-    private statisticsService: StatisticsService, private router: Router,
-    private snackBar: MatSnackBar) 
-    {
-  this.feedbackTypeOptions = Object.entries(this.feedbackType)
-  .filter(([key, value]) => !isNaN(Number(value)))
-  .map(([key, value]) => ({ key, value: Number(value) }));
+    private statisticsService: StatisticsService, private router: Router) {
+    this.feedbackTypeOptions = Object.entries(this.feedbackType)
+      .filter(([key, value]) => !isNaN(Number(value)))
+      .map(([key, value]) => ({ key, value: Number(value) }));
   }
 
   optionList: RoomDate[] = [];
   ngOnInit(): void {
     this.statisticsService.getCleaningStatus().subscribe(
       (data) => {
-        data.forEach ((item) => {
+        data.forEach((item) => {
           this.optionList.push(new RoomDate(item.userRoomId, item.id, item.date));
         });
       },
@@ -48,19 +45,16 @@ export class FeedbacksComponent implements OnInit {
       });
   }
 
-    saveFeedback(): void {
+  saveFeedback(): void {
     let feedbackTypeNumber = parseInt(this.selectedFeedbackType, 10);
 
     const feedback = new Feedback(this.selectedCleaningType, feedbackTypeNumber,
-    this.rating, this.feedbackText);
+      this.rating, this.feedbackText);
     feedback.memberId = "d55bd14c-c380-42d5-a9c6-aa1c0b050804";
 
     // Make a POST request to the API endpoint
     this.feedbackService.saveFeedback(feedback).subscribe(
       response => {
-        this.snackBar.open('Feedback submitted successfully!', 'Close', {
-          duration: 5000, // Duration in milliseconds
-        });
         this.showForm = false;
       },
       error => {
@@ -69,7 +63,7 @@ export class FeedbacksComponent implements OnInit {
     );
   }
 
-    showPopup() {
-      this.showForm = true;
+  showPopup() {
+    this.showForm = true;
   }
 }
