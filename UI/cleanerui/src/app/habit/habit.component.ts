@@ -87,7 +87,7 @@ export class HabitComponent implements OnInit {
     }
   }
 
-  selectedCleaningFrequencyOptions: any = 0; // This will hold the selected value
+  selectedCleaningFrequencyOptions: any = 0;
   selectedDayOfTheWeekOptions: string[] = [];
 
   toggleDaySelection(day: string) {
@@ -101,7 +101,7 @@ export class HabitComponent implements OnInit {
   }
 
   onSubmit() {
-    // Implement your logic to handle the form submission
+    // Implement logic to handle the form submission
     console.log('User Preferences submitted:', this.userPreferences);
   }
 
