@@ -38,7 +38,6 @@ export class FeedbacksComponent implements OnInit {
   ngOnInit(): void {
     this.statisticsService.getCleaningsForMemberByMutalRoomId().subscribe(
       (data) => {
-        console.log("cleaning items", data)
         if (data !== null) {
           data.forEach((item) => {
             if (item)
