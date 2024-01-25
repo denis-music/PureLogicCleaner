@@ -20,7 +20,6 @@ export class SubscriptionService {
     const item = localStorage.getItem('user');
     if (item) {
       const user: User[] = JSON.parse(item);
-      console.log("get user in subs", user[0]);
       return this.http.put<boolean>(environment.baseUrl + `member/${user[0].id}/subscription/${subsId}`, {});
     } else {
       console.log('No user data found in localStorage');

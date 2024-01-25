@@ -3,6 +3,7 @@ import { StatisticsService } from '../statistics/statistics.service';
 import { CleaningHistory } from '../model/cleaningHistory.model';
 import { RoomService } from '../_services/room.service';
 import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cleaning',
@@ -12,7 +13,7 @@ import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model'
 export class CleaningComponent implements OnInit {
 
   constructor(private statisticsService: StatisticsService,
-    private roomService: RoomService) { }
+    private roomService: RoomService, private router: Router) { }
 
   showWaitingMessage = false;
   cleaningHistoryList: CleaningHistory[] = [];
@@ -39,6 +40,7 @@ export class CleaningComponent implements OnInit {
 
   pastCleaningHistoryList: CleaningHistory[] = [];
   futureCleaningHistoryList: CleaningHistoryWithName[] = [];
+
   splitHistoryLists(): void {
     this.pastCleaningHistoryList = [];
     this.futureCleaningHistoryList = [];
@@ -80,6 +82,33 @@ export class CleaningComponent implements OnInit {
       }, (error) => {
         this.showWaitingMessage = false;
       });
+  }
+
+  onScheduleClick(cleaning: CleaningHistory) {
+    const navigateWithDelay = () => {
+      setTimeout(() => {
+        this.router.navigate(['/companies']);
+      }, 3000);
+    };
+
+    const setItemRecursively = () => {
+      var ch: CleaningHistory[] = [];
+      localStorage.setItem("cleaning", JSON.stringify(cleaning));
+
+      const item = localStorage.getItem("cleaning");
+      if (item) {
+        ch = JSON.parse(item);
+        if (ch.length === 0) {
+          setItemRecursively();
+        } else {
+          navigateWithDelay();
+        }
+      } else {
+        console.log('Error: Item not found in local storage');
+      }
+    };
+
+    setItemRecursively();
   }
 
 }

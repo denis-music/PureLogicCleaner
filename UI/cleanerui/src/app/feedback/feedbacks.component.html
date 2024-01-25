@@ -1,61 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <title>Feedback Form</title>
-</head>
+  <style>
+    .container {
+      max-width: 700px;
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
 
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .btn-custom {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .btn-custom:hover {
+      background-color: #0056b3;
+    }
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
 <body>
 
-  <div class="container mt-5" *ngIf="!showForm">
-    <h2 class="mb-4">Provide Feedback</h2>
+<div class="container">
+  <h2>Provide Feedback</h2>
 
-    <button class="btn btn-primary" (click)="showPopup()">Submit another feedback!</button>
+  <div *ngIf="!showForm">
+    <button class="btn btn-custom" (click)="showPopup()">Submit another feedback!</button>
   </div>
 
-  <div class="container mt-5" *ngIf="showForm">
-    <h2 class="mb-4">Provide Feedback</h2>
-
+  <div *ngIf="showForm">
     <form id="feedbackForm">
       <div class="form-group">
         <label for="selectCleaningType">Select Room:</label>
         <select [(ngModel)]="selectedCleaningType" name="cleaningType" class="form-control">
           <option value="" disabled selected>Select an option</option>
-          <option *ngFor="let option of optionList" [value]="option.cleaningHistoryId">{{ option.userRoomName + " - " +
-            (option.cleaningDate | date: 'yyyy-MM-dd') }}</option>
+          <option *ngFor="let option of optionList" [value]="option.cleaningHistoryId">
+            {{ option.userRoomName + " - " + (option.cleaningDate | date: 'yyyy-MM-dd') }}
+          </option>
         </select>
       </div>
 
-      <select class="form-control" [(ngModel)]="selectedFeedbackType" name="feedbackType">
-        <option *ngFor="let type of feedbackTypeOptions" [value]="type.value">
-          {{ type.key }}
-        </option>
-      </select>
-
+      <div class="form-group">
+        <label for="selectFeedbackType">Feedback Type:</label>
+        <select class="form-control" [(ngModel)]="selectedFeedbackType" name="feedbackType" id="selectFeedbackType">
+          <option value="" disabled selected>Select an option</option>
+          <option *ngFor="let type of feedbackTypeOptions" [value]="type.value">
+            {{ type.key }}
+          </option>
+        </select>
+      </div>
 
       <div class="form-group">
         <label for="rating">Rating (1-10):</label>
-        <input type="number" class="form-control" id="rating" min="1" max="10" placeholder="Enter rating"
-          [(ngModel)]="rating" name="rating">
+        <input type="number" class="form-control" id="rating" min="1" max="10" placeholder="Enter rating" [(ngModel)]="rating" name="rating">
       </div>
 
       <div class="form-group">
         <label for="text">Feedback Text (optional):</label>
-        <textarea class="form-control" id="text" rows="3" placeholder="Enter feedback text" [(ngModel)]="feedbackText"
-          name="feedbackText"></textarea>
+        <textarea class="form-control" id="text" rows="3" placeholder="Enter feedback text" [(ngModel)]="feedbackText" name="feedbackText"></textarea>
       </div>
 
-      <button type="button" class="btn btn-primary" (click)="saveFeedback()">Submit Feedback</button>
+      <button type="button" class="btn btn-custom" (click)="saveFeedback()">Submit Feedback</button>
     </form>
   </div>
+</div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
-
 </html>

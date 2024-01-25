@@ -18,6 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HabitComponent } from './habit/habit.component';
 import { LogoutComponent } from './logout/logout.component';
+import { CompaniesComponent } from './companies/companies.component';
 
 @NgModule({
   declarations: [				
@@ -33,7 +34,8 @@ import { LogoutComponent } from './logout/logout.component';
       CleaningComponent,
       RegisterComponent,
       HabitComponent,
-      LogoutComponent
+      LogoutComponent,
+      CompaniesComponent
    ],
   imports: [
     BrowserModule,

@@ -82,7 +82,7 @@
             <td>{{ history.date ? (history.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
             <td>{{ history.createdAt ? (history.createdAt | date: 'yyyy-MM-dd') : 'NAN' }}</td>
             <td>
-              <button class="btn btn-primary" (click)="onButtonClick(history)">Schedule</button>
+              <button class="btn btn-primary" (click)="onScheduleClick(history)">Schedule</button>
             </td>
           </tr>
         </tbody>
