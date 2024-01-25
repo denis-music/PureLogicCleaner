@@ -151,7 +151,6 @@ export class HabitComponent implements OnInit {
         const usageFrequency = parseInt(roomControl.get('usageFrequency')?.value);
         const numberOfOccupants = roomControl.get('numberOfOccupants')?.value;
 
-        console.log(this.selectedCleaningFrequencyOptions);
         if (roomName !== null) {
           this.listOfRooms.push(roomName);
         }

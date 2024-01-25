@@ -26,6 +26,5 @@ export class NavbarComponent implements OnInit {
     } else {
       this.userId = '';
     }
-    console.log(this.userId);
   }
 }
