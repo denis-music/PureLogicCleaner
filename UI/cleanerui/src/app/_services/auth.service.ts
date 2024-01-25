@@ -37,6 +37,7 @@ export class AuthService {
       (result) => {
         localStorage.removeItem('user');
         localStorage.setItem('user', JSON.stringify(result));
+        location.reload();
       });
   }
 
