@@ -19,7 +19,6 @@ export class UserRoomsService {
     if (item) {
       const user: User[] = JSON.parse(item);
       userroom.userId = user[0].id;
-      console.log("user in service", userroom);
       return this.http.post<boolean>(this.apiUrl, userroom);
     } else {
       console.log('No user data found in localStorage');
