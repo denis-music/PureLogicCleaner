@@ -82,6 +82,7 @@ export class RegisterComponent implements OnInit {
     this.model.passwordConfirm = this.passwordconfirm?.value;
 
     this.authService.register(this.model).subscribe(e => {
+      this.authService.saveUser(this.model.username!);
       this.router.navigate(['/home']);
       this.registerForm.reset();
     }, error => {

@@ -12,6 +12,7 @@ import { Rooms } from '../model/rooms.model';
 import { SurfaceType } from '../enum/surfaceType.enum';
 import { UsageFrequency } from '../enum/usageFrequency.enum';
 import { RoomSize } from '../enum/roomSize.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-habit',
@@ -21,7 +22,8 @@ import { RoomSize } from '../enum/roomSize.enum';
 export class HabitComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userroomService: UserRoomsService,
-    private userService: UserService, private roomService: RoomService) {
+    private userService: UserService, private roomService: RoomService,
+    private router: Router) {
     this.myForm = this.fb.group({
       rooms: this.fb.array([this.createRoom()])
     });
@@ -185,6 +187,7 @@ export class HabitComponent implements OnInit {
     this.userService.saveUserHabit(habit).subscribe(
       (data) => {
         console.log("Success, saved user Habits!");
+        this.router.navigate(['/home']);
       }, (error) => {
         console.error('Error fetching API results:', error);
       })

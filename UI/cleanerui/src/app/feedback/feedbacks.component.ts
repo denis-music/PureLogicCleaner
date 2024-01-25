@@ -38,12 +38,16 @@ export class FeedbacksComponent implements OnInit {
   ngOnInit(): void {
     this.statisticsService.getCleaningsForMemberByMutalRoomId().subscribe(
       (data) => {
+        console.log("cleaning items", data)
         if (data !== null) {
           data.forEach((item) => {
-            this.roomService.getRoomById(item.userRoomId).subscribe(
-              (room) => {
-                this.optionList.push(new RoomDate(item.userRoomId, room.name, item.id, item.date))
-              })
+            if (item)
+              this.roomService.getRoomById(item.userRoomId).subscribe(
+                (room) => {
+                  if (room !== null) {
+                    this.optionList.push(new RoomDate(item.userRoomId, room.name, item.id, item.date))
+                  }
+                })
           })
         } else {
           console.error('There is no data.');
