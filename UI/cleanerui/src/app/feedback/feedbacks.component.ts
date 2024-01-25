@@ -5,6 +5,7 @@ import { FeedbackType } from '../enum/feedbackType.enum';
 import { StatisticsService } from '../statistics/statistics.service';
 import { RoomDate } from '../model/roomDate.model';
 import { Router } from '@angular/router';
+import { RoomService } from '../_services/room.service';
 
 @Component({
   selector: 'app-feedbacks',
@@ -26,7 +27,8 @@ export class FeedbacksComponent implements OnInit {
   showForm: boolean = true;
 
   constructor(private feedbackService: FeedbacksService,
-    private statisticsService: StatisticsService, private router: Router) {
+    private statisticsService: StatisticsService, private router: Router,
+    private roomService: RoomService) {
     this.feedbackTypeOptions = Object.entries(this.feedbackType)
       .filter(([key, value]) => !isNaN(Number(value)))
       .map(([key, value]) => ({ key, value: Number(value) }));
@@ -34,12 +36,15 @@ export class FeedbacksComponent implements OnInit {
 
   optionList: RoomDate[] = [];
   ngOnInit(): void {
-    this.statisticsService.getCleaningStatus().subscribe(
+    this.statisticsService.getCleaningsForMemberByMutalRoomId().subscribe(
       (data) => {
         if (data !== null) {
           data.forEach((item) => {
-            this.optionList.push(new RoomDate(item.userRoomId, item.id, item.date));
-          });
+            this.roomService.getRoomById(item.userRoomId).subscribe(
+              (room) => {
+                this.optionList.push(new RoomDate(item.userRoomId, room.name, item.id, item.date))
+              })
+          })
         } else {
           console.error('There is no data.');
         }

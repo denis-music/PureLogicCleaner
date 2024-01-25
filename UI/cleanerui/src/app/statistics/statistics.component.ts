@@ -48,7 +48,7 @@ export class StatisticsComponent implements OnInit {
     this.isDataNeverLoaded = true;
     this.apiResults = [];
     if (this.selectedCleaningType) {
-      this.statisticsService.getCleaningStatus().subscribe(
+      this.statisticsService.getCleaningsForMemberByMutalRoomId().subscribe(
         (results) => {
           if (results !== null) {
             results.forEach((item) => {

@@ -20,7 +20,7 @@ export class CleaningComponent implements OnInit {
 
   loadData() {
     this.cleaningHistoryList = [];
-    this.statisticsService.getCleaningStatus().subscribe(
+    this.statisticsService.getCleaningsForMemberByMutalRoomId().subscribe(
       (data) => {
         if (data !== null) {
           this.cleaningHistoryList = data;

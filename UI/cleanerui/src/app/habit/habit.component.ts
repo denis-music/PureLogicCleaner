@@ -7,6 +7,11 @@ import { UserRoomsService } from '../_services/user-rooms.service';
 import { UserRoom } from '../model/userRoom.model';
 import { error } from 'console';
 import { UserService } from '../_services/user.service';
+import { RoomService } from '../_services/room.service';
+import { Rooms } from '../model/rooms.model';
+import { SurfaceType } from '../enum/surfaceType.enum';
+import { UsageFrequency } from '../enum/usageFrequency.enum';
+import { RoomSize } from '../enum/roomSize.enum';
 
 @Component({
   selector: 'app-habit',
@@ -16,7 +21,7 @@ import { UserService } from '../_services/user.service';
 export class HabitComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userroomService: UserRoomsService,
-    private userService: UserService) {
+    private userService: UserService, private roomService: RoomService) {
     this.myForm = this.fb.group({
       rooms: this.fb.array([this.createRoom()])
     });
@@ -24,10 +29,16 @@ export class HabitComponent implements OnInit {
 
   cleaningFrequencyOptions!: { key: string; value: number; }[];
   daysOfWeekOptions!: { key: string; value: number; }[];
+  surfacedTypeOptions!: { key: string; value: number; }[];
+  usageFrequencyOptions!: { key: string; value: number; }[];
+  roomSizeOptions!: { key: string; value: number; }[];
 
   userPreferences: Habit = new Habit();
   daysOfWeekType = DaysOfWeek;
   cleaningFrequencyType = CleaningFrequency;
+  surfacedType = SurfaceType;
+  usageFrequency = UsageFrequency;
+  roomSize = RoomSize;
 
   myForm: FormGroup;
 
@@ -62,8 +73,20 @@ export class HabitComponent implements OnInit {
       .filter(([key, value]) => !isNaN(Number(value)))
       .map(([key, value]) => ({ key, value: Number(value) }));
 
-      this.userPreferences.allergies = false;
-      this.userPreferences.pets = false;
+    this.surfacedTypeOptions = Object.entries(this.surfacedType)
+      .filter(([key, value]) => !isNaN(Number(value)))
+      .map(([key, value]) => ({ key, value: Number(value) }));
+
+    this.usageFrequencyOptions = Object.entries(this.usageFrequency)
+      .filter(([key, value]) => !isNaN(Number(value)))
+      .map(([key, value]) => ({ key, value: Number(value) }));
+
+    this.roomSizeOptions = Object.entries(this.roomSize)
+      .filter(([key, value]) => !isNaN(Number(value)))
+      .map(([key, value]) => ({ key, value: Number(value) }));
+
+    this.userPreferences.allergies = false;
+    this.userPreferences.pets = false;
   }
 
   toFriendlyString(frequency: CleaningFrequency): string {
@@ -127,33 +150,44 @@ export class HabitComponent implements OnInit {
         const surfaceType = parseInt(roomControl.get('surfaceType')?.value);
         const usageFrequency = parseInt(roomControl.get('usageFrequency')?.value);
         const numberOfOccupants = roomControl.get('numberOfOccupants')?.value;
-        // add dropdowns
-        this.listOfRooms.push(roomName);
-        var userrom = new UserRoom(
-          roomName, roomSize, surfaceType, usageFrequency, numberOfOccupants
-        )
-        this.userroomService.saveUserRoom(userrom).subscribe(
-          (data) => {
-            console.log("Success Room!");
-          }, (error) => {
-            console.error('Error fetching API results:', error);
-          });
+
+        console.log(this.selectedCleaningFrequencyOptions);
+        if (roomName !== null) {
+          this.listOfRooms.push(roomName);
+        }
+        var savedRoom: Rooms | null;
+        this.roomService.saveRoom(new Rooms(roomName)).subscribe(
+          (savedR) => {
+            if (savedR === null) return;
+            else {
+              savedRoom = savedR;
+              var userrom = new UserRoom(
+                savedRoom!.id, roomSize, surfaceType, usageFrequency, numberOfOccupants
+              )
+              this.userroomService.saveUserRoom(userrom).subscribe(
+                (data) => {
+                  console.log("Success saved User Room!");
+                }, (error) => {
+                  console.error('Error fetching API results:', error);
+                });
+            }
+          }
+        );
       }
     })
-      
 
     var habit = new Habit(
       this.getSelectedDayIds(),
-      this.selectedCleaningFrequencyOptions,
+      parseInt(this.selectedCleaningFrequencyOptions),
       this.listOfRooms,
       this.userPreferences.pets,
       this.userPreferences.allergies
     )
     this.userService.saveUserHabit(habit).subscribe(
       (data) => {
-        console.log("Success Habit!");
+        console.log("Success, saved user Habits!");
       }, (error) => {
         console.error('Error fetching API results:', error);
-      });
+      })
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from './subscription.service';
 import { Subscription } from '../model/subs.model';
 import { UserService } from '../_services/user.service';
+import { User } from '../model/users.model';
 
 
 @Component({
@@ -15,7 +16,15 @@ export class SubscriptionComponent implements OnInit {
     private userService: UserService) { }
   subscriptions: Subscription[] = [];
 
+  userId = '';
   ngOnInit() {
+    const item = localStorage.getItem('user');
+    if (item) {
+      const user: User[] = JSON.parse(item);
+      this.userId = user[0].id;
+    } else {
+      this.userId = '';
+    }
     this.loadData();
     this.loadMemberSub();
   }
@@ -41,6 +50,7 @@ export class SubscriptionComponent implements OnInit {
   }
 
   loading: boolean = false;
+
   subscribe(subscription: Subscription) {
     this.loading = true;
     this.subsService.changeUserSub(subscription.id).subscribe(
