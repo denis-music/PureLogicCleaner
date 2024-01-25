@@ -24,7 +24,7 @@
         <label for="selectCleaningType">Select Room:</label>
         <select [(ngModel)]="selectedCleaningType" name="cleaningType" class="form-control">
           <option value="" disabled selected>Select an option</option>
-          <option *ngFor="let option of optionList" [value]="option.cleaningHistoryId">{{ option.userRoomId + " - " +
+          <option *ngFor="let option of optionList" [value]="option.cleaningHistoryId">{{ option.userRoomName + " - " +
             (option.cleaningDate | date: 'yyyy-MM-dd') }}</option>
         </select>
       </div>

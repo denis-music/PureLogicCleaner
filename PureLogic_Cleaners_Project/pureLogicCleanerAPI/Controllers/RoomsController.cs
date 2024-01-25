@@ -37,16 +37,18 @@ namespace pureLogicCleanerAPI.Controllers
         }
 
         [HttpPost(Name = "SendRoom")]
-        public async Task<bool> PostAsync(RoomsSearchRequest payload)
+        public async Task<Rooms>? PostAsync(RoomsSearchRequest payload)
         {
-            if (payload.Name == null) return false;
+            if (payload.Name == null) return null;
             string r = Guid.NewGuid().ToString();
             var newUR = new Rooms
             {
                 Id = r,
                 Name = payload.Name
             };
-            return await _cosmosDBRepo.CreateItemAsync(newUR, containerName, newUR.Id);
+            var savedRoom = await _cosmosDBRepo.CreateItemAsync(newUR, containerName, newUR.Id);
+            if (savedRoom) return newUR;
+            else return null;
         }
     }
 }

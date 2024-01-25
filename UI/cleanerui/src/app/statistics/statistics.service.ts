@@ -17,7 +17,7 @@ export class StatisticsService {
     return this.http.get<Rooms[]>(this.apiUrl);
   }
 
-  getCleaningStatus(): Observable<CleaningHistory[] | null> {
+  getCleaningsForMemberByMutalRoomId(): Observable<CleaningHistory[] | null> {
     const item = localStorage.getItem('user');
     if (item) {
       const user: User[] = JSON.parse(item);
