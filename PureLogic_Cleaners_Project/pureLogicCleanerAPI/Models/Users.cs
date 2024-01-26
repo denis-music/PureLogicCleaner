@@ -13,8 +13,8 @@ namespace pureLogicCleanerAPI.Models
         public List<DaysOfWeek>? PreferredCleaningDays { get; set; } = null;
         public CleaningFrequency? PreferredCleaningFrequency { get; set; } = null;
         public List<string>? PriorityRoomIds { get; set; } = null;
-        public bool? Pets { get; set; } = null;
-        public bool? Allergies { get; set; } = null;
+        public bool? Pets { get; set; } = false;
+        public bool? Allergies { get; set; } = false;
 
         public string Username { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;

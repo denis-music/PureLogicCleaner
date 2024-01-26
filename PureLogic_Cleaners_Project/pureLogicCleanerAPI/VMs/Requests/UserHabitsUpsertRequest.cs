@@ -7,7 +7,7 @@ namespace pureLogicCleanerAPI.VMs.Requests
         public required List<DaysOfWeek>? PreferredCleaningDays { get; set; }
         public required CleaningFrequency? PreferredCleaningFrequency { get; set; }
         public required List<string>? PriorityRoomIds { get; set; }
-        public required bool? Pets { get; set; }
-        public required bool? Allergies { get; set; }
+        public required bool Pets { get; set; } = false;
+        public required bool Allergies { get; set; } = false;
     }
 }
