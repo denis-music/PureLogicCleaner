@@ -49,7 +49,7 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    
+
     .close-btn {
       width: 100%;
       padding: 10px;
@@ -68,92 +68,104 @@
 
 <body>
 
-  <div class="container">
-    <div>
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <h2>Register</h2>
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div>
-              <div class="mb-3">
-                <label for="firstname" class="form-label">First Name:</label>
-                <input type="text" id="firstname" class="form-control" formControlName="firstname">
-                <span
-                  *ngIf="registerForm.get('firstname')?.hasError('required') && (registerForm.get('firstname')?.dirty || registerForm.get('firstname')?.touched)"
-                  class="text-danger">
-                  First Name is required
-                </span>
-              </div>
+  <div class="container mt-5">
+    <ng-container *ngIf="loading">
+      <div class="message text-center mt-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <p class="mt-2">Please wait...</p>
+      </div>
+    </ng-container>
+    <div class="row" *ngIf="!loading">
+      <div class="container">
+        <div>
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <h2>Register</h2>
+              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div>
+                  <div class="mb-3">
+                    <label for="firstname" class="form-label">First Name:</label>
+                    <input type="text" id="firstname" class="form-control" formControlName="firstname">
+                    <span
+                      *ngIf="registerForm.get('firstname')?.hasError('required') && (registerForm.get('firstname')?.dirty || registerForm.get('firstname')?.touched)"
+                      class="text-danger">
+                      First Name is required
+                    </span>
+                  </div>
 
-              <div class="mb-3">
-                <label for="lastname" class="form-label">Last Name:</label>
-                <input type="text" id="lastname" class="form-control" formControlName="lastname">
-                <span
-                  *ngIf="registerForm.get('lastname')?.hasError('required') && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)"
-                  class="text-danger">
-                  Last Name is required
-                </span>
-              </div>
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Last Name:</label>
+                    <input type="text" id="lastname" class="form-control" formControlName="lastname">
+                    <span
+                      *ngIf="registerForm.get('lastname')?.hasError('required') && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)"
+                      class="text-danger">
+                      Last Name is required
+                    </span>
+                  </div>
 
-              <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
-                <input type="text" id="username" class="form-control" formControlName="username">
-                <span
-                  *ngIf="registerForm.get('username')?.hasError('required') && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)"
-                  class="text-danger">
-                  Username is required
-                </span>
-              </div>
+                  <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" id="username" class="form-control" formControlName="username">
+                    <span
+                      *ngIf="registerForm.get('username')?.hasError('required') && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)"
+                      class="text-danger">
+                      Username is required
+                    </span>
+                  </div>
 
-              <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" id="email" class="form-control" formControlName="email">
-                <span
-                  *ngIf="registerForm.get('email')?.hasError('required') && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
-                  class="text-danger">
-                  Email is required
-                </span>
-              </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" class="form-control" formControlName="email">
+                    <span
+                      *ngIf="registerForm.get('email')?.hasError('required') && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                      class="text-danger">
+                      Email is required
+                    </span>
+                  </div>
 
-              <div class="mb-3">
-                <label for="age" class="form-label">Age:</label>
-                <input type="number" id="age" class="form-control" formControlName="age">
-                <span
-                  *ngIf="registerForm.get('age')?.hasError('required') && (registerForm.get('age')?.dirty || registerForm.get('age')?.touched)"
-                  class="text-danger">
-                  Age is required
-                </span>
-              </div>
+                  <div class="mb-3">
+                    <label for="age" class="form-label">Age:</label>
+                    <input type="number" id="age" class="form-control" formControlName="age">
+                    <span
+                      *ngIf="registerForm.get('age')?.hasError('required') && (registerForm.get('age')?.dirty || registerForm.get('age')?.touched)"
+                      class="text-danger">
+                      Age is required
+                    </span>
+                  </div>
 
-              <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" id="password" class="form-control" formControlName="password">
-                <span
-                  *ngIf="registerForm.get('password')?.hasError('required') && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
-                  class="text-danger">
-                  Password is required
-                </span>
-              </div>
-              <div class="mb-3">
-                <label for="passwordConfirm" class="form-label">Confirm Password:</label>
-                <input type="password" id="passwordConfirm" class="form-control" formControlName="passwordConfirm">
-                <span
-                  *ngIf="registerForm.get('passwordConfirm')?.hasError('required') && (registerForm.get('passwordConfirm')?.dirty || registerForm.get('passwordConfirm')?.touched)"
-                  class="text-danger">
-                  Confirm Password is required
-                </span>
-                <span *ngIf="passwordsDoNotMatch()" class="text-danger">
-                  Passwords do not match
-                </span>
-              </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" id="password" class="form-control" formControlName="password">
+                    <span
+                      *ngIf="registerForm.get('password')?.hasError('required') && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+                      class="text-danger">
+                      Password is required
+                    </span>
+                  </div>
+                  <div class="mb-3">
+                    <label for="passwordConfirm" class="form-label">Confirm Password:</label>
+                    <input type="password" id="passwordConfirm" class="form-control" formControlName="passwordConfirm">
+                    <span
+                      *ngIf="registerForm.get('passwordConfirm')?.hasError('required') && (registerForm.get('passwordConfirm')?.dirty || registerForm.get('passwordConfirm')?.touched)"
+                      class="text-danger">
+                      Confirm Password is required
+                    </span>
+                    <span *ngIf="passwordsDoNotMatch()" class="text-danger">
+                      Passwords do not match
+                    </span>
+                  </div>
 
-              <button type="submit" [disabled]="registerForm.invalid || passwordsDoNotMatch()"
-                class="btn btn-primary">Register</button>
+                  <button type="submit" [disabled]="registerForm.invalid || passwordsDoNotMatch()"
+                    class="btn btn-primary">Register</button>
 
-                <button class="btn close-btn"  (click)="cancelLogin()">Close</button>
+                  <button class="btn close-btn" (click)="cancelLogin()">Close</button>
 
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

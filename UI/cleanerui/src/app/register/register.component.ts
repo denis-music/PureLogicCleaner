@@ -14,6 +14,7 @@ import { AuthService } from '../_services/auth.service';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
+  loading = false;
 
   model: UserUpsert = {};
 
@@ -73,6 +74,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
+    this.loading = true;
     this.model.firstName = this.firstname?.value;
     this.model.lastName = this.lastname?.value;
     this.model.username = this.username?.value;
@@ -87,6 +89,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.reset();
     }, error => {
       console.log(error);
+      this.loading = false;
     });
   }
 
