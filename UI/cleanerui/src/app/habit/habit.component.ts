@@ -13,6 +13,9 @@ import { SurfaceType } from '../enum/surfaceType.enum';
 import { UsageFrequency } from '../enum/usageFrequency.enum';
 import { RoomSize } from '../enum/roomSize.enum';
 import { Router } from '@angular/router';
+import { UserStateService } from '../_services/user-state.service';
+import { AuthService } from '../_services/auth.service';
+import { User } from '../model/users.model';
 
 @Component({
   selector: 'app-habit',
@@ -23,7 +26,8 @@ export class HabitComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userroomService: UserRoomsService,
     private userService: UserService, private roomService: RoomService,
-    private router: Router) {
+    private router: Router, private userStateService: UserStateService,
+    private authService: AuthService) {
     this.myForm = this.fb.group({
       rooms: this.fb.array([this.createRoom()])
     });
@@ -67,6 +71,23 @@ export class HabitComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const item = localStorage.getItem('user');
+    if (item) {
+      const users: User[] = JSON.parse(item);
+      var user = users[0];
+      if (user.preferredCleaningDays == null ||
+        user.preferredCleaningFrequency == null ||
+        user.allergies == null || user.pets == null ||
+        user.priorityRoomIds == null ||
+        user.priorityRoomIds.length === 0 ||
+        user.preferredCleaningDays.length === 0) {
+      }
+      else {
+        this.router.navigate(['/home'])
+      }
+    }
+
+
     this.cleaningFrequencyOptions = Object.entries(CleaningFrequency)
       .filter(([key, value]) => !isNaN(Number(value)))
       .map(([key, value]) => ({ key: this.toFriendlyString(Number(value) as CleaningFrequency), value: Number(value) }));
@@ -187,9 +208,22 @@ export class HabitComponent implements OnInit {
     this.userService.saveUserHabit(habit).subscribe(
       (data) => {
         console.log("Success, saved user Habits!");
-        this.router.navigate(['/home']);
+        this.userStateService.setUserWHabits(true);
+        const item = localStorage.getItem('user');
+        if (item) {
+          const users: User[] = JSON.parse(item);
+          var user = users[0];
+          this.authService.saveUser(user.username);
+          setTimeout(() => {
+            this.router.navigate(['/home'])
+          }, 3000);
+        }
       }, (error) => {
         console.error('Error fetching API results:', error);
       })
+  }
+
+  close() {
+    this.router.navigate(['/login'])
   }
 }

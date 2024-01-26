@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StatisticsService } from './statistics.service';
+import { UserRoomsService } from '../_services/user-rooms.service';
+import { RoomService } from '../_services/room.service';
 
 @Component({
   selector: 'app-statistics',
@@ -24,23 +26,33 @@ export class StatisticsComponent implements OnInit {
     responsive: true,
   };
   isDataNeverLoaded: boolean = false;
-  constructor(private statisticsService: StatisticsService) { }
+  constructor(private statisticsService: StatisticsService,
+    private userRoomsService: UserRoomsService, private roomService: RoomService) { }
 
   ngOnInit() {
     this.loadData();
   }
 
   private loadData() {
-    this.statisticsService.getCleaningType().subscribe(
-      (data) => {
-        data.forEach((item) => {
-          this.optionList.push(item.name);
-        });
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
+    this.userRoomsService.getUserRooms().subscribe(
+      (userRooms) => {
+        if (userRooms !== null) {
+          userRooms.forEach(userRoom => {
+            this.roomService.getRoomById(userRoom.roomId!).subscribe(
+              (room) => {
+                  this.optionList.push(room.name);
+              },
+              (error) => {
+                console.error('Error fetching data:', error);
+              }
+            );
+          });
+        }
       }
     );
+
+
+    
   }
   apiResults: any[] = [];
 

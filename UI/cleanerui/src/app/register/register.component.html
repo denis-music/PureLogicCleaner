@@ -49,6 +49,17 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    
+    .close-btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: #ccc;
+      margin-top: 20px;
+    }
+
     .btn-primary:hover {
       background-color: #0056b3;
     }
@@ -138,6 +149,9 @@
 
               <button type="submit" [disabled]="registerForm.invalid || passwordsDoNotMatch()"
                 class="btn btn-primary">Register</button>
+
+                <button class="btn close-btn"  (click)="cancelLogin()">Close</button>
+
             </div>
           </form>
         </div>

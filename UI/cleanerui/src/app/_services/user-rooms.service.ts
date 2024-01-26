@@ -25,4 +25,15 @@ export class UserRoomsService {
       return of(null);
     }
   }
+
+  getUserRooms(): Observable<UserRoom[] | null> {
+    const item = localStorage.getItem('user');
+    if (item) {
+      const user: User[] = JSON.parse(item);
+      return this.http.get<UserRoom[]>(this.apiUrl + `?UserId=${user[0].id}`);
+    } else {
+      console.log('No user data found in localStorage');
+      return of(null);
+    }
+  }
 }

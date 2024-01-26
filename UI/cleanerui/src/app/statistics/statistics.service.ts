@@ -13,7 +13,7 @@ export class StatisticsService {
   private apiUrl = environment.baseUrl + 'Rooms';
   constructor(private http: HttpClient) {}
 
-  getCleaningType(): Observable<Rooms[]> {
+  getRooms(): Observable<Rooms[]> {
     return this.http.get<Rooms[]>(this.apiUrl);
   }
 
