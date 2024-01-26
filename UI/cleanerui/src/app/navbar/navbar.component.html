@@ -21,16 +21,19 @@
                         <a class="nav-link" href="#" routerLink="/home">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" *ngIf="userId !== ''" routerLink="/statistics">Statistics</a>
+                        <a class="nav-link" *ngIf="userId !== '' && userWHabist" routerLink="/statistics">Statistics</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" *ngIf="userId !== ''" routerLink="/feedbacks">Feedbacks</a>
+                        <a class="nav-link" *ngIf="userId !== '' && userWHabist" routerLink="/feedbacks">Feedbacks</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" *ngIf="userId !== ''" routerLink="/cleaning">Cleaning Schedules</a>
+                        <a class="nav-link" *ngIf="userId !== '' && userWHabist" routerLink="/cleaning">Cleaning Schedules</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" *ngIf="userId !== ''" routerLink="/subs">Subscriptions</a>
+                        <a class="nav-link" *ngIf="userId !== '' && userWHabist" routerLink="/subs">Subscriptions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" *ngIf="!userWHabist && userId !== ''" routerLink="/habit">Add Habits to Start</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto"> <!-- Right-aligned nav items -->
