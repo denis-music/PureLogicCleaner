@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../model/users.model';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,12 +11,15 @@ export class NavbarComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-    logout() {
-        this.router.navigate(['/logout']).then(() => {
-            location.reload();
-        });
-    }
+  logout() {
+    this.router.navigate(['/logout']).then(() => {
+      location.reload();
+    });
+  }
 
+  showNavbarHabits: boolean = true;
+  showNavbarLogin: boolean = true;
+  showNavbarReg: boolean = true;
   userId = '';
   ngOnInit() {
     const item = localStorage.getItem('user');
@@ -26,5 +29,14 @@ export class NavbarComponent implements OnInit {
     } else {
       this.userId = '';
     }
+
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.showNavbarHabits = !(event.url === '/habit');
+        this.showNavbarLogin = !(event.url === '/login');
+        this.showNavbarReg = !(event.url === '/register');
+      }
+    });
   }
 }

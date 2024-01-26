@@ -192,4 +192,8 @@ export class HabitComponent implements OnInit {
         console.error('Error fetching API results:', error);
       })
   }
+
+  close() {
+    this.router.navigate(['/login'])
+  }
 }
