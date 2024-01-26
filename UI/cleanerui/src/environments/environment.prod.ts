@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: "https://localhost:7079/"
+  baseUrl: "https://purelogiccleanerapi20240126150522.azurewebsites.net/"
 };
