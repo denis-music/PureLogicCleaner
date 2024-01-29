@@ -46,6 +46,16 @@
                           <input formControlName="room" type="text" class="form-control" id="roomName{{ i }}" placeholder="Room Name">
                           <small *ngIf="room.get('room')?.hasError('required')" class="text-danger">Room Name is required.</small>
                         </div>
+
+                        <div class="form-group">
+                            <label for="roomLabel">Room Label:</label>
+                            <select formControlName="roomLabel" class="form-control" id="roomLabel">
+                                <option *ngFor="let size of roomLabel" [value]="size">
+                                    {{ size }}
+                                </option>
+                            </select>
+                            <small *ngIf="room.get('roomLabel')?.hasError('required')" class="text-danger">Room Label is required.</small>
+                        </div>
             
                         <div class="form-group">
                           <label for="roomSize{{ i }}">Room Size:</label>
