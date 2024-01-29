@@ -24,7 +24,8 @@ namespace pureLogicCleanerAPI.Controllers
                     .ToList() : [];
 
             var filterResults = result
-                .Where(p => (searchRequest.Name == null || p.Name == searchRequest.Name))
+                .Where(p => searchRequest.Name == null || p.Name == searchRequest.Name ||
+                searchRequest.CustomName == null || p.CustomName == searchRequest.CustomName)
                 .ToList();
 
             return filterResults.Any() ? filterResults : result;
@@ -44,7 +45,8 @@ namespace pureLogicCleanerAPI.Controllers
             var newUR = new Rooms
             {
                 Id = r,
-                Name = payload.Name
+                Name = payload.Name,
+                CustomName = payload.CustomName
             };
             var savedRoom = await _cosmosDBRepo.CreateItemAsync(newUR, containerName, newUR.Id);
             if (savedRoom) return newUR;
