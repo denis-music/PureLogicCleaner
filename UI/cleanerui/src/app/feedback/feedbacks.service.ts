@@ -17,7 +17,6 @@ export class FeedbacksService {
     if (item) {
       const user: User[] = JSON.parse(item);
       feedback.memberId = user[0].id;
-      console.log("feed to save", feedback)
       return this.http.post<Feedback>(this.apiUrl, feedback);
     } else {
       console.log('No user data found in localStorage');

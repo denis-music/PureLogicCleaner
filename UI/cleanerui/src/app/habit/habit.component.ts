@@ -99,7 +99,6 @@ export class HabitComponent implements OnInit {
       }
     }
 
-
     this.cleaningFrequencyOptions = Object.entries(CleaningFrequency)
       .filter(([key, value]) => !isNaN(Number(value)))
       .map(([key, value]) => ({ key: this.toFriendlyString(Number(value) as CleaningFrequency), value: Number(value) }));
@@ -194,10 +193,10 @@ export class HabitComponent implements OnInit {
             if (savedR === null) return;
             else {
               savedRoom = savedR;
-              var userrom = new UserRoom(
+              var userroom = new UserRoom(
                 savedRoom!.id, roomSize, surfaceType, usageFrequency, numberOfOccupants
               )
-              this.userroomService.saveUserRoom(userrom).subscribe(
+              this.userroomService.saveUserRoom(userroom).subscribe(
                 (data) => {
                   console.log("Success saved User Room!");
                   this.listOfRooms.push(savedRoom!.id);
