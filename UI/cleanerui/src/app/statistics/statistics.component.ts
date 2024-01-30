@@ -72,10 +72,10 @@ export class StatisticsComponent implements OnInit {
           if (results !== null) {
             results.forEach((item) => {
               if (item.userRoomId == this.selectedCleaningType) {
-                var roomName = this.optionList.find( p => p.userRoomId == item.userRoomId)
+                var roomName = this.optionList.find(p => p.userRoomId == item.userRoomId)
                 var model = new CleaningHistoryWithName(
                   item.id,
-                  item.userRoomId, 
+                  item.userRoomId,
                   roomName!.roomName, item.completed, "item.cleaningQuality"
                   , item.cleaningDurationInMins, item.date,
                   item.createdAt, item.updatedAt
