@@ -4,6 +4,8 @@ import { CleaningHistory } from '../model/cleaningHistory.model';
 import { RoomService } from '../_services/room.service';
 import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model';
 import { Router } from '@angular/router';
+import { UserStateService } from '../_services/user-state.service';
+import { getCleaningQualityName } from '../enum/cleaningQuality.enum';
 
 @Component({
   selector: 'app-cleaning',
@@ -13,7 +15,8 @@ import { Router } from '@angular/router';
 export class CleaningComponent implements OnInit {
 
   constructor(private statisticsService: StatisticsService,
-    private roomService: RoomService, private router: Router) { }
+    private roomService: RoomService, private router: Router,
+    private sharedService: UserStateService) { }
 
   showWaitingMessage = false;
   cleaningHistoryList: CleaningHistory[] = [];
@@ -38,7 +41,7 @@ export class CleaningComponent implements OnInit {
       });
   }
 
-  pastCleaningHistoryList: CleaningHistory[] = [];
+  pastCleaningHistoryList: CleaningHistoryWithName[] = [];
   futureCleaningHistoryList: CleaningHistoryWithName[] = [];
 
   splitHistoryLists(): void {
@@ -56,7 +59,8 @@ export class CleaningComponent implements OnInit {
             var itemWName = new CleaningHistoryWithName(
               item.id, item.userRoomId,
               room.name, item.completed,
-              item.cleaningQuality, item.cleaningDurationInMins,
+              getCleaningQualityName(item.cleaningQuality)
+              , item.cleaningDurationInMins,
               item.date, item.createdAt, item.updatedAt
             )
             if (itemDate <= today) {
@@ -72,19 +76,12 @@ export class CleaningComponent implements OnInit {
     });
   }
 
-  onButtonClick(cleaning: CleaningHistory) {
-    this.showWaitingMessage = true;
-
-    this.statisticsService.changeCleaningStatus(cleaning.id).subscribe(
-      (result) => {
-        this.loadData();
-        this.showWaitingMessage = false;
-      }, (error) => {
-        this.showWaitingMessage = false;
-      });
+  onButtonClick(cleaningId: string) {
+    this.sharedService.changeCleaningId(cleaningId);
+    this.router.navigate(["/completeInfo"])
   }
 
-  onScheduleClick(cleaning: CleaningHistory) {
+  onScheduleClick(cleaning: CleaningHistoryWithName) {
     const navigateWithDelay = () => {
       setTimeout(() => {
         this.router.navigate(['/companies']);

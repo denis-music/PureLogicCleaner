@@ -38,61 +38,83 @@
             <label>Add your rooms:</label>
             <form [formGroup]="myForm" class="mt-4">
                 <div formArrayName="rooms">
-                  <div *ngFor="let room of rooms.controls; let i = index" [formGroupName]="i">
-                    <div class="card mb-3" style="background-color: #f8f9fa;">
-                      <div class="card-body">
-                        <div class="form-group">
-                          <label for="roomName{{ i }}">Room Name:</label>
-                          <input formControlName="room" type="text" class="form-control" id="roomName{{ i }}" placeholder="Room Name">
-                          <small *ngIf="room.get('room')?.hasError('required')" class="text-danger">Room Name is required.</small>
+                    <div *ngFor="let room of rooms.controls; let i = index" [formGroupName]="i">
+                        <div class="card mb-3" style="background-color: #f8f9fa;">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="roomName{{ i }}">Room Name:</label>
+                                    <input formControlName="room" type="text" class="form-control" id="roomName{{ i }}"
+                                        placeholder="Room Name">
+                                    <small *ngIf="room.get('room')?.hasError('required')" class="text-danger">Room Name
+                                        is required.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="roomLabel">Room Label:</label>
+                                    <select formControlName="roomLabel" class="form-control" id="roomLabel">
+                                        <option *ngFor="let size of roomLabel" [value]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="room.get('roomLabel')?.hasError('required')" class="text-danger">Room
+                                        Label is required.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="roomSize{{ i }}">Room Size:</label>
+                                    <select formControlName="roomSize" class="form-control" id="roomSize{{ i }}">
+                                        <option *ngFor="let size of roomSizeOptions" [value]="size.value">
+                                            {{ size.key }}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="room.get('roomSize')?.hasError('required')" class="text-danger">Room
+                                        Size is required.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="surfaceType{{ i }}">Surface Type:</label>
+                                    <select formControlName="surfaceType" class="form-control" id="surfaceType{{ i }}">
+                                        <option *ngFor="let surfaceType of surfacedTypeOptions"
+                                            [value]="surfaceType.value">
+                                            {{ surfaceType.key }}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="room.get('surfaceType')?.hasError('required')"
+                                        class="text-danger">Surface Type is required.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="usageFrequency{{ i }}">Usage Frequency:</label>
+                                    <select formControlName="usageFrequency" class="form-control"
+                                        id="usageFrequency{{ i }}">
+                                        <option *ngFor="let frequency of usageFrequencyOptions"
+                                            [value]="frequency.value">
+                                            {{ frequency.key }}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="room.get('usageFrequency')?.hasError('required')"
+                                        class="text-danger">Usage Frequency is required.</small>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="numberOfOccupants{{ i }}">Number of Occupants:</label>
+                                    <input formControlName="numberOfOccupants" type="number" class="form-control"
+                                        id="numberOfOccupants{{ i }}" placeholder="Number of Occupants">
+                                    <small *ngIf="room.get('numberOfOccupants')?.hasError('required')"
+                                        class="text-danger">Number of Occupants is required.</small>
+                                </div>
+
+                                <button class="btn btn-outline-danger" type="button" (click)="removeRoom(i)">Remove
+                                    Room</button>
+                            </div>
                         </div>
-            
-                        <div class="form-group">
-                          <label for="roomSize{{ i }}">Room Size:</label>
-                          <select formControlName="roomSize" class="form-control" id="roomSize{{ i }}">
-                              <option *ngFor="let size of roomSizeOptions" [value]="size.value">
-                                  {{ size.key }}
-                              </option>
-                          </select>
-                          <small *ngIf="room.get('roomSize')?.hasError('required')" class="text-danger">Room Size is required.</small>
-                      </div>
-            
-                        <div class="form-group">
-                          <label for="surfaceType{{ i }}">Surface Type:</label>
-                          <select formControlName="surfaceType" class="form-control" id="surfaceType{{ i }}">
-                              <option *ngFor="let surfaceType of surfacedTypeOptions" [value]="surfaceType.value">
-                                  {{ surfaceType.key }}
-                              </option>
-                          </select>
-                          <small *ngIf="room.get('surfaceType')?.hasError('required')" class="text-danger">Surface Type is required.</small>
-                      </div>
-            
-                      <div class="form-group">
-                        <label for="usageFrequency{{ i }}">Usage Frequency:</label>
-                        <select formControlName="usageFrequency" class="form-control" id="usageFrequency{{ i }}">
-                            <option *ngFor="let frequency of usageFrequencyOptions" [value]="frequency.value">
-                                {{ frequency.key }}
-                            </option>
-                        </select>
-                        <small *ngIf="room.get('usageFrequency')?.hasError('required')" class="text-danger">Usage Frequency is required.</small>
                     </div>
-                    
-            
-                        <div class="form-group">
-                          <label for="numberOfOccupants{{ i }}">Number of Occupants:</label>
-                          <input formControlName="numberOfOccupants" type="number" class="form-control" id="numberOfOccupants{{ i }}" placeholder="Number of Occupants">
-                          <small *ngIf="room.get('numberOfOccupants')?.hasError('required')" class="text-danger">Number of Occupants is required.</small>
-                        </div>
-            
-                        <button class="btn btn-outline-danger" type="button" (click)="removeRoom(i)">Remove Room</button>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-            
+
                 <button class="btn btn-primary" type="button" (click)="addRoom()">Add Room</button>
-              </form>
-              <div></div>
+            </form>
+            <div></div>
 
             <div class="form-check mb-3">
                 <input type="checkbox" class="form-check-input" id="pets" [(ngModel)]="userPreferences.pets"

@@ -38,6 +38,7 @@ export class HabitComponent implements OnInit {
   surfacedTypeOptions!: { key: string; value: number; }[];
   usageFrequencyOptions!: { key: string; value: number; }[];
   roomSizeOptions!: { key: string; value: number; }[];
+  roomLabelOptions!: { key: string; value: number; }[];
 
   userPreferences: Habit = new Habit();
   daysOfWeekType = DaysOfWeek;
@@ -45,12 +46,23 @@ export class HabitComponent implements OnInit {
   surfacedType = SurfaceType;
   usageFrequency = UsageFrequency;
   roomSize = RoomSize;
+  roomLabel: string[] = [
+    'Kitchen',
+    'Living Room',
+    'Bathroom',
+    'Bedroom',
+    'Dining Room',
+    'Study',
+    'Hallway',
+    'Garage'
+  ];
 
   myForm: FormGroup;
 
   createRoom(): FormGroup {
     return this.fb.group({
       room: [null, Validators.required],
+      roomLabel: [null, Validators.required],
       roomSize: [null, Validators.required],
       surfaceType: [null, Validators.required],
       usageFrequency: [null, Validators.required],
@@ -166,19 +178,18 @@ export class HabitComponent implements OnInit {
 
   onSubmit() {
     const formArray = this.myForm.get('rooms') as FormArray;
+
     formArray.controls.forEach((roomControl: AbstractControl) => {
       if (roomControl instanceof FormGroup) {
-        const roomName = roomControl.get('room')?.value;
+        const customRoomName = roomControl.get('room')?.value;
         const roomSize = parseInt(roomControl.get('roomSize')?.value);
         const surfaceType = parseInt(roomControl.get('surfaceType')?.value);
         const usageFrequency = parseInt(roomControl.get('usageFrequency')?.value);
         const numberOfOccupants = roomControl.get('numberOfOccupants')?.value;
+        const roomLabel = roomControl.get('roomLabel')?.value;
 
-        if (roomName !== null) {
-          this.listOfRooms.push(roomName);
-        }
         var savedRoom: Rooms | null;
-        this.roomService.saveRoom(new Rooms(roomName)).subscribe(
+        this.roomService.saveRoom(new Rooms(roomLabel, customRoomName)).subscribe(
           (savedR) => {
             if (savedR === null) return;
             else {
@@ -189,6 +200,7 @@ export class HabitComponent implements OnInit {
               this.userroomService.saveUserRoom(userrom).subscribe(
                 (data) => {
                   console.log("Success saved User Room!");
+                  this.listOfRooms.push(savedRoom!.id);
                 }, (error) => {
                   console.error('Error fetching API results:', error);
                 });
@@ -198,29 +210,33 @@ export class HabitComponent implements OnInit {
       }
     })
 
-    var habit = new Habit(
-      this.getSelectedDayIds(),
-      parseInt(this.selectedCleaningFrequencyOptions),
-      this.listOfRooms,
-      this.userPreferences.pets,
-      this.userPreferences.allergies
-    )
-    this.userService.saveUserHabit(habit).subscribe(
-      (data) => {
-        console.log("Success, saved user Habits!");
-        this.userStateService.setUserWHabits(true);
-        const item = localStorage.getItem('user');
-        if (item) {
-          const users: User[] = JSON.parse(item);
-          var user = users[0];
-          this.authService.saveUser(user.username);
-          setTimeout(() => {
-            this.router.navigate(['/home'])
-          }, 3000);
-        }
-      }, (error) => {
-        console.error('Error fetching API results:', error);
-      })
+
+    setTimeout(() => {
+      var habit = new Habit(
+        this.getSelectedDayIds(),
+        parseInt(this.selectedCleaningFrequencyOptions),
+        this.listOfRooms,
+        this.userPreferences.pets,
+        this.userPreferences.allergies
+      )
+      this.userService.saveUserHabit(habit).subscribe(
+        (data) => {
+          console.log("Success, saved user Habits!");
+          this.userStateService.setUserWHabits(true);
+          const item = localStorage.getItem('user');
+          if (item) {
+            const users: User[] = JSON.parse(item);
+            var user = users[0];
+            this.authService.saveUser(user.username);
+            setTimeout(() => {
+              this.router.navigate(['/home'])
+            }, 3000);
+          }
+        }, (error) => {
+          console.error('Error fetching API results:', error);
+        })
+    }, 6000);
+
   }
 
   close() {
