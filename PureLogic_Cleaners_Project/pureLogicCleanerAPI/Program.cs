@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using pureLogicCleanerAPI.Mapper;
 using pureLogicCleanerAPI.Extenssions;
+using pureLogicCleanerAPI.LoggerService;
 using pureLogicCleanerAPI.Services;
 using pureLogicCleanerAPI.Repository;
 
@@ -43,8 +44,18 @@ namespace pureLogicCleanerAPI
 
             // Services
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+
 
             var app = builder.Build();
+
+            //Global exception handler
+            var logger = app.Services.GetRequiredService<ILoggerManager>();
+            app.ConfigureExceptionHandler(logger);
+
+            if (app.Environment.IsProduction())
+                app.UseHsts();
+
             var iCosmosDBRepo = app.Services.GetService<ICosmosDBRepo>();
             iCosmosDBRepo?.SetAsync();
             // Configure the HTTP request pipeline.
