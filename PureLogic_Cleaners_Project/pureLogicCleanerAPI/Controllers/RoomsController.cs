@@ -24,8 +24,8 @@ namespace pureLogicCleanerAPI.Controllers
                     .ToList() : [];
 
             var filterResults = result
-                .Where(p => searchRequest.Name == null || p.Name == searchRequest.Name ||
-                searchRequest.CustomName == null || p.CustomName == searchRequest.CustomName)
+                .Where(p => (searchRequest.Name == null || p.Name == searchRequest.Name) &&
+                (searchRequest.CustomName == null || p.CustomName == searchRequest.CustomName))
                 .ToList();
 
             return filterResults.Any() ? filterResults : result;

@@ -98,6 +98,32 @@ namespace pureLogicCleanerAPI.Controllers
             var ch = await _cosmosDBRepo.GetItemByIdAsync<CleaningHistory>(containerName, id);
             if (ch == null) return false;
             ch.Completed = !ch.Completed;
+            ch.UpdatedAt = DateTime.Now;
+            return await _cosmosDBRepo.UpdateAsync(ch, containerName, ch.Id);
+        }
+
+        [HttpPut("{id}/uncompleted")]
+        public async Task<bool>? PutAsyncUncompleted(string id)
+        {
+            var ch = await _cosmosDBRepo.GetItemByIdAsync<CleaningHistory>(containerName, id);
+            if (ch == null) return false;
+            ch.Completed = false;
+            ch.UpdatedAt = DateTime.Now;
+
+            ch.CleaningDurationInMins = null;
+            ch.CleaningQuality = null;
+            return await _cosmosDBRepo.UpdateAsync(ch, containerName, ch.Id);
+        }
+
+        [HttpPut("{id}/completedInfo")]
+        public async Task<bool>? PutAsyncCompletedInfo(string id, CleaningHistoryCompletion request)
+        {
+            var ch = await _cosmosDBRepo.GetItemByIdAsync<CleaningHistory>(containerName, id);
+            if (ch == null) return false;
+            ch.Completed = request.Completed;
+            ch.CleaningDurationInMins = request.CleaningDurationInMins;
+            ch.CleaningQuality = request.CleaningQuality;
+            ch.UpdatedAt = DateTime.Now;
             return await _cosmosDBRepo.UpdateAsync(ch, containerName, ch.Id);
         }
 
