@@ -6,6 +6,7 @@ import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model'
 import { Router } from '@angular/router';
 import { UserStateService } from '../_services/user-state.service';
 import { getCleaningQualityName } from '../enum/cleaningQuality.enum';
+import { UserRoomsService } from '../_services/user-rooms.service';
 
 @Component({
   selector: 'app-cleaning',
@@ -16,7 +17,8 @@ export class CleaningComponent implements OnInit {
 
   constructor(private statisticsService: StatisticsService,
     private roomService: RoomService, private router: Router,
-    private sharedService: UserStateService) { }
+    private sharedService: UserStateService,
+    private userRoomService: UserRoomsService) { }
 
   showWaitingMessage = false;
   cleaningHistoryList: CleaningHistory[] = [];
@@ -52,24 +54,27 @@ export class CleaningComponent implements OnInit {
     this.cleaningHistoryList.forEach((item) => {
       const itemDate = new Date(item.date);
 
-
-      this.roomService.getRoomById(item.userRoomId).subscribe(
-        (room) => {
-          if (room !== null) {
-            var itemWName = new CleaningHistoryWithName(
-              item.id, item.userRoomId,
-              room.name, item.completed,
-              getCleaningQualityName(item.cleaningQuality)
-              , item.cleaningDurationInMins,
-              item.date, item.createdAt, item.updatedAt
+      this.userRoomService.getUserRoomById(item.userRoomId).subscribe(
+        (userRoom) => {
+          if (userRoom !== null) {
+            this.roomService.getRoomById(userRoom.roomId!).subscribe(
+              (room) => {
+                var itemWName = new CleaningHistoryWithName(
+                  item.id, item.userRoomId,
+                  room.name, item.completed,
+                  getCleaningQualityName(item.cleaningQuality)
+                  , item.cleaningDurationInMins,
+                  item.date, item.createdAt, item.updatedAt
+                )
+                if (itemDate <= today) {
+                  // Date is today or in the past
+                  this.pastCleaningHistoryList.push(itemWName);
+                } else if (itemDate > today) {
+                  // Date is in the future
+                  this.futureCleaningHistoryList.push(itemWName);
+                }
+              }
             )
-            if (itemDate <= today) {
-              // Date is today or in the past
-              this.pastCleaningHistoryList.push(itemWName);
-            } else if (itemDate > today) {
-              // Date is in the future
-              this.futureCleaningHistoryList.push(itemWName);
-            }
           }
         }
       );

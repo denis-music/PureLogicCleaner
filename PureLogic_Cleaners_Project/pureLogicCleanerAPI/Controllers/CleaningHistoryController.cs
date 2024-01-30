@@ -86,7 +86,7 @@ namespace pureLogicCleanerAPI.Controllers
 
             return resultsUR
                  .Join(resultCH,
-                    userRoom => userRoom.RoomId,
+                    userRoom => userRoom.Id,
                     cleaningHistory => cleaningHistory.UserRoomId,
                     (userRoom, cleaningHistory) => cleaningHistory)
                     .ToList();

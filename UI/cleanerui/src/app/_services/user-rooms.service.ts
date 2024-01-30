@@ -36,4 +36,8 @@ export class UserRoomsService {
       return of(null);
     }
   }
+
+  getUserRoomById(userRoomId: string): Observable<UserRoom | null> {
+    return this.http.get<UserRoom>(this.apiUrl + `${userRoomId}`);
+  }
 }
