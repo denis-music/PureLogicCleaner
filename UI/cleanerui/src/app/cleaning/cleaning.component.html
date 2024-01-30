@@ -77,8 +77,8 @@
           <tr *ngFor="let history of futureCleaningHistoryList">
             <td>{{ history.userRoomName }}</td>
             <td>{{ history.completed ? 'Yes' : 'No' }}</td>
-            <td>{{ history.cleaningQuality }}</td>
-            <td>{{ history.cleaningDurationInMins }}</td>
+            <td>{{ history.cleaningQuality ? history.cleaningQuality : 'NAN' }}</td>
+            <td>{{ history.cleaningDurationInMins  ? history.cleaningDurationInMins : 'NAN' }}</td>
             <td>{{ history.date ? (history.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
             <td>{{ history.createdAt ? (history.createdAt | date: 'yyyy-MM-dd') : 'NAN' }}</td>
             <td>
@@ -100,20 +100,20 @@
             <th>Cleaning Quality</th>
             <th>Cleaning Duration (mins)</th>
             <th>Date</th>
-            <th>Created At</th>
+            <th>Updated At</th>
             <th>Complete</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let history of pastCleaningHistoryList">
-            <td>{{ history.userRoomId }}</td>
+            <td>{{ history.userRoomName }}</td>
             <td>{{ history.completed ? 'Yes' : 'No' }}</td>
-            <td>{{ history.cleaningQuality }}</td>
-            <td>{{ history.cleaningDurationInMins }}</td>
+            <td>{{ history.cleaningQuality ? history.cleaningQuality : 'NAN' }}</td>
+            <td>{{ history.cleaningDurationInMins  ? history.cleaningDurationInMins : 'NAN' }}</td>
             <td>{{ history.date ? (history.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
-            <td>{{ history.createdAt ? (history.createdAt | date: 'yyyy-MM-dd') : 'NAN' }}</td>
+            <td>{{ history.updatedAt ? (history.updatedAt | date: 'yyyy-MM-dd') : 'NAN' }}</td>
             <td>
-              <button class="btn btn-primary" (click)="onButtonClick(history)">Complete</button>
+              <button class="btn btn-primary" (click)="onButtonClick(history.id)">Complete</button>
             </td>
           </tr>
         </tbody>

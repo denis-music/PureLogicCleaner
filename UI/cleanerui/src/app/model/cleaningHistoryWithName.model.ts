@@ -5,8 +5,8 @@ export class CleaningHistoryWithName {
     userRoomId!: string;
     userRoomName!: string;
     completed!: boolean;
-    cleaningQuality!: CleaningQuality;
-    cleaningDurationInMins!: number;
+    cleaningQuality?: string;
+    cleaningDurationInMins?: number;
     date!: Date;
     createdAt?: Date;
     updatedAt?: Date;
@@ -16,7 +16,7 @@ export class CleaningHistoryWithName {
         userRoomId: string,
         userRoomName: string,
         completed: boolean,
-        cleaningQuality: CleaningQuality,
+        cleaningQuality: string,
         cleaningDurationInMins: number,
         date: Date,
         createdAt?: Date,

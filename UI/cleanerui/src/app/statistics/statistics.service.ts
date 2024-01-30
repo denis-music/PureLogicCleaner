@@ -28,8 +28,4 @@ export class StatisticsService {
       return of(null);
     }
   }
-
-  changeCleaningStatus(id: string): Observable<boolean> {
-    return this.http.put<boolean>(environment.baseUrl + `CleaningHistory/${id}/completed`, id);
-  }
 }

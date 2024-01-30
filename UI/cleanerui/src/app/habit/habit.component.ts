@@ -48,10 +48,10 @@ export class HabitComponent implements OnInit {
   roomSize = RoomSize;
   roomLabel: string[] = [
     'Kitchen',
-    'LivingRoom',
+    'Living Room',
     'Bathroom',
     'Bedroom',
-    'DiningRoom',
+    'Dining Room',
     'Study',
     'Hallway',
     'Garage'
@@ -201,7 +201,6 @@ export class HabitComponent implements OnInit {
                 (data) => {
                   console.log("Success saved User Room!");
                   this.listOfRooms.push(savedRoom!.id);
-                  console.log(this.listOfRooms)
                 }, (error) => {
                   console.error('Error fetching API results:', error);
                 });
@@ -220,7 +219,6 @@ export class HabitComponent implements OnInit {
         this.userPreferences.pets,
         this.userPreferences.allergies
       )
-      console.log("habit", habit);
       this.userService.saveUserHabit(habit).subscribe(
         (data) => {
           console.log("Success, saved user Habits!");
