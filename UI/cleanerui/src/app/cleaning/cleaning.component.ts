@@ -79,15 +79,6 @@ export class CleaningComponent implements OnInit {
   onButtonClick(cleaningId: string) {
     this.sharedService.changeCleaningId(cleaningId);
     this.router.navigate(["/completeInfo"])
-    // this.showWaitingMessage = true;
-
-    // this.statisticsService.changeCleaningStatus(cleaning.id).subscribe(
-    //   (result) => {
-    //     this.loadData();
-    //     this.showWaitingMessage = false;
-    //   }, (error) => {
-    //     this.showWaitingMessage = false;
-    //   });
   }
 
   onScheduleClick(cleaning: CleaningHistoryWithName) {
