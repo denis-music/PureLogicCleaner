@@ -43,6 +43,7 @@ export class StatisticsComponent implements OnInit {
             this.roomService.getRoomById(userRoom.roomId!).subscribe(
               (room) => {
                 var model = new StatsView(
+                  userRoom.id!,
                   room.id,
                   room.customName
                 )
@@ -71,7 +72,7 @@ export class StatisticsComponent implements OnInit {
           if (results !== null) {
             results.forEach((item) => {
               if (item.userRoomId == this.selectedCleaningType) {
-                var roomName = this.optionList.find( p => p.roomId == item.userRoomId)
+                var roomName = this.optionList.find( p => p.userRoomId == item.userRoomId)
                 var model = new CleaningHistoryWithName(
                   item.id,
                   item.userRoomId, 

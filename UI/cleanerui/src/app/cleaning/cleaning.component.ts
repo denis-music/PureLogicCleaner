@@ -61,7 +61,7 @@ export class CleaningComponent implements OnInit {
               (room) => {
                 var itemWName = new CleaningHistoryWithName(
                   item.id, item.userRoomId,
-                  room.name, item.completed,
+                  room.customName, item.completed,
                   getCleaningQualityName(item.cleaningQuality)
                   , item.cleaningDurationInMins,
                   item.date, item.createdAt, item.updatedAt

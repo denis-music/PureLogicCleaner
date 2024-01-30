@@ -59,7 +59,7 @@
     <label for="selectCleaningType">Select Room:</label>
     <select id="selectCleaningType" class="form-control" [(ngModel)]="selectedCleaningType">
       <option value="" disabled selected>Select an option</option>
-      <option *ngFor="let option of optionList" [value]="option.roomId">{{ option.roomName }}</option>
+      <option *ngFor="let option of optionList" [value]="option.userRoomId">{{ option.roomName }}</option>
     </select>
   </div>
 
