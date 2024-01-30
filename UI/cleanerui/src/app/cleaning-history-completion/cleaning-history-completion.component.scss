@@ -1,48 +1,46 @@
-/* Optional: in case you have a separate stylesheet, otherwise include this in your <style> tag */
 .container {
-    max-width: 600px; /* Adjust the width of the form container */
-  }
-  
-  .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Adds a subtle shadow around the card */
-    transition: 0.3s; /* Smooth transition for hover effect */
-  }
-  
-  .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Shadow effect on hover */
-  }
-  
-  .card-header {
-    background-color: #007bff; /* Match Bootstrap primary color */
-    color: white; /* White text color */
-    font-size: 20px; /* Increase font size */
-  }
-  
-  .card-body {
-    padding: 20px; /* Add padding inside card body */
-  }
-  
-  .form-group {
-    margin-bottom: 1rem; /* Add margin to the bottom of form groups */
-  }
-  
-  .alert-danger {
-    margin-top: 0.5rem; /* Add margin to the top of alert messages */
-    padding: 0.5rem; /* Add padding inside alert messages */
-    border-radius: 5px; /* Round corners of alert messages */
-  }
-  
-  .btn-primary {
-    background-color: #007bff; /* Match Bootstrap primary color */
-    border-color: #007bff; /* Match border color with background */
-  }
-  .btn-primary:hover {
-    background-color: #0056b3; /* Darken the button on hover */
-    border-color: #004085; /* Match border color with background on hover */
-  }
-  
-  .btn-primary:disabled {
-    background-color: #007bff; /* Keep the background color on disabled state */
-    opacity: 0.65; /* Slightly fade the button when disabled */
-  }
-  
+    max-width: 600px;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: white;
+    font-size: 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.alert-danger {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-primary:disabled {
+    background-color: #007bff;
+}

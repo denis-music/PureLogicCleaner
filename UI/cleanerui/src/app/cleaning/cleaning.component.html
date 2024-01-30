@@ -58,7 +58,6 @@
       </div>
     </ng-template>
 
-    <!-- Display Future Cleaning History Table -->
     <ng-container *ngIf="!showWaitingMessage && futureCleaningHistoryList.length > 0; else noFutureHistory">
       <h3>Future Cleaning History</h3>
       <table class="table table-striped table-bordered">
@@ -89,7 +88,6 @@
       </table>
     </ng-container>
 
-    <!-- Display Past Cleaning History Table -->
     <ng-container *ngIf="!showWaitingMessage && pastCleaningHistoryList.length > 0; else noPastHistory">
       <h3>Past Cleaning History</h3>
       <table class="table table-striped table-bordered">

@@ -3,11 +3,10 @@
         <div class="card-header">
             Cleaning Details
         </div>
-        <div class="card-body p-4"> <!-- Increased padding inside the card body -->
+        <div class="card-body p-4">
             <form #myForm="ngForm" (ngSubmit)="handleSubmit(myForm)" novalidate class="mt-4 mb-4">
-                <!-- Increased top and bottom margin of the form -->
 
-                <div class="form-group mb-4"> <!-- Increased bottom margin -->
+                <div class="form-group mb-4">
                     <label for="completionStatus" class="form-label">Completion:</label>
                     <select class="form-select" id="completionStatus" [(ngModel)]="completionStatus"
                         name="completionStatus" required #completionStatusModel="ngModel">
@@ -46,7 +45,7 @@
                     </div>
                 </div>
 
-                <div class="d-grid gap-3 d-md-flex justify-content-md-end"> <!-- Increased gap between buttons -->
+                <div class="d-grid gap-3 d-md-flex justify-content-md-end">
                     <button type="submit" class="btn btn-primary btn-lg" [disabled]="!myForm.valid">Submit</button>
                     <button type="button" class="btn btn-secondary btn-lg" (click)="handleCancel()">Cancel</button>
                 </div>
