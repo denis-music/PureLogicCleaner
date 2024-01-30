@@ -6,6 +6,7 @@ import { StatisticsService } from '../statistics/statistics.service';
 import { RoomDate } from '../model/roomDate.model';
 import { Router } from '@angular/router';
 import { RoomService } from '../_services/room.service';
+import { UserRoomsService } from '../_services/user-rooms.service';
 
 @Component({
   selector: 'app-feedbacks',
@@ -28,7 +29,7 @@ export class FeedbacksComponent implements OnInit {
 
   constructor(private feedbackService: FeedbacksService,
     private statisticsService: StatisticsService, private router: Router,
-    private roomService: RoomService) {
+    private roomService: RoomService, private userRoomService: UserRoomsService) {
     this.feedbackTypeOptions = Object.entries(this.feedbackType)
       .filter(([key, value]) => !isNaN(Number(value)))
       .map(([key, value]) => ({ key, value: Number(value) }));
@@ -41,11 +42,14 @@ export class FeedbacksComponent implements OnInit {
         if (data !== null) {
           data.forEach((item) => {
             if (item)
-              this.roomService.getRoomById(item.userRoomId).subscribe(
-                (room) => {
-                  if (room !== null) {
-                    this.optionList.push(new RoomDate(item.userRoomId, room.name, item.id, item.date))
-                  }
+              this.userRoomService.getUserRoomById(item.userRoomId).subscribe(
+                (userRoom) => {
+                  this.roomService.getRoomById(userRoom!.roomId!).subscribe(
+                    (room) => {
+                      if (room !== null) {
+                        this.optionList.push(new RoomDate(item.userRoomId, room.customName, item.id, item.date))
+                      }
+                    })
                 })
           })
         } else {
@@ -62,7 +66,6 @@ export class FeedbacksComponent implements OnInit {
 
     const feedback = new Feedback(this.selectedCleaningType, feedbackTypeNumber,
       this.rating, this.feedbackText);
-    feedback.memberId = "d55bd14c-c380-42d5-a9c6-aa1c0b050804";
 
     this.feedbackService.saveFeedback(feedback).subscribe(
       response => {
