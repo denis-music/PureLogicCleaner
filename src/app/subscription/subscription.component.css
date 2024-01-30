@@ -1,0 +1,48 @@
+.subscription-box {
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  .subscription-box:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
+  
+  .card-header {
+    border-bottom: none;
+  }
+  
+  .btn-primary {
+    margin-top: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card {
+    border-radius: 20px;
+    overflow: hidden; 
+  }
+  
+  .card-header {
+    border-top-left-radius: 20px; 
+    border-top-right-radius: 20px; 
+    background-color: #343a40;
+    color: white;
+    border-bottom: none;
+  }
+  
+  .subscription-box {
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .subscription-box:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
+
+.disabled {
+  background-color: #6c757d;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+  

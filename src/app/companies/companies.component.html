@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Information</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #4a4a4a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #7aabd4;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1; 
+        }
+
+        button:first-child {
+            margin-right: 10px;
+        }
+
+        button.send {
+            background-color: #4285F4;
+            color: white;
+        }
+
+        button.send:hover {
+            background-color: #357ae8;
+        }
+
+        button.close {
+            background-color: #c4c4c4;
+            color: black;
+        }
+
+        button.close:hover {
+            background-color: #a6a6a6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Contact Information</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Telephone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Company A</td>
+                <td>(123) 456-7890</td>
+            </tr>
+            <tr>
+                <td>Company B</td>
+                <td>(456) 789-0123</td>
+            </tr>
+            <tr>
+                <td>Company C</td>
+                <td>(789) 012-3456</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <button class="send" (click)="openEmail()">Send Email</button>
+        <button class="close" (click)="close()">Close</button>
+    </div>
+</div>
+
+</body>
+</html>
