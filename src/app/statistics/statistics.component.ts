@@ -65,7 +65,15 @@ export class StatisticsComponent implements OnInit {
           if (results !== null) {
             results.forEach((item) => {
               if (item.userRoomId == this.selectedCleaningType) {
-                this.apiResults.push(item);
+                var roomName = this.optionList.find(p => p.userRoomId == item.userRoomId)
+                var model = new CleaningHistoryWithName(
+                  item.id,
+                  item.userRoomId,
+                  roomName!.roomName, item.completed, "item.cleaningQuality"
+                  , item.cleaningDurationInMins, item.date,
+                  item.createdAt, item.updatedAt
+                )
+                this.apiResults.push(model);
                 this.isDataNeverLoaded = false;
               }
             })
