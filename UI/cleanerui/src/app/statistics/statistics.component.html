@@ -59,7 +59,7 @@
     <label for="selectCleaningType">Select Room:</label>
     <select id="selectCleaningType" class="form-control" [(ngModel)]="selectedCleaningType">
       <option value="" disabled selected>Select an option</option>
-      <option *ngFor="let option of optionList" [value]="option">{{ option }}</option>
+      <option *ngFor="let option of optionList" [value]="option.roomId">{{ option.roomName }}</option>
     </select>
   </div>
 
@@ -79,9 +79,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let result of apiResults">
-        <td>{{ result.userRoomId }}</td>
+        <td>{{ result.userRoomName }}</td>
         <td>{{ result.completed }}</td>
-        <td>{{ result.date }}</td>
+        <td>{{ result.date ? (result.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
       </tr>
     </tbody>
   </table>

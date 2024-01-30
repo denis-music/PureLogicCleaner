@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { UserRoomsService } from '../_services/user-rooms.service';
 import { RoomService } from '../_services/room.service';
+import { StatsView } from '../model/stats.view.model';
+import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model';
 
 @Component({
   selector: 'app-statistics',
@@ -19,7 +21,7 @@ export class StatisticsComponent implements OnInit {
   public title: string = 'Completion Status Circular Chart';
 
   selectedCleaningType: string = 'cleaned';
-  optionList: string[] = [];
+  optionList: StatsView[] = [];
   doughnutChartData: number[] = [];
   doughnutChartLabels: string[] = ['Completed', 'Not Completed'];
   chartOptions = {
@@ -40,7 +42,11 @@ export class StatisticsComponent implements OnInit {
           userRooms.forEach(userRoom => {
             this.roomService.getRoomById(userRoom.roomId!).subscribe(
               (room) => {
-                  this.optionList.push(room.name);
+                var model = new StatsView(
+                  room.id,
+                  room.customName
+                )
+                this.optionList.push(model);
               },
               (error) => {
                 console.error('Error fetching data:', error);
@@ -52,9 +58,9 @@ export class StatisticsComponent implements OnInit {
     );
 
 
-    
+
   }
-  apiResults: any[] = [];
+  apiResults: CleaningHistoryWithName[] = [];
 
   onButtonClick() {
     this.isDataNeverLoaded = true;
@@ -65,7 +71,15 @@ export class StatisticsComponent implements OnInit {
           if (results !== null) {
             results.forEach((item) => {
               if (item.userRoomId == this.selectedCleaningType) {
-                this.apiResults.push(item);
+                var roomName = this.optionList.find( p => p.roomId == item.userRoomId)
+                var model = new CleaningHistoryWithName(
+                  item.id,
+                  item.userRoomId, 
+                  roomName!.roomName, item.completed, "item.cleaningQuality"
+                  , item.cleaningDurationInMins, item.date,
+                  item.createdAt, item.updatedAt
+                )
+                this.apiResults.push(model);
                 this.isDataNeverLoaded = false;
               }
             })
