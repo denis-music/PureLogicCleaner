@@ -30,4 +30,5 @@ public messageAlert(content:string)
 {
   alertify.message(content);
 }
+
 }
