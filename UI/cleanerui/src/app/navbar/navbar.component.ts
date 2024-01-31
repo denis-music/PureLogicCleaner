@@ -9,9 +9,12 @@ import { UserStateService } from '../_services/user-state.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
   constructor(private router: Router, private userStateService: UserStateService) { }
+  showNavbar: boolean = false;
 
+  toggleNavbar() {
+      this.showNavbar = !this.showNavbar;
+  }
   logout() {
     this.router.navigate(['/logout']).then(() => {
       location.reload();

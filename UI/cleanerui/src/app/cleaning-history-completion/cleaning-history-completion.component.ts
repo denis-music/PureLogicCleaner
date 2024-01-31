@@ -24,12 +24,12 @@ export class CleaningHistoryCompletionComponent implements OnInit {
       .map(([key, value]) => ({ key, value: Number(value) }));
   }
 
-  completionStatus = '';
+  completionStatus: string = '';
   selectedCleaningQuality: any = 0;
   cleaningMinutes = 0;
 
   handleSubmit(form: any) {
-    if (form.valid && this.cleaningMinutes != 0) {
+    if (form.valid) {
       var cleaningId: string = ''
       this.sharedService.currentCleaningId.subscribe(id => {
         cleaningId = id!;
@@ -41,11 +41,11 @@ export class CleaningHistoryCompletionComponent implements OnInit {
       )
 
       if (model.Completed == false) {
-          this.cleaningHistoryService.setUncompletedStatus(cleaningId).subscribe(
-            (result) => {
-              this.handleCancel();
-            }
-          )
+        this.cleaningHistoryService.setUncompletedStatus(cleaningId).subscribe(
+          (result) => {
+            this.handleCancel();
+          }
+        )
       }
       else {
         this.cleaningHistoryService.saveCompletionInfo(cleaningId, model).subscribe(
@@ -57,7 +57,7 @@ export class CleaningHistoryCompletionComponent implements OnInit {
             console.error('Error fetching data:', error);
           }
         )
-    }
+      }
     } else {
       console.log('Form is not valid');
     }

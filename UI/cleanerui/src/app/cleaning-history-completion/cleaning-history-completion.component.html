@@ -20,31 +20,33 @@
                     </div>
                 </div>
 
-                <div class="form-group mb-4">
-                    <label for="cleaningQuality" class="form-label">Cleaning Quality:</label>
-                    <select class="form-select" id="cleaningQuality" [(ngModel)]="selectedCleaningQuality"
-                        name="cleaningQuality" required #cleaningQualityModel="ngModel">
-                        <option *ngFor="let surfaceType of cleaningQualityOptions" [value]="surfaceType.value">
-                            {{ surfaceType.key }}
-                        </option>
-                    </select>
-                    <div *ngIf="cleaningQualityModel.invalid && cleaningQualityModel.touched"
-                        class="alert alert-danger mt-2">
-                        Cleaning Quality is required.
+                <div *ngIf="completionStatus === 'yes'">
+                    <div class="form-group mb-4">
+                        <label for="cleaningQuality" class="form-label">Cleaning Quality:</label>
+                        <select class="form-select" id="cleaningQuality" [(ngModel)]="selectedCleaningQuality"
+                                name="cleaningQuality" required #cleaningQualityModel="ngModel">
+                            <option *ngFor="let surfaceType of cleaningQualityOptions" [value]="surfaceType.value">
+                                {{ surfaceType.key }}
+                            </option>
+                        </select>
+                        <div *ngIf="cleaningQualityModel.invalid && cleaningQualityModel.touched"
+                            class="alert alert-danger mt-2">
+                            Cleaning Quality is required.
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group mb-4">
+                <div class="form-group mb-4" *ngIf="completionStatus === 'yes'">
                     <label for="cleaningMinutes" class="form-label">Cleaning Minutes:</label>
                     <input type="number" class="form-control" id="cleaningMinutes" [(ngModel)]="cleaningMinutes"
                            name="cleaningMinutes" required #cleaningMinutesModel="ngModel"
                            placeholder="Enter cleaning minutes" min="1">
-                    <div *ngIf="cleaningMinutesModel.invalid && cleaningMinutesModel.touched || cleaningMinutes == 0"
+                    <div *ngIf="cleaningMinutesModel.invalid && cleaningMinutesModel.touched"
                          class="alert alert-danger mt-2">
-                         Cleaning minutes must be greater than 0.
+                        Cleaning minutes must be greater than 0.
                     </div>
                 </div>
-
+                
                 <div class="d-grid gap-3 d-md-flex justify-content-md-end">
                     <button type="submit" class="btn btn-primary btn-lg" [disabled]="!myForm.valid">Submit</button>
                     <button type="button" class="btn btn-secondary btn-lg" (click)="handleCancel()">Cancel</button>

@@ -1,97 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <title>Feedback Form</title>
-  <style>
-    .container {
-      max-width: 700px;
-      margin-top: 50px;
-      padding: 20px;
-      background-color: #f8f9fa;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-
-    h2 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 30px;
-    }
-
-    .btn-custom {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      margin: 10px 0;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .btn-custom:hover {
-      background-color: #0056b3;
-    }
-
-    label {
-      margin-bottom: 5px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-  </style>
-</head>
-<body>
-
 <div class="container">
-  <h2>Provide Feedback</h2>
-
-  <div *ngIf="!showForm">
-    <button class="btn btn-custom" (click)="showPopup()">Submit another feedback!</button>
-  </div>
+  <h2>Feedback</h2>
 
   <div *ngIf="showForm">
-    <form id="feedbackForm">
+    <form id="feedbackForm" #feedbackForm="ngForm" (ngSubmit)="saveFeedback()" novalidate>
       <div class="form-group">
         <label for="selectCleaningType">Select Room:</label>
-        <select [(ngModel)]="selectedCleaningType" name="cleaningType" class="form-control">
+        <select class="form-control" required [(ngModel)]="selectedCleaningType" name="cleaningType"
+          #cleaningType="ngModel">
           <option value="" disabled selected>Select an option</option>
           <option *ngFor="let option of optionList" [value]="option.cleaningHistoryId">
             {{ option.userRoomName + " - " + (option.cleaningDate | date: 'yyyy-MM-dd') }}
           </option>
         </select>
+        <div [hidden]="cleaningType.valid || cleaningType.pristine" class="alert alert-danger">
+          Room selection is required.
+        </div>
       </div>
 
       <div class="form-group">
         <label for="selectFeedbackType">Feedback Type:</label>
-        <select class="form-control" [(ngModel)]="selectedFeedbackType" name="feedbackType" id="selectFeedbackType">
+        <select class="form-control" required [(ngModel)]="selectedFeedbackType" name="feedbackType"
+          #feedbackType="ngModel">
           <option value="" disabled selected>Select an option</option>
           <option *ngFor="let type of feedbackTypeOptions" [value]="type.value">
             {{ type.key }}
           </option>
         </select>
+        <div [hidden]="feedbackType.valid || feedbackType.pristine" class="alert alert-danger">
+          Feedback type is required.
+        </div>
       </div>
 
       <div class="form-group">
         <label for="rating">Rating (1-10):</label>
-        <input type="number" class="form-control" id="rating" min="1" max="10" placeholder="Enter rating" [(ngModel)]="rating" name="rating">
+        <input type="number" class="form-control" id="rating" min="1" max="10" placeholder="Enter rating" required
+          [(ngModel)]="rating" name="rating" #refRating="ngModel">
+        <div [hidden]="refRating.valid || refRating.pristine" class="alert alert-danger">
+          Rating is required and must be between 1 and 10.
+        </div>
       </div>
 
       <div class="form-group">
         <label for="text">Feedback Text (optional):</label>
-        <textarea class="form-control" id="text" rows="3" placeholder="Enter feedback text" [(ngModel)]="feedbackText" name="feedbackText"></textarea>
+        <textarea class="form-control" id="text" rows="3" placeholder="Enter feedback text" [(ngModel)]="feedbackText"
+          name="feedbackText"></textarea>
       </div>
 
-      <button type="button" class="btn btn-custom" (click)="saveFeedback()">Submit Feedback</button>
+      <div class="form-group">
+        <button type="submit" class="btn btn-custom" [disabled]="!feedbackForm.valid || isSubmitting">
+          Submit Feedback
+        </button>
+
+        <!-- Adding spacing between the buttons -->
+        <span class="button-spacing"></span>
+
+        <button type="button" class="btn btn-secondary" (click)="closeForm()">Close</button>
+
+        <!-- Button to submit another feedback (conditionally displayed) -->
+        <button *ngIf="!showForm" type="button" class="btn btn-success" (click)="submitAnotherFeedback()">
+          Submit Another Feedback
+        </button>
+
+      </div>
     </form>
+
+    <div *ngIf="isSubmitting" class="alert alert-info">
+      Please wait, submitting feedback...
+    </div>
   </div>
+
+  <!-- Button to submit another feedback, shown after feedback is successfully submitted -->
+  <button *ngIf="feedbackSubmitted && !showForm" type="button" class="btn btn-success"
+    (click)="submitAnotherFeedback()">
+    Submit Another Feedback
+  </button>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-</body>
-</html>
