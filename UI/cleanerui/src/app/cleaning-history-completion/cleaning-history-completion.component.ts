@@ -24,8 +24,7 @@ export class CleaningHistoryCompletionComponent implements OnInit {
       .map(([key, value]) => ({ key, value: Number(value) }));
   }
 
-  completionStatus: string = ''; // Initialize with empty or default value
-  // cleaningMinutes: number;
+  completionStatus: string = '';
   selectedCleaningQuality: any = 0;
   cleaningMinutes = 0;
 
