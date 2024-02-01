@@ -5,7 +5,6 @@ import { Habit } from '../model/habit.model';
 import { FormGroup, FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { UserRoomsService } from '../_services/user-rooms.service';
 import { UserRoom } from '../model/userRoom.model';
-import { error } from 'console';
 import { UserService } from '../_services/user.service';
 import { RoomService } from '../_services/room.service';
 import { Rooms } from '../model/rooms.model';
