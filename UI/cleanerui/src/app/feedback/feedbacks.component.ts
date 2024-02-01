@@ -8,6 +8,7 @@ import { RoomDate } from '../model/roomDate.model';
 import { Feedback } from '../model/feedback.model';
 import { FeedbackType } from '../enum/feedbackType.enum';
 import { Router } from '@angular/router';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-feedbacks',
@@ -38,7 +39,8 @@ export class FeedbacksComponent implements OnInit {
     private statisticsService: StatisticsService,
     private router: Router,
     private roomService: RoomService,
-    private userRoomService: UserRoomsService
+    private userRoomService: UserRoomsService,
+    private alertifyService: AlertifyService
   ) {
     this.feedbackTypeOptions = Object.entries(this.feedbackType)
       .filter(([key, value]) => !isNaN(Number(value)))
@@ -46,6 +48,7 @@ export class FeedbacksComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedFeedbackType = ''
     this.loadOptionList();
   }
 
@@ -90,9 +93,12 @@ export class FeedbacksComponent implements OnInit {
         }
         this.isSubmitting = false;
         this.feedbackSubmitted = true;
+        this.alertifyService.successAlert("Feedback Added!")
       },
       error => {
         console.error('Error submitting feedback:', error);
+        this.alertifyService.errorAlert("Error submitting feedback, try again!")
+
       }
     );
   }
@@ -116,5 +122,7 @@ export class FeedbacksComponent implements OnInit {
     this.isSubmitting = false;
     this.showForm = true;
     this.feedbackSubmitted = false;
+    this.selectedCleaningType = ''
+    this.selectedFeedbackType = ''
   }
 }

@@ -20,7 +20,7 @@ export class StatisticsComponent implements OnInit {
   public primaryXAxis: Object = { valueType: 'Category' };
   public title: string = 'Completion Status Circular Chart';
 
-  selectedCleaningType: string = 'cleaned';
+  selectedCleaningType: string = '';
   optionList: StatsView[] = [];
   doughnutChartData: number[] = [];
   doughnutChartLabels: string[] = ['Completed', 'Not Completed'];

@@ -3,6 +3,7 @@ import { SubscriptionService } from './subscription.service';
 import { Subscription } from '../model/subs.model';
 import { UserService } from '../_services/user.service';
 import { User } from '../model/users.model';
+import { AlertifyService } from '../_services/alertify.service';
 
 
 @Component({
@@ -13,7 +14,8 @@ import { User } from '../model/users.model';
 export class SubscriptionComponent implements OnInit {
 
   constructor(private subsService: SubscriptionService,
-    private userService: UserService) { }
+    private userService: UserService, 
+    private alertifyService: AlertifyService) { }
   subscriptions: Subscription[] = [];
 
   userId = '';
@@ -55,11 +57,13 @@ export class SubscriptionComponent implements OnInit {
     this.loading = true;
     this.subsService.changeUserSub(subscription.id).subscribe(
       (result) => {
+        this.alertifyService.successAlert("Subscription Added!")
         this.loadMemberSub();
         this.loadData();
         this.loading = false;
       },
       (error) => {
+        this.alertifyService.errorAlert("Error Adding Subscription!")
         console.error('Error fetching data:', error);
         this.loading = false;
       }

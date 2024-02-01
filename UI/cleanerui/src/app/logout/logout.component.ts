@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-logout',
@@ -8,10 +9,11 @@ import { Router } from '@angular/router';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private alertifyService: AlertifyService) { }
 
   ngOnInit(): void {
     localStorage.removeItem('user');
+    this.alertifyService.warningAlert("Successfully Logged out!")
     this.router.navigate(['/home'])
   }
 

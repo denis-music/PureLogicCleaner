@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { UserStateService } from '../_services/user-state.service';
 import { AuthService } from '../_services/auth.service';
 import { User } from '../model/users.model';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-habit',
@@ -27,7 +28,7 @@ export class HabitComponent implements OnInit {
   constructor(private fb: FormBuilder, private userroomService: UserRoomsService,
     private userService: UserService, private roomService: RoomService,
     private router: Router, private userStateService: UserStateService,
-    private authService: AuthService) {
+    private authService: AuthService, private alertifyService: AlertifyService) {
     this.myForm = this.fb.group({
       rooms: this.fb.array([this.createRoom()])
     });
@@ -220,7 +221,7 @@ export class HabitComponent implements OnInit {
       )
       this.userService.saveUserHabit(habit).subscribe(
         (data) => {
-          console.log("Success, saved user Habits!");
+          this.alertifyService.successAlert("User preferences Added!")
           this.userStateService.setUserWHabits(true);
           const item = localStorage.getItem('user');
           if (item) {
@@ -232,6 +233,7 @@ export class HabitComponent implements OnInit {
             }, 3000);
           }
         }, (error) => {
+          this.alertifyService.errorAlert("Error in adding user preferences, please try again!")
           console.error('Error fetching API results:', error);
         })
     }, 6000);

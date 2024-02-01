@@ -20,25 +20,26 @@ import { HabitComponent } from './habit/habit.component';
 import { LogoutComponent } from './logout/logout.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { CleaningHistoryCompletionComponent } from './cleaning-history-completion/cleaning-history-completion.component';
+import { AlertifyService } from './_services/alertify.service';
 
 @NgModule({
-  declarations: [				
+  declarations: [
     AppComponent,
-      NavbarComponent,
-      UserComponent,
-      SubscriptionComponent,
-      StatisticsComponent,
-      FeedbacksComponent,
-      HomeComponent,
-      CleaningComponent,
-      LoginComponent,
-      CleaningComponent,
-      RegisterComponent,
-      HabitComponent,
-      LogoutComponent,
-      CompaniesComponent,
-      CleaningHistoryCompletionComponent
-   ],
+    NavbarComponent,
+    UserComponent,
+    SubscriptionComponent,
+    StatisticsComponent,
+    FeedbacksComponent,
+    HomeComponent,
+    CleaningComponent,
+    LoginComponent,
+    CleaningComponent,
+    RegisterComponent,
+    HabitComponent,
+    LogoutComponent,
+    CompaniesComponent,
+    CleaningHistoryCompletionComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -48,7 +49,9 @@ import { CleaningHistoryCompletionComponent } from './cleaning-history-completio
     ChartModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    AlertifyService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
