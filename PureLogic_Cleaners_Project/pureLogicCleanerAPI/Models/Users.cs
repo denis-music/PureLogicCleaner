@@ -24,5 +24,7 @@ namespace pureLogicCleanerAPI.Models
         public int Age { get; set; }
 
         public DateTime? SubscriptionDateBought { get; set; } = null;
+        public int? SubscriptionDaysLeft { get; set; } = null;
+        public int? SubscriptionDays { get; set; } = null;
     }
 }

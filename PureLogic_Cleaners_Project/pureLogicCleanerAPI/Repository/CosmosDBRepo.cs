@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
+using pureLogicCleanerAPI.Models;
 
 namespace pureLogicCleanerAPI.Repository
 {
@@ -52,7 +53,6 @@ namespace pureLogicCleanerAPI.Repository
                 id: "MemberSchedules",
                 partitionKeyPath: "/id"
             );
-
             await database.CreateContainerIfNotExistsAsync(
                 id: "Rooms",
                 partitionKeyPath: "/id"

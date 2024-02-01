@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using pureLogicCleanerAPI.DTOs;
 using pureLogicCleanerAPI.Models;
+using pureLogicCleanerAPI.Models.Enums;
 using pureLogicCleanerAPI.Repository;
 using pureLogicCleanerAPI.Services;
 using pureLogicCleanerAPI.VMs.Requests;
@@ -70,9 +71,18 @@ namespace pureLogicCleanerAPI.Controllers
             {
                 return BadRequest("Username already taken.");
             }
+
+            var subs = await _cosmosDBRepo.GetItemsAsync<Subscriptions>("Subscriptions");
+            var freeTrialSub = subs.Where(s => s.Name == SubscirptionNamesExtensions.ToFriendlyString(SubscirptionNames.FreeTrial)).FirstOrDefault();
+            if (freeTrialSub == null) return BadRequest();
             var newUser = await _userService.RegisterUser(userDto);
             string id = Guid.NewGuid().ToString();
             newUser.Id = id;
+            newUser.SubsId = freeTrialSub.Id;
+            newUser.SubscriptionDateBought = DateTime.Now;
+            newUser.SubscriptionDaysLeft = freeTrialSub.DurationInDays;
+            newUser.SubscriptionDays = freeTrialSub.DurationInDays;
+
             await _cosmosDBRepo.CreateItemAsync(newUser, containerName, id);
 
             return Ok();
@@ -107,6 +117,14 @@ namespace pureLogicCleanerAPI.Controllers
             if (user is null)
                 return Unauthorized();
 
+            var subs = await _cosmosDBRepo.GetItemByIdAsync<Subscriptions>("Subscriptions", user.SubsId);
+            if (subs == null) return BadRequest();
+            DateTime subscriptionDateBought = (DateTime)user.SubscriptionDateBought;
+            TimeSpan difference = DateTime.Now - subscriptionDateBought;
+            user.SubscriptionDaysLeft = difference.Days;
+            user.SubscriptionDays = subs.DurationInDays;
+            await _cosmosDBRepo.UpdateAsync(user, containerName, user.Id);
+
             return Ok(new
             {
                 token = await _userService.CreateToken(user)
@@ -122,7 +140,9 @@ namespace pureLogicCleanerAPI.Controllers
             var user = await _cosmosDBRepo.GetItemByIdAsync<Users>(containerName, userId);
             user.SubsId = subsId;
             user.SubscriptionDateBought = DateTime.Now;
-            return await _cosmosDBRepo.UpdateAsync<Users>(user, containerName, user.Id);
+            user.SubscriptionDaysLeft = subs.DurationInDays;
+            user.SubscriptionDays = subs.DurationInDays;
+            return await _cosmosDBRepo.UpdateAsync(user, containerName, user.Id);
         }
     }
 }

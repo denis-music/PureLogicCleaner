@@ -36,6 +36,7 @@ namespace pureLogicCleanerAPI
                 });
             });
             builder.Services.AddTransient<ICosmosDBRepo, CosmosDBRepo>();
+            builder.Services.AddTransient<ISubscirptionsService, SubscirptionsService>();
             //JWT
             builder.Services.ConfigureJWT(builder.Configuration);
 
@@ -44,6 +45,7 @@ namespace pureLogicCleanerAPI
 
             // Services
             builder.Services.AddScoped<IUserService, UserService>();
+            //builder.Services.AddScoped<ISubscirptionsService, SubscirptionsService>();
             builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 
 
@@ -57,7 +59,9 @@ namespace pureLogicCleanerAPI
                 app.UseHsts();
 
             var iCosmosDBRepo = app.Services.GetService<ICosmosDBRepo>();
+            var iSubsService = app.Services.GetService<ISubscirptionsService>();
             iCosmosDBRepo?.SetAsync();
+            iSubsService?.SyncSubsInDB();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
