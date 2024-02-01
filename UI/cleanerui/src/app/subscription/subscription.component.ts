@@ -57,7 +57,7 @@ export class SubscriptionComponent implements OnInit {
     this.loading = true;
     this.subsService.changeUserSub(subscription.id).subscribe(
       (result) => {
-        this.alertifyService.successAlert("Subscription added!")
+        this.alertifyService.successAlert("Subscription Added!")
         this.loadMemberSub();
         this.loadData();
         this.loading = false;

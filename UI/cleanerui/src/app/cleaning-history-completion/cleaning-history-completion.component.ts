@@ -46,7 +46,7 @@ export class CleaningHistoryCompletionComponent implements OnInit {
       if (model.Completed == false) {
         this.cleaningHistoryService.setUncompletedStatus(cleaningId).subscribe(
           (result) => {
-            this.alertifyService.successAlert("Completion saved!")
+            this.alertifyService.successAlert("Completion Saved!")
             this.handleCancel();
           }
         )
@@ -54,11 +54,11 @@ export class CleaningHistoryCompletionComponent implements OnInit {
       else {
         this.cleaningHistoryService.saveCompletionInfo(cleaningId, model).subscribe(
           (room) => {
-            this.alertifyService.successAlert("Completion saved!")
+            this.alertifyService.successAlert("Completion Saved!")
             this.handleCancel()
           },
           (error) => {
-            this.alertifyService.errorAlert("Error in saving completion, please try later!")
+            this.alertifyService.errorAlert("Error saving completion, please try later!")
           }
         )
       }
