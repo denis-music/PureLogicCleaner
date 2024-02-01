@@ -6,8 +6,6 @@ import { User } from '../model/users.model';
 import { AlertifyService } from '../_services/alertify.service';
 import { SharedStateService } from '../_services/shared-state.service';
 import { AuthService } from '../_services/auth.service';
-import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-subscription',
@@ -17,11 +15,10 @@ import { Router } from '@angular/router';
 export class SubscriptionComponent implements OnInit {
 
   constructor(private subsService: SubscriptionService,
-    private userService: UserService, 
+    private userService: UserService,
     private alertifyService: AlertifyService,
-    private sharedStateService: SharedStateService, 
-    private authService: AuthService, 
-    private router: Router) { }
+    private sharedStateService: SharedStateService,
+    private authService: AuthService) { }
   subscriptions: Subscription[] = [];
 
   userId = '';
@@ -46,7 +43,7 @@ export class SubscriptionComponent implements OnInit {
       (result) => {
         this.userSubs = result.find(subscription => subscription.id === this.user?.subsId);
         this.subscriptions = result
-        .filter(subscription => subscription.name !== 'Free Trial');
+          .filter(subscription => subscription.name !== 'Free Trial');
       }
     )
   };
