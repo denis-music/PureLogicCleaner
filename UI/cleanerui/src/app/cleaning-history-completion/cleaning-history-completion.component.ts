@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserStateService } from '../_services/user-state.service';
 import { CleaningHistoryService } from '../_services/cleaning-history.service';
 import { CleaningHistoryCompletion } from '../model/cleaningHistoryCompletion.model';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-cleaning-history-completion',
@@ -13,7 +14,9 @@ import { CleaningHistoryCompletion } from '../model/cleaningHistoryCompletion.mo
 export class CleaningHistoryCompletionComponent implements OnInit {
 
   constructor(private router: Router, private sharedService: UserStateService,
-    private cleaningHistoryService: CleaningHistoryService) { }
+    private cleaningHistoryService: CleaningHistoryService,
+    private alertifyService: AlertifyService
+    ) { }
 
   cleaningQuality = CleaningQuality;
   cleaningQualityOptions!: { key: string; value: number; }[];
@@ -43,6 +46,7 @@ export class CleaningHistoryCompletionComponent implements OnInit {
       if (model.Completed == false) {
         this.cleaningHistoryService.setUncompletedStatus(cleaningId).subscribe(
           (result) => {
+            this.alertifyService.successAlert("Completion saved!")
             this.handleCancel();
           }
         )
@@ -50,11 +54,11 @@ export class CleaningHistoryCompletionComponent implements OnInit {
       else {
         this.cleaningHistoryService.saveCompletionInfo(cleaningId, model).subscribe(
           (room) => {
-            console.log('Success saving data.');
+            this.alertifyService.successAlert("Completion saved!")
             this.handleCancel()
           },
           (error) => {
-            console.error('Error fetching data:', error);
+            this.alertifyService.errorAlert("Error in saving completion, please try later!")
           }
         )
       }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { UserUpsert } from '../model/user.upsert.model';
 import { AuthService } from '../_services/auth.service';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,8 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, 
+    private http: HttpClient, private alertifyService: AlertifyService) {
     this.registerForm = this.fb.group({
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
@@ -84,11 +86,12 @@ export class RegisterComponent implements OnInit {
     this.model.passwordConfirm = this.passwordconfirm?.value;
 
     this.authService.register(this.model).subscribe(e => {
+      this.alertifyService.successAlert("Successful Registration!")
       this.authService.saveUser(this.model.username!);
       this.router.navigate(['/home']);
       this.registerForm.reset();
     }, error => {
-      console.log(error);
+      this.alertifyService.errorAlert("Registration failed, please try again!")
       this.loading = false;
     });
   }

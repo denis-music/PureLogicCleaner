@@ -43,7 +43,7 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       error => {
-        console.log(error);
+        this.alertifyService.errorAlert("Login Failed!")
         this.loading = false;
       }
     );
