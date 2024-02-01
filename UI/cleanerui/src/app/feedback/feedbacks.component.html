@@ -68,4 +68,10 @@
       Please wait, submitting feedback...
     </div>
   </div>
+
+  <!-- Button to submit another feedback, shown after feedback is successfully submitted -->
+  <button *ngIf="feedbackSubmitted && !showForm" type="button" class="btn btn-success"
+    (click)="submitAnotherFeedback()">
+    Submit Another Feedback
+  </button>
 </div>
