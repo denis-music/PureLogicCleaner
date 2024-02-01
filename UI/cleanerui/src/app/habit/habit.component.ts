@@ -12,7 +12,7 @@ import { SurfaceType } from '../enum/surfaceType.enum';
 import { UsageFrequency } from '../enum/usageFrequency.enum';
 import { RoomSize } from '../enum/roomSize.enum';
 import { Router } from '@angular/router';
-import { UserStateService } from '../_services/user-state.service';
+import { SharedStateService } from '../_services/shared-state.service';
 import { AuthService } from '../_services/auth.service';
 import { User } from '../model/users.model';
 import { AlertifyService } from '../_services/alertify.service';
@@ -26,7 +26,7 @@ export class HabitComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userroomService: UserRoomsService,
     private userService: UserService, private roomService: RoomService,
-    private router: Router, private userStateService: UserStateService,
+    private router: Router, private sharedStateService: SharedStateService,
     private authService: AuthService, private alertifyService: AlertifyService) {
     this.myForm = this.fb.group({
       rooms: this.fb.array([this.createRoom()])
@@ -58,6 +58,7 @@ export class HabitComponent implements OnInit {
   ];
 
   myForm: FormGroup;
+  loading: boolean = false;
 
   createRoom(): FormGroup {
     return this.fb.group({
@@ -176,6 +177,7 @@ export class HabitComponent implements OnInit {
   listOfRooms: string[] = [];
 
   onSubmit() {
+    this.loading  = true;
     const formArray = this.myForm.get('rooms') as FormArray;
 
     formArray.controls.forEach((roomControl: AbstractControl) => {
@@ -221,19 +223,21 @@ export class HabitComponent implements OnInit {
       this.userService.saveUserHabit(habit).subscribe(
         (data) => {
           this.alertifyService.successAlert("User preferences Added!")
-          this.userStateService.setUserWHabits(true);
+          this.sharedStateService.setUserWHabits(true);
           const item = localStorage.getItem('user');
           if (item) {
             const users: User[] = JSON.parse(item);
             var user = users[0];
             this.authService.saveUser(user.username);
             setTimeout(() => {
+            this.loading = false;
               this.router.navigate(['/home'])
             }, 3000);
           }
         }, (error) => {
           this.alertifyService.errorAlert("Error in adding user preferences, please try again!")
           console.error('Error fetching API results:', error);
+          this.loading = false;
         })
     }, 6000);
 

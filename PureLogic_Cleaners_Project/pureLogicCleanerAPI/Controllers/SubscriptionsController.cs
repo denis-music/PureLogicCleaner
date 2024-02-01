@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using pureLogicCleanerAPI.Models;
 using pureLogicCleanerAPI.Repository;
+using pureLogicCleanerAPI.Services;
 using pureLogicCleanerAPI.VMs;
 using pureLogicCleanerAPI.VMs.Requests;
 
@@ -9,9 +10,10 @@ namespace pureLogicCleanerAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class SubscriptionsController(ICosmosDBRepo cosmosDBRepo) : Controller
+    public class SubscriptionsController(ICosmosDBRepo cosmosDBRepo, ISubscirptionsService subsService) : Controller
     {
         private readonly ICosmosDBRepo _cosmosDBRepo = cosmosDBRepo;
+        private readonly ISubscirptionsService _subsService = subsService;
         private readonly string containerName = "Subscriptions";
 
         [HttpGet(Name = "GetSubscriptions")]
@@ -42,21 +44,7 @@ namespace pureLogicCleanerAPI.Controllers
         [HttpPost(Name = "SendSubscription")]
         public async Task<bool> PostAsync(SubscriptionsVM payload)
         {
-            if (payload.DurationInDays is null || payload.SensorsIncluded is null ||
-                payload.Price is null || payload.Name is null)
-                return false;
-            
-            string subsId = Guid.NewGuid().ToString();
-            var newSubs = new Subscriptions
-            {
-                Id = subsId,
-                DurationInDays = (int)payload.DurationInDays,
-                Name = payload.Name,
-                Price = (double)payload.Price,
-                SensorsIncluded = (bool)payload.SensorsIncluded,
-                Description = payload.Description
-            };
-            return await _cosmosDBRepo.CreateItemAsync(newSubs, containerName, newSubs.Id);
+            return await _subsService.PostItem(payload);
         }
 
         [HttpPut("{id}")]
