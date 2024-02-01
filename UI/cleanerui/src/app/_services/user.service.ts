@@ -18,7 +18,7 @@ export class UserService {
     return this.http.get<User>(environment.baseUrl + `username/${username}`);
   }
 
-  getUser(): Observable<User | null> {
+  getUserById(): Observable<User | null> {
     const item = localStorage.getItem('user');
     if (item) {
       const user: User[] = JSON.parse(item);

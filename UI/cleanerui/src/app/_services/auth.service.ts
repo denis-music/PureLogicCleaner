@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserAuth } from '../model/user.auth.model';
 import { UserUpsert } from '../model/user.upsert.model';
 import { UserService } from './user.service';
+import { SharedStateService } from './shared-state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class AuthService {
   helper = new JwtHelperService();
   decodedToken: any;
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService,
+    private sharedStateService: SharedStateService) { }
 
   loginMethod(model: UserAuth) {
     return this.http.post(this.apiUrl + 'login', model)

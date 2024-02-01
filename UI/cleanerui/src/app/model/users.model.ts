@@ -20,6 +20,8 @@ export class User {
   age: number = 0;
 
   subscriptionDateBought: Date | null = null;
+  subscriptionDaysLeft: number | null = null;
+  subscriptionDays: number | null = null;
 
   constructor(
     id: string,
@@ -37,7 +39,9 @@ export class User {
     email: string,
     address: string,
     age: number,
-    subscriptionDateBought: Date | null
+    subscriptionDateBought: Date | null,
+    subscriptionDaysLeft: number | null,
+    subscriptionDays: number | null,
   ) {
     this.id = id;
     this.subsId = subsId;
@@ -55,5 +59,7 @@ export class User {
     this.address = address;
     this.age = age;
     this.subscriptionDateBought = subscriptionDateBought;
+    this.subscriptionDaysLeft = subscriptionDaysLeft;
+    this.subscriptionDays = subscriptionDays;
   }
 }

@@ -4,7 +4,7 @@ import { CleaningHistory } from '../model/cleaningHistory.model';
 import { RoomService } from '../_services/room.service';
 import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model';
 import { Router } from '@angular/router';
-import { UserStateService } from '../_services/user-state.service';
+import { SharedStateService } from '../_services/shared-state.service';
 import { getCleaningQualityName } from '../enum/cleaningQuality.enum';
 import { UserRoomsService } from '../_services/user-rooms.service';
 
@@ -17,7 +17,7 @@ export class CleaningComponent implements OnInit {
 
   constructor(private statisticsService: StatisticsService,
     private roomService: RoomService, private router: Router,
-    private sharedService: UserStateService,
+    private sharedService: SharedStateService,
     private userRoomService: UserRoomsService) { }
 
   showWaitingMessage = false;

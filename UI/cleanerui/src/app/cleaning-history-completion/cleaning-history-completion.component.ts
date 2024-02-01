@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CleaningQuality } from '../enum/cleaningQuality.enum';
 import { Router } from '@angular/router';
-import { UserStateService } from '../_services/user-state.service';
+import { SharedStateService } from '../_services/shared-state.service';
 import { CleaningHistoryService } from '../_services/cleaning-history.service';
 import { CleaningHistoryCompletion } from '../model/cleaningHistoryCompletion.model';
 import { AlertifyService } from '../_services/alertify.service';
@@ -13,7 +13,7 @@ import { AlertifyService } from '../_services/alertify.service';
 })
 export class CleaningHistoryCompletionComponent implements OnInit {
 
-  constructor(private router: Router, private sharedService: UserStateService,
+  constructor(private router: Router, private sharedService: SharedStateService,
     private cleaningHistoryService: CleaningHistoryService,
     private alertifyService: AlertifyService
     ) { }

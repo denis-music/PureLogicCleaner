@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class UserStateService {
+export class SharedStateService {
 
   constructor() { }
 
@@ -14,11 +14,18 @@ export class UserStateService {
   private cleaningIdSource = new BehaviorSubject<string | null>(null);
   currentCleaningId = this.cleaningIdSource.asObservable();
 
+  private userWSubsSource = new BehaviorSubject<boolean>(false);
+  userWSubs = this.userWSubsSource.asObservable();
+
   setUserWHabits(value: boolean) {
     this.userWHabitsSource.next(value);
   }
 
   changeCleaningId(id: string) {
     this.cleaningIdSource.next(id);
+  }
+
+  setUserWSubs(value: boolean) {
+    this.userWSubsSource.next(value);
   }
 }

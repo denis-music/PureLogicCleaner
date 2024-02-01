@@ -7,6 +7,11 @@
       <p class="mt-2">Please wait...</p>
     </div>
   </ng-container>
+
+  <div class="info-block" *ngIf="!loading && subscriptions.length !== 0">
+    <p class="info-message">You currently have {{ userSubs?.name }} package</p>
+  </div>  
+
   <div class="row" *ngIf="!loading">
     <div *ngFor="let subscription of subscriptions" class="col-lg-4 col-md-6 mb-4">
       <div *ngIf="!loading" class="card subscription-box shadow-lg">
