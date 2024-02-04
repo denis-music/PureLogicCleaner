@@ -14,8 +14,7 @@ export class CompaniesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openEmail() {
-    const email = 'info@yourcompany.com';
+  openEmail(email: string) {
     const subject = 'Inquiry';
     let body = '';
 

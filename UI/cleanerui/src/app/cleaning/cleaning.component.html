@@ -1,5 +1,4 @@
 <div class="container mt-5">
-
   <ng-container *ngIf="showWaitingMessage">
     <div class="message text-center mt-3">
       <div class="spinner-border text-primary" role="status">
@@ -9,14 +8,31 @@
     </div>
   </ng-container>
 
+  <ng-container *ngIf="!showWaitingMessage && (pastCleaningHistoryList.length === 0 && futureCleaningHistoryList.length === 0);">
+    <div class="alert d-flex flex-column flex-md-row align-items-center justify-content-center p-4" role="alert" style="background-color: aliceblue; border-color: aliceblue; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <div class="loadingio-spinner-wedges-5eyg1nw386r mr-3"><div class="ldio-5np3r7txova">
+        <div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        </div></div>
+      <div class="text-center mt-3 mt-md-0" style="width: 100%;">
+        <h4 class="alert-heading" style="color: #0d3b66; font-weight: bold;">Just a Moment!</h4>
+        <p class="mb-2" style="color: #155d74;">AI is rendering your user preferences. Please wait up to 24 hours until results are ready.</p>
+        <hr>
+        <p class="mb-0" style="font-size: 0.9rem; color: #507f91;">We appreciate your patience.</p>
+      </div>
+    </div>
+  </ng-container>
+  
+
+<!-- 
   <ng-template #noPastHistory>
     <div class="alert alert-info d-flex align-items-center justify-content-center" role="alert"
       *ngIf="!showWaitingMessage">
       <p class="mb-0">No past cleaning history available.</p>
     </div>
-  </ng-template>
+  </ng-template> -->
 
-  <ng-container *ngIf="!showWaitingMessage && futureCleaningHistoryList.length > 0; else noFutureHistory">
+  <ng-container *ngIf="!showWaitingMessage && futureCleaningHistoryList.length > 0">
+  <!-- else noFutureHistory"> -->
     <h3>Future Cleaning History</h3>
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">
@@ -46,7 +62,8 @@
     </table>
   </ng-container>
 
-  <ng-container *ngIf="!showWaitingMessage && pastCleaningHistoryList.length > 0; else noPastHistory">
+  <ng-container *ngIf="!showWaitingMessage && pastCleaningHistoryList.length > 0">
+  <!-- else noPastHistory"> -->
     <h3>Past Cleaning History</h3>
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">
@@ -76,11 +93,11 @@
     </table>
   </ng-container>
 
-
+<!-- 
   <ng-template #noFutureHistory>
     <div class="alert alert-info d-flex align-items-center justify-content-center" role="alert"
       *ngIf="!showWaitingMessage">
       <p class="mb-0">No future cleaning history available.</p>
     </div>
-  </ng-template>
+  </ng-template> -->
 </div>

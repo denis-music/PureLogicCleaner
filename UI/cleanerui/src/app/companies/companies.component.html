@@ -1,31 +1,50 @@
-<div class="container">
-    <h1>Contact Information</h1>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            Contact Information
+        </div>
+        <div class="card-body p-4">
+            <h2 class="mb-4">Companies</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Company Name</th>
-                <th>Telephone Number</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Company A</td>
-                <td>(123) 456-7890</td>
-            </tr>
-            <tr>
-                <td>Company B</td>
-                <td>(456) 789-0123</td>
-            </tr>
-            <tr>
-                <td>Company C</td>
-                <td>(789) 012-3456</td>
-            </tr>
-        </tbody>
-    </table>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Telephone Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Company A</td>
+                        <td>(123) 456-7890</td>
+                        <td>
+                            <button class="btn btn-primary" (click)="openEmail('companya@example.com')">Send
+                                Email</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Company B</td>
+                        <td>(456) 789-0123</td>
+                        <td>
+                            <button class="btn btn-primary" (click)="openEmail('companyb@example.com')">Send
+                                Email</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Company C</td>
+                        <td>(789) 012-3456</td>
+                        <td>
+                            <button class="btn btn-primary" (click)="openEmail('companyc@example.com')">Send
+                                Email</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-    <div class="button-container">
-        <button class="send" (click)="openEmail()">Send Email</button>
-        <button class="close" (click)="close()">Close</button>
+            <div class="d-grid gap-3 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-secondary btn-lg" (click)="close()">Close</button>
+            </div>
+        </div>
     </div>
 </div>
