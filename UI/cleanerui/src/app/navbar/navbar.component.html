@@ -10,15 +10,14 @@
 
     <div *ngIf="showNavbarHabits && showNavbarLogin && showNavbarReg">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">PureLogic Cleaner</a>
+            <a class="navbar-brand" href="#">
+                <h1 class="text-black fw-bold d-block">PureLogic<span class="text-secondary">Cleaner</span> </h1>
+              </a>
             <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" [ngClass]="{ 'show': showNavbar }" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#" routerLink="/home">Home <span class="sr-only">(current)</span></a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" *ngIf="userId !== '' && userWHabist && userHasSubsciption" routerLink="/statistics">Statistics</a>
                     </li>
@@ -43,7 +42,7 @@
                         <a class="nav-link" *ngIf="userId == ''" routerLink="/register">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" *ngIf="userId !== ''" (click)="logout()">Logout</a>
+                        <a class="nav-link" *ngIf="userId !== ''" (click)="logout()" [ngStyle]="{'cursor': 'pointer'}">Logout</a>
                     </li>
                 </ul>
             </div>

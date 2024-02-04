@@ -19,7 +19,7 @@
           <h3 class="m-0">{{ subscription.name }}</h3>
         </div>
         <div class="card-body">
-          <p class="card-text mb-2">Price: ${{ subscription.price }}/month</p>
+          <p class="card-text mb-2">Price: ${{ subscription.price }}</p>
           <p class="card-text mb-2">Sensor Availability:
             <span [ngClass]="{'text-success': subscription.sensorsIncluded, 'text-danger': !subscription.sensorsIncluded}">
               {{ subscription.sensorsIncluded ? 'True' : 'False' }}
