@@ -67,7 +67,7 @@ export class HabitComponent implements OnInit {
       roomSize: [null, Validators.required],
       surfaceType: [null, Validators.required],
       usageFrequency: [null, Validators.required],
-      numberOfOccupants: [null, Validators.required]
+      numberOfOccupants: [null, Validators.required],
     });
   }
 
@@ -157,7 +157,7 @@ export class HabitComponent implements OnInit {
     }
   }
 
-  selectedCleaningFrequencyOptions: any = 0;
+  selectedCleaningFrequencyOptions: any = undefined;
   selectedDayOfTheWeekOptions: number[] = [];
 
   toggleDaySelection(dayValue: number) {
@@ -177,6 +177,10 @@ export class HabitComponent implements OnInit {
   listOfRooms: string[] = [];
 
   onSubmit() {
+    if (!this.myForm.valid) {
+      this.alertifyService.warningAlert("Fill all of the data!")
+      return;
+    }
     this.loading  = true;
     const formArray = this.myForm.get('rooms') as FormArray;
 
@@ -210,7 +214,6 @@ export class HabitComponent implements OnInit {
         );
       }
     })
-
 
     setTimeout(() => {
       var habit = new Habit(
