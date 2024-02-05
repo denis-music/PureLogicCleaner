@@ -1,74 +1,152 @@
-body {
-    background-color: #f8f9fa;
+.container {
+  margin: 3rem auto;
+  padding: 1rem;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  table-layout: fixed;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 6px;
+}
+
+table tr td {
+  background-color: #ffffff;
+}
+
+thead {
+  th {
+    background-color: #55608f;
+  }
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, .05);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, .075);
+}
+
+.history-container {
+  margin-bottom: 1.5rem;
+  background-color: lavender;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+h3 {
+  text-transform: uppercase;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+//spinner
+@keyframes ldio-5np3r7txova {
+  0% {
+    transform: rotate(0deg)
   }
 
-  .container {
-    max-width: 800px;
+  100% {
+    transform: rotate(360deg)
   }
+}
 
-  .table th,
-  .table td {
-    text-align: center;
-    vertical-align: middle;
-  }
+.ldio-5np3r7txova>div>div {
+  transform-origin: 50px 50px;
+  animation: ldio-5np3r7txova 3.0303030303030303s linear infinite;
+  opacity: 0.8
+}
 
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
+.ldio-5np3r7txova>div>div>div {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  width: 35px;
+  height: 35px;
+  border-radius: 35px 0 0 0;
+  transform-origin: 50px 50px
+}
 
-  .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-
-  .message {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  @keyframes ldio-5np3r7txova {
-    0% { transform: rotate(0deg) }
-    100% { transform: rotate(360deg) }
-  }
-  .ldio-5np3r7txova > div > div {
-    transform-origin: 50px 50px; 
-    animation: ldio-5np3r7txova 3.0303030303030303s linear infinite;
-    opacity: 0.8
-  }
-  .ldio-5np3r7txova > div > div > div {
-    position: absolute;
-    left: 15px;
-    top: 15px; 
-    width: 35px; 
-    height: 35px; 
-    border-radius: 35px 0 0 0; 
-    transform-origin: 50px 50px 
-  }.ldio-5np3r7txova > div div:nth-child(1) {
+.ldio-5np3r7txova>div div:nth-child(1) {
   animation-duration: 0.7575757575757576s
 }
-.ldio-5np3r7txova > div div:nth-child(1) > div {
+
+.ldio-5np3r7txova>div div:nth-child(1)>div {
   background: blue;
   transform: rotate(0deg);
-}.ldio-5np3r7txova > div div:nth-child(2) {
+}
+
+.ldio-5np3r7txova>div div:nth-child(2) {
   animation-duration: 1.0101010101010102s
 }
-.ldio-5np3r7txova > div div:nth-child(2) > div {
+
+.ldio-5np3r7txova>div div:nth-child(2)>div {
   background: #007bff;
   transform: rotate(0deg);
-}.ldio-5np3r7txova > div div:nth-child(3) {
+}
+
+.ldio-5np3r7txova>div div:nth-child(3) {
   animation-duration: 1.5151515151515151s
 }
-.ldio-5np3r7txova > div div:nth-child(3) > div {
+
+.ldio-5np3r7txova>div div:nth-child(3)>div {
   background: blueviolet;
   transform: rotate(0deg);
-}.ldio-5np3r7txova > div div:nth-child(4) {
+}
+
+.ldio-5np3r7txova>div div:nth-child(4) {
   animation-duration: 3.0303030303030303s
 }
-.ldio-5np3r7txova > div div:nth-child(4) > div {
+
+.ldio-5np3r7txova>div div:nth-child(4)>div {
   background: #edb195;
   transform: rotate(0deg);
 }
+
 .loadingio-spinner-wedges-5eyg1nw386r {
   width: 100px;
   height: 100px;
@@ -76,12 +154,16 @@ body {
   overflow: hidden;
   background: none;
 }
+
 .ldio-5np3r7txova {
   width: 100%;
   height: 100%;
   position: relative;
   transform: translateZ(0) scale(1);
   backface-visibility: hidden;
-  transform-origin: 0 0; 
+  transform-origin: 0 0;
 }
-.ldio-5np3r7txova div { box-sizing: content-box; }
+
+.ldio-5np3r7txova div {
+  box-sizing: content-box;
+}
