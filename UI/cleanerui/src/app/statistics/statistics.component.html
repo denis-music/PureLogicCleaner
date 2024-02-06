@@ -9,7 +9,7 @@
 
   <div class="row">
     <div class="col-md-12 button">
-      <button (click)="onButtonClick()" class="btn btn-primary">Get Cleaning Results</button>
+      <button (click)="onButtonClick()" class="btn btn-primary" id="results-preview">Get Cleaning Results</button>
     </div>
   </div>
 
@@ -17,30 +17,30 @@
     <p>Loading or no results.</p>
   </div>
 
-  <table *ngIf="apiResults.length > 0" class="table mt-3">
-    <thead class="thead-dark">
-      <tr>
-        <th>User Room</th>
-        <th>Completed</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let result of apiResults">
-        <td>{{ result.userRoomName }}</td>
-        <td>{{ result.completed }}</td>
-        <td>{{ result.date ? (result.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="apiResults.length > 0" class="chart-container">
+  <div *ngIf="apiResults.length > 0">
+    <table class="table mt-3">
+      <thead class="thead-light">
+        <tr>
+          <th>User Room</th>
+          <th>Completed</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of apiResults">
+          <td>{{ result.userRoomName }}</td>
+          <td>{{ result.completed }}</td>
+          <td>{{ result.date ? (result.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
+        </tr>
+      </tbody>
+    </table>
     <h3>Completion Status Circular Chart:</h3>
-    <ejs-chart id="circular-chart" title="Circular Chart">
-      <e-series-collection>
-        <e-series [dataSource]='doughnutData' xName='x' yName='y' type='Doughnut'></e-series>
-      </e-series-collection>
-    </ejs-chart>
+  </div>
+
+  <div *ngIf="apiResults.length > 0">
+    <div id="chart-gauge"></div>
   </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
