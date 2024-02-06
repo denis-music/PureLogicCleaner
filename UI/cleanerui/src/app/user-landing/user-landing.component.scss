@@ -1,0 +1,119 @@
+.landing-container {
+  display: flex;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+
+  .left-panel,
+  .right-panel {
+    flex: 1;
+    padding: 40px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    transition: background-color 0.3s ease;
+  }
+
+  .left-panel {
+    background-color: #f9f9f9;
+    max-height: 230px;
+    overflow: hidden;
+    max-width: 400px;
+    text-align: justify;
+  }
+
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+
+    .cleaning-history,
+    .news-section {
+      flex: 1;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      overflow-y: auto;
+      max-height: 300px;
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  .user-info {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  .cleaning-history {
+    background-color: #f3f4f6;
+  }
+
+  .news-section {
+    background-color: #e5e7eb;
+  }
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #1a202c;
+  }
+
+  a {
+    color: #3182ce;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .fas {
+    margin-right: 10px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+  }
+
+  .info p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .fas {
+      margin-right: 5px;
+      color: #6366f1;
+    }
+  }
+
+  .news-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    .news-card {
+      flex: 1 1 300px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background: #edf2f7;
+      }
+
+      .news-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #2d3748;
+      }
+
+      .news-description {
+        font-size: 14px;
+        color: #4a5568;
+      }
+    }
+  }
+}

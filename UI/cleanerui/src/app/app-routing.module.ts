@@ -11,6 +11,7 @@ import { HabitComponent } from './habit/habit.component';
 import { LogoutComponent } from './logout/logout.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { CleaningHistoryCompletionComponent } from './cleaning-history-completion/cleaning-history-completion.component';
+import { UserLandingComponent } from './user-landing/user-landing.component';
 
 const routes: Routes = [
   { path: 'statistics', component: StatisticsComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'habit', component: HabitComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'companies', component: CompaniesComponent },
+  { path: 'userInfo', component: UserLandingComponent },
   { path: 'completeInfo', component: CleaningHistoryCompletionComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home page if no path specified
   { path: '**', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home page if the URL doesn't match any route
