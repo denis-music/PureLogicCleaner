@@ -48,7 +48,8 @@
                                             <label for="roomName{{ i }}">Room Name:</label>
                                             <input formControlName="room" type="text" class="form-control"
                                                 id="roomName{{ i }}" placeholder="Room Name">
-                                            <small *ngIf="room.get('room')?.hasError('required')"
+                                            <small
+                                                *ngIf="room.get('room')?.hasError('required') && (room.get('room')?.dirty || room.get('room')?.touched)"
                                                 class="text-danger">Room Name
                                                 is required.</small>
                                         </div>
@@ -63,9 +64,10 @@
                                                     {{ size }}
                                                 </option>
                                             </select>
-                                            <small *ngIf="room.get('roomLabel')?.hasError('required')"
-                                                class="text-danger">Room
-                                                Label is required.</small>
+                                            <small
+                                                *ngIf="room.get('room')?.hasError('required') && (room.get('room')?.dirty || room.get('room')?.touched)"
+                                                class="text-danger">
+                                                Room Label is required.</small>
                                         </div>
                                     </div>
                                 </div>
@@ -81,7 +83,8 @@
                                                     {{ size.key }}
                                                 </option>
                                             </select>
-                                            <small *ngIf="room.get('roomSize')?.hasError('required')"
+                                            <small
+                                                *ngIf="room.get('room')?.hasError('required') && (room.get('room')?.dirty || room.get('room')?.touched)"
                                                 class="text-danger">Room
                                                 Size is required.</small>
                                         </div>
@@ -98,7 +101,8 @@
                                                     {{ surfaceType.key }}
                                                 </option>
                                             </select>
-                                            <small *ngIf="room.get('surfaceType')?.hasError('required')"
+                                            <small
+                                                *ngIf="room.get('room')?.hasError('required') && (room.get('room')?.dirty || room.get('room')?.touched)"
                                                 class="text-danger">Surface Type is required.</small>
                                         </div>
                                     </div>
@@ -116,7 +120,8 @@
                                                     {{ frequency.key }}
                                                 </option>
                                             </select>
-                                            <small *ngIf="room.get('usageFrequency')?.hasError('required')"
+                                            <small
+                                                *ngIf="room.get('room')?.hasError('required') && (room.get('room')?.dirty || room.get('room')?.touched)"
                                                 class="text-danger">Usage Frequency is required.</small>
                                         </div>
                                     </div>
@@ -127,14 +132,19 @@
                                             <input formControlName="numberOfOccupants" type="number"
                                                 class="form-control" id="numberOfOccupants{{ i }}"
                                                 placeholder="Number of Occupants">
-                                            <small *ngIf="room.get('numberOfOccupants')?.hasError('required')"
+                                            <small
+                                                *ngIf="room.get('room')?.hasError('required') && (room.get('room')?.dirty || room.get('room')?.touched)"
                                                 class="text-danger">Number of Occupants is required.</small>
                                         </div>
                                     </div>
                                 </div>
 
-                                <button class="btn btn-outline-danger" type="button" (click)="removeRoom(i)">Remove
-                                    Room</button>
+                                <div class="row buttons">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-danger" type="button" (click)="removeRoom(i)">Remove
+                                            Room</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -162,10 +172,22 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid || this.selectedCleaningFrequencyOptions == undefined
+
+
+            <div class="row buttons">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+
+                         <!-- Adding spacing between the buttons -->
+            <span class="button-spacing"></span>
+
+                    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid || this.selectedCleaningFrequencyOptions == undefined
             || this.selectedDayOfTheWeekOptions.length == 0 || rooms.length == 0" (click)="onSubmit()">Save
-                Preferences</button>
-            <button class="close" (click)="close()">Close</button>
+                        Preferences</button>
+                </div>
+            </div>
+
+
         </form>
     </div>
 </div>

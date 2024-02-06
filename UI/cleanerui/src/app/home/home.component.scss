@@ -81,5 +81,40 @@ body {
 
 .text-secondary{
   text-align: center;
+}
 
+.counter-value{
+  padding-right: 8px;
+}
+
+.inner-text{
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.nav-fill{
+  margin-right: 5px;
+}
+
+.text-white-new{
+  color: white;
+  text-justify: inter-word;
+}
+
+.box{
+  padding-left: 3px;
+}
+
+
+.counter-value{
+  padding-top: auto !important;
+  padding-bottom: auto !important;
+
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+.services-text{
+  text-align: justify;
+  text-justify: inter-word;
 }

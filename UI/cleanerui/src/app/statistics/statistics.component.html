@@ -1,59 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <title>Cleaning Results</title>
-  <style>
-    .container {
-      padding: 20px;
-      max-width: 800px;
-      margin: 40px auto;
-      background-color: #f8f9fa;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    label {
-      margin-bottom: 0.5rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .btn-primary {
-      margin-top: 1rem;
-      padding: 0.5rem 1.5rem;
-    }
-
-    .loading-message {
-      margin-top: 1rem;
-      font-style: italic;
-      color: #6c757d;
-    }
-
-    table {
-      margin-top: 1rem;
-    }
-
-    h3 {
-      margin-top: 2rem;
-      color: #333;
-    }
-
-    #circular-chart {
-      margin-top: 1rem;
-      background-color: white;
-      border-radius: 5px;
-      padding: 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-  </style>
-</head>
-<body>
-
 <div class="container">
   <div class="form-group">
     <label for="selectCleaningType">Select Room:</label>
@@ -63,7 +7,11 @@
     </select>
   </div>
 
-  <button (click)="onButtonClick()" class="btn btn-primary">Get Cleaning Results</button>
+  <div class="row">
+    <div class="col-md-12 button">
+      <button (click)="onButtonClick()" class="btn btn-primary">Get Cleaning Results</button>
+    </div>
+  </div>
 
   <div *ngIf="apiResults.length == 0 && isDataNeverLoaded" class="loading-message">
     <p>Loading or no results.</p>
@@ -90,15 +38,9 @@
     <h3>Completion Status Circular Chart:</h3>
     <ejs-chart id="circular-chart" title="Circular Chart">
       <e-series-collection>
-          <e-series [dataSource]='doughnutData' xName='x' yName='y' type='Doughnut'></e-series>
+        <e-series [dataSource]='doughnutData' xName='x' yName='y' type='Doughnut'></e-series>
       </e-series-collection>
     </ejs-chart>
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-</body>
-</html>
