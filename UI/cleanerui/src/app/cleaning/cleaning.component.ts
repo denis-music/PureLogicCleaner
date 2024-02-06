@@ -58,7 +58,7 @@ export class CleaningComponent implements OnInit {
           if (userRoom !== null) {
             return this.roomService.getRoomById(userRoom.roomId!);
           } else {
-            return of(null); // Handle null case appropriately
+            return of(null);
           }
         }),
         map(room => {
