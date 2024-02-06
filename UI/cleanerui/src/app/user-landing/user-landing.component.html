@@ -1,0 +1,56 @@
+<div class="landing-container">
+    <div class="left-panel" *ngIf="user">
+        <div class="user-info">
+            <h2 class="section-title"><i class="fas fa-user"></i> User Profile</h2>
+            <div class="info">
+                <p><i class="fas fa-id-card"></i> Name: {{user!.firstName + " " + user!.lastName}}</p>
+                <p><i class="fas fa-envelope"></i> Email: {{user.email}}</p>
+                <p><i class="fas fa-birthday-cake"></i> Age: {{user.age}}</p>
+            </div>
+        </div>
+        <div *ngIf="futureCleaningHistoryList.length > 0" class="chart-container">
+            <canvas baseChart class="chart" 
+            [type]="'line'" 
+            [data]="pieChartData" 
+            [labels]="pieChartData.labels"
+            chartType="'pie'">
+            </canvas>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="cleaning-history" *ngIf="futureCleaningHistoryList.length > 0 && !showWaitingMessage">
+            <h2 class="section-title"><i class="fas fa-broom"></i> Cleaning History</h2>
+            <div class="news-container">
+                <div *ngFor="let history of futureCleaningHistoryList.slice(0, 3)" class="news-card"
+                    [ngStyle]="{'cursor': 'pointer'}" (click)="onCardClick()">
+                    <p class="news-description">User room: {{ history.userRoomName }}</p>
+                    <p class="news-description">Next cleaning date: {{ history.date ? (history.date | date:
+                        'yyyy-MM-dd') : 'NAN' }}</p>
+                    <p class="news-description">Days until cleaning: {{ getDaysUntilCleaning(history.date) }}</p>
+                </div>
+            </div>
+        </div>
+        <ng-container class="cleaning-history" *ngIf="showWaitingMessage && futureCleaningHistoryList.length == 0">
+            <div class="message text-center mt-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p class="mt-2">Please wait for your cleaning schedules...</p>
+            </div>
+        </ng-container>
+        <div class="cleaning-history" *ngIf="!showWaitingMessage && futureCleaningHistoryList.length == 0">
+            <h2 class="section-title"><i class="fas fa-broom"></i> Cleaning History</h2>
+
+            <p class="mt-2">No cleaning schedules...</p>
+        </div>
+        <div class="news-section">
+            <h2 class="section-title"><i class="fas fa-newspaper"></i> Latest News</h2>
+            <div class="news-container">
+                <div *ngFor="let newsItem of newsItems" class="news-card">
+                    <h3 class="news-title">{{ newsItem.title }}</h3>
+                    <p class="news-description">{{ newsItem.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

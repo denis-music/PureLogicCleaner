@@ -40,7 +40,7 @@ export class LoginComponent {
       () => {
         this.alertifyService.successAlert("Login Successful!")
         this.loginForm.reset();
-        this.router.navigate(['/home']);
+        this.router.navigate(['/userInfo']);
       },
       error => {
         this.alertifyService.errorAlert("Login Failed!")

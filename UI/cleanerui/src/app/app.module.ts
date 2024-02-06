@@ -21,6 +21,7 @@ import { CompaniesComponent } from './companies/companies.component';
 import { CleaningHistoryCompletionComponent } from './cleaning-history-completion/cleaning-history-completion.component';
 import { AlertifyService } from './_services/alertify.service';
 import { NgChartsModule } from 'ng2-charts';
+import { UserLandingComponent } from './user-landing/user-landing.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { NgChartsModule } from 'ng2-charts';
     HabitComponent,
     LogoutComponent,
     CompaniesComponent,
-    CleaningHistoryCompletionComponent
+    CleaningHistoryCompletionComponent,
+    UserLandingComponent
   ],
   imports: [
     BrowserModule,
