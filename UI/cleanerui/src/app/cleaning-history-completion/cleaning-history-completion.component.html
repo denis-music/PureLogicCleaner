@@ -1,5 +1,14 @@
 <div class="container mt-5">
-    <div class="card shadow-lg rounded">
+  <ng-container *ngIf="showWaitingMessage">
+    <div class="message text-center mt-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <p class="mt-2">Please wait...</p>
+    </div>
+  </ng-container>
+
+    <div *ngIf="!showWaitingMessage" class="card shadow-lg rounded">
       <div class="card-header bg-primary text-white">
         <h3 class="mb-0">Cleaning Details</h3>
       </div>

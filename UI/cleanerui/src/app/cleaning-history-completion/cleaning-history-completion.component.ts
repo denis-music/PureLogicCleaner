@@ -16,7 +16,7 @@ export class CleaningHistoryCompletionComponent implements OnInit {
   constructor(private router: Router, private sharedService: SharedStateService,
     private cleaningHistoryService: CleaningHistoryService,
     private alertifyService: AlertifyService
-    ) { }
+  ) { }
 
   cleaningQuality = CleaningQuality;
   cleaningQualityOptions!: { key: string; value: number; }[];
@@ -30,8 +30,10 @@ export class CleaningHistoryCompletionComponent implements OnInit {
   completionStatus: string = '';
   selectedCleaningQuality: any = 0;
   cleaningMinutes = 0;
+  showWaitingMessage = false;
 
   handleSubmit(form: any) {
+    this.showWaitingMessage = true;
     if (form.valid) {
       var cleaningId: string = ''
       this.sharedService.currentCleaningId.subscribe(id => {
@@ -47,6 +49,8 @@ export class CleaningHistoryCompletionComponent implements OnInit {
         this.cleaningHistoryService.setUncompletedStatus(cleaningId).subscribe(
           (result) => {
             this.alertifyService.successAlert("Completion Saved!")
+            this.showWaitingMessage = false;
+
             this.handleCancel();
           }
         )
@@ -55,10 +59,14 @@ export class CleaningHistoryCompletionComponent implements OnInit {
         this.cleaningHistoryService.saveCompletionInfo(cleaningId, model).subscribe(
           (room) => {
             this.alertifyService.successAlert("Completion Saved!")
+            this.showWaitingMessage = false;
+
             this.handleCancel()
           },
           (error) => {
             this.alertifyService.errorAlert("Error saving completion, please try later!")
+            this.showWaitingMessage = false;
+
           }
         )
       }

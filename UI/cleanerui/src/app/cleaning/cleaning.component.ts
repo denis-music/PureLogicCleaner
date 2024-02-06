@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { SharedStateService } from '../_services/shared-state.service';
 import { getCleaningQualityName } from '../enum/cleaningQuality.enum';
 import { UserRoomsService } from '../_services/user-rooms.service';
+import { Observable, ObservableInput, forkJoin, map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-cleaning',
@@ -47,39 +48,49 @@ export class CleaningComponent implements OnInit {
   futureCleaningHistoryList: CleaningHistoryWithName[] = [];
 
   splitHistoryLists(): void {
-    this.pastCleaningHistoryList = [];
-    this.futureCleaningHistoryList = [];
     const today = new Date();
+    const observables: Observable<any>[] = []
 
     this.cleaningHistoryList.forEach((item) => {
       const itemDate = new Date(item.date);
-
-      this.userRoomService.getUserRoomById(item.userRoomId).subscribe(
-        (userRoom) => {
+      const userRoomObservable = this.userRoomService.getUserRoomById(item.userRoomId).pipe(
+        switchMap(userRoom => {
           if (userRoom !== null) {
-            this.roomService.getRoomById(userRoom.roomId!).subscribe(
-              (room) => {
-                var itemWName = new CleaningHistoryWithName(
-                  item.id, item.userRoomId,
-                  room.customName, item.completed,
-                  getCleaningQualityName(item.cleaningQuality)
-                  , item.cleaningDurationInMins,
-                  item.date, item.createdAt, item.updatedAt
-                )
-                if (itemDate <= today) {
-                  // Date is today or in the past
-                  this.pastCleaningHistoryList.push(itemWName);
-                } else if (itemDate > today) {
-                  // Date is in the future
-                  this.futureCleaningHistoryList.push(itemWName);
-                }
-              }
-            )
+            return this.roomService.getRoomById(userRoom.roomId!);
+          } else {
+            return of(null);
+          }
+        }),
+        map(room => {
+          if (room !== null) {
+            return new CleaningHistoryWithName(
+              item.id, item.userRoomId,
+              room.customName, item.completed,
+              getCleaningQualityName(item.cleaningQuality),
+              item.cleaningDurationInMins,
+              item.date, item.createdAt, item.updatedAt
+            );
+          }
+          return null;
+        })
+      );
+      observables.push(userRoomObservable);
+    });
+
+    forkJoin(observables).subscribe(results => {
+      results.forEach(itemWName => {
+        if (itemWName !== null) {
+          if (new Date(itemWName.date) <= today) {
+            this.pastCleaningHistoryList.push(itemWName);
+          } else {
+            this.futureCleaningHistoryList.push(itemWName);
           }
         }
-      );
+      });
+      this.sortByScheduledDate();
     });
   }
+
 
   onButtonClick(cleaningId: string) {
     this.sharedService.changeCleaningId(cleaningId);
@@ -113,4 +124,20 @@ export class CleaningComponent implements OnInit {
     setItemRecursively();
   }
 
+  getDaysUntilCleaning(historyDate: any): number {
+    const date = new Date(historyDate);
+    const today = new Date();
+    if (!isNaN(date.getTime())) {
+      const timeDiff = date.getTime() - today.getTime();
+      const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      return daysLeft;
+    } else {
+      return NaN;
+    }
+  }
+
+  sortByScheduledDate(): void {
+    this.futureCleaningHistoryList.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    this.pastCleaningHistoryList.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }
 }
