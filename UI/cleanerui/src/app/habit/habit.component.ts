@@ -22,12 +22,17 @@ import { AlertifyService } from '../_services/alertify.service';
   templateUrl: './habit.component.html',
   styleUrls: ['./habit.component.scss']
 })
-export class HabitComponent implements OnInit {
+export class HabitComponent {
 
-  constructor(private fb: FormBuilder, private userroomService: UserRoomsService,
-    private userService: UserService, private roomService: RoomService,
-    private router: Router, private sharedStateService: SharedStateService,
-    private authService: AuthService, private alertifyService: AlertifyService) {
+  constructor(private fb: FormBuilder,
+    private userroomService: UserRoomsService,
+    private userService: UserService,
+    private roomService: RoomService,
+    private router: Router, 
+    private sharedStateService: SharedStateService,
+    private authService: AuthService, 
+    private alertifyService: AlertifyService) {
+
     this.myForm = this.fb.group({
       rooms: this.fb.array([this.createRoom()])
     });
