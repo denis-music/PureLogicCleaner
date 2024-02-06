@@ -8,6 +8,14 @@
                 <p><i class="fas fa-birthday-cake"></i> Age: {{user.age}}</p>
             </div>
         </div>
+        <div *ngIf="futureCleaningHistoryList.length > 0" class="chart-container">
+            <canvas baseChart class="chart" 
+            [type]="'line'" 
+            [data]="pieChartData" 
+            [labels]="pieChartData.labels"
+            chartType="'pie'">
+            </canvas>
+        </div>
     </div>
     <div class="right-panel">
         <div class="cleaning-history" *ngIf="futureCleaningHistoryList.length > 0 && !showWaitingMessage">

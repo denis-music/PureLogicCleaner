@@ -119,6 +119,7 @@ export class UserLandingComponent implements OnInit {
         }
       });
       this.sortByScheduledDate();
+      this.updateChartData()
     });
   }
 
@@ -140,5 +141,23 @@ export class UserLandingComponent implements OnInit {
 
   onCardClick(){
     this.router.navigate(["cleaning"])
+  }
+
+  public pieChartData: any;
+
+  updateChartData() {
+    const completedCount = this.futureCleaningHistoryList.filter(cleaning => cleaning.completed).length;
+    const notCompletedCount = this.futureCleaningHistoryList.length - completedCount;
+  
+    this.pieChartData = {
+      labels: ['Completed', 'Not Completed'],
+      datasets: [
+        {
+          data: [completedCount, notCompletedCount],
+          backgroundColor: ['green', 'red'],
+          label: 'Last 3 Cleaning Completion Statuses',
+        },
+      ],
+    };
   }
 }

@@ -15,11 +15,21 @@
   }
 
   .left-panel {
-    background-color: #f9f9f9;
-    max-height: 230px;
-    overflow: hidden;
-    max-width: 400px;
+    display: flex;
+    flex-direction: column;
     text-align: justify;
+
+    .user-info,
+    .chart-info {
+      flex: 1;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      overflow-y: auto;
+      max-height: 300px;
+      transition: background-color 0.3s ease;
+    }
   }
 
   .right-panel {
