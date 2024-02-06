@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CleaningHistoryCompletion } from '../model/cleaningHistoryCompletion.model';
-import { Rooms } from '../model/rooms.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +19,9 @@ export class CleaningHistoryService {
 
   setUncompletedStatus(id: string): Observable<boolean> {
     return this.http.put<boolean>(this.apiUrl + `${id}/uncompleted`, id);
+  }
+
+  getAll(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 }

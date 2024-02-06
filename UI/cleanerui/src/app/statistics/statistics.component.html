@@ -35,12 +35,12 @@
   </table>
 
   <div *ngIf="apiResults.length > 0" class="chart-container">
-    <h3>Completion Status Circular Chart:</h3>
-    <ejs-chart id="circular-chart" title="Circular Chart">
-      <e-series-collection>
-        <e-series [dataSource]='doughnutData' xName='x' yName='y' type='Doughnut'></e-series>
-      </e-series-collection>
-    </ejs-chart>
-  </div>
+    <canvas
+      baseChart
+      class="chart"
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      [type]="'line'"
+    ></canvas>
 </div>
 

@@ -4,6 +4,7 @@ import { UserRoomsService } from '../_services/user-rooms.service';
 import { RoomService } from '../_services/room.service';
 import { StatsView } from '../model/stats.view.model';
 import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model';
+import { CleaningHistoryService } from '../_services/cleaning-history.service';
 
 @Component({
   selector: 'app-statistics',
@@ -22,14 +23,35 @@ export class StatisticsComponent implements OnInit {
 
   selectedCleaningType: string = '';
   optionList: StatsView[] = [];
-  doughnutChartData: number[] = [];
-  doughnutChartLabels: string[] = ['Completed', 'Not Completed'];
-  chartOptions = {
-    responsive: true,
-  };
   isDataNeverLoaded: boolean = false;
-  constructor(private statisticsService: StatisticsService,
-    private userRoomsService: UserRoomsService, private roomService: RoomService) { }
+  apiResults: CleaningHistoryWithName[] = [];
+  cleaningHistory: any[] = [];
+
+  public lineChartData = {
+    datasets: [
+      {
+        data: [0],
+        label: 'Cleaning duration',
+      }
+    ],
+    labels: ['N/A'],
+  };
+
+  public lineChartOptions = {
+    responsive: true,
+    scales: {
+      y: {
+        min: 0,
+      }
+    }
+  }
+
+  constructor(
+    private statisticsService: StatisticsService,
+    private userRoomsService: UserRoomsService,
+    private cleaningHistoryService: CleaningHistoryService,
+    private roomService: RoomService
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -57,11 +79,17 @@ export class StatisticsComponent implements OnInit {
         }
       }
     );
+    
+    this.cleaningHistoryService.getAll().subscribe(
+      (cleaningHistory) => {
+        if (cleaningHistory === null) {
+          return;
+        }
 
-
-
+        this.cleaningHistory = cleaningHistory;
+      }
+    );
   }
-  apiResults: CleaningHistoryWithName[] = [];
 
   onButtonClick() {
     this.isDataNeverLoaded = true;
@@ -84,6 +112,11 @@ export class StatisticsComponent implements OnInit {
                 this.isDataNeverLoaded = false;
               }
             })
+
+            let completedCleanings = this.apiResults.filter(x => x.completed);
+            // this.lineChartData = 
+            this.lineChartData.labels = completedCleanings.map(x => new Date(x.date).toDateString());
+            this.lineChartData.datasets[0].data = completedCleanings.map(x => Number(x.cleaningDurationInMins));
           }
           else {
             console.error('No cleaning history API results:');

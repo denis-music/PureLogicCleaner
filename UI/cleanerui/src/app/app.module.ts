@@ -9,7 +9,6 @@ import { SubscriptionComponent } from './subscription/subscription.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ChartModule } from '@syncfusion/ej2-angular-charts';
 import { FeedbacksComponent } from './feedback/feedbacks.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,6 +20,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { CleaningHistoryCompletionComponent } from './cleaning-history-completion/cleaning-history-completion.component';
 import { AlertifyService } from './_services/alertify.service';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { AlertifyService } from './_services/alertify.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ChartModule,
+    NgChartsModule,
     BrowserAnimationsModule
   ],
   providers: [
