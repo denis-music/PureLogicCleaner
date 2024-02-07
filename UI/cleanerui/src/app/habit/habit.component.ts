@@ -88,11 +88,13 @@ export class HabitComponent {
     return this.myForm.get('rooms') as FormArray;
   }
 
+  isLogIn: boolean = true;
   ngOnInit(): void {
     const item = localStorage.getItem('user');
     if (item) {
       const users: User[] = JSON.parse(item);
       var user = users[0];
+      this.isLogIn = true;
       if (user.preferredCleaningDays == null ||
         user.preferredCleaningFrequency == null ||
         user.allergies == null || user.pets == null ||
@@ -101,8 +103,11 @@ export class HabitComponent {
         user.preferredCleaningDays.length === 0) {
       }
       else {
+        this.isLogIn = false;
         this.router.navigate(['/home'])
       }
+    } else {
+      this.isLogIn = false;
     }
 
     this.cleaningFrequencyOptions = Object.entries(CleaningFrequency)

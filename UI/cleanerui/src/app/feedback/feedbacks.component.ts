@@ -9,6 +9,7 @@ import { Feedback } from '../model/feedback.model';
 import { FeedbackType } from '../enum/feedbackType.enum';
 import { Router } from '@angular/router';
 import { AlertifyService } from '../_services/alertify.service';
+import { User } from '../model/users.model';
 
 @Component({
   selector: 'app-feedbacks',
@@ -47,9 +48,23 @@ export class FeedbacksComponent implements OnInit {
       .map(([key, value]) => ({ key, value: Number(value) }));
   }
 
+  isLogIn: boolean = true;
   ngOnInit(): void {
     this.selectedFeedbackType = ''
     this.loadOptionList();
+    
+    const item = localStorage.getItem('user');
+    if (item) {
+      const users: User[] = JSON.parse(item);
+      var user = users[0];
+      if (user != null && user.username != '') {
+        this.isLogIn = true;
+      } else {
+        this.isLogIn = false;
+      }
+    } else {
+      this.isLogIn = false;
+    }
   }
 
   loadOptionList(): void {

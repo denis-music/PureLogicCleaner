@@ -5,6 +5,7 @@ import { SharedStateService } from '../_services/shared-state.service';
 import { CleaningHistoryService } from '../_services/cleaning-history.service';
 import { CleaningHistoryCompletion } from '../model/cleaningHistoryCompletion.model';
 import { AlertifyService } from '../_services/alertify.service';
+import { User } from '../model/users.model';
 
 @Component({
   selector: 'app-cleaning-history-completion',
@@ -20,11 +21,25 @@ export class CleaningHistoryCompletionComponent implements OnInit {
 
   cleaningQuality = CleaningQuality;
   cleaningQualityOptions!: { key: string; value: number; }[];
+  isLogIn: boolean = true;
 
   ngOnInit(): void {
     this.cleaningQualityOptions = Object.entries(this.cleaningQuality)
       .filter(([key, value]) => !isNaN(Number(value)))
       .map(([key, value]) => ({ key, value: Number(value) }));
+
+    const item = localStorage.getItem('user');
+    if (item) {
+      const users: User[] = JSON.parse(item);
+      var user = users[0];
+      if (user != null && user.username != '') {
+        this.isLogIn = true;
+      } else {
+        this.isLogIn = false;
+      }
+    } else {
+      this.isLogIn = false;
+    }
   }
 
   completionStatus: string = '';

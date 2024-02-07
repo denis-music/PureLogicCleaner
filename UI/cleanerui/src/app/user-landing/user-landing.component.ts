@@ -52,6 +52,7 @@ export class UserLandingComponent implements OnInit {
     return array.sort(() => Math.random() - 0.5);
   }
 
+  isLogIn: boolean = true;
   user: User | undefined;
   loadUser() {
     const item = localStorage.getItem('user');
@@ -59,6 +60,9 @@ export class UserLandingComponent implements OnInit {
       const users: User[] = JSON.parse(item);
       var user = users[0];
       this.user = user;
+      this.isLogIn = true;
+    } else {
+      this.isLogIn = false;
     }
   }
 

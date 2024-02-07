@@ -5,6 +5,7 @@ import { RoomService } from '../_services/room.service';
 import { StatsView } from '../model/stats.view.model';
 import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model';
 import { CleaningHistoryService } from '../_services/cleaning-history.service';
+import { User } from '../model/users.model';
 
 @Component({
   selector: 'app-statistics',
@@ -47,6 +48,8 @@ export class StatisticsComponent implements OnInit {
     }
   }
 
+  isLogIn: boolean = true;
+
   constructor(
     private statisticsService: StatisticsService,
     private userRoomsService: UserRoomsService,
@@ -56,6 +59,18 @@ export class StatisticsComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    const item = localStorage.getItem('user');
+    if (item) {
+      const users: User[] = JSON.parse(item);
+      var user = users[0];
+      if (user != null && user.username != ''){
+        this.isLogIn = true;
+      } else {
+        this.isLogIn = false;
+      }
+    } else {
+      this.isLogIn = false;
+    }
   }
 
   private loadData() {

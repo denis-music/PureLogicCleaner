@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CleaningHistory } from '../model/cleaningHistory.model';
 import { Router } from '@angular/router';
+import { User } from '../model/users.model';
 
 @Component({
   selector: 'app-companies',
@@ -8,10 +9,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./companies.component.scss']
 })
 export class CompaniesComponent implements OnInit {
+  isLogIn: boolean = true;
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    
+    const item = localStorage.getItem('user');
+    if (item) {
+      const users: User[] = JSON.parse(item);
+      var user = users[0];
+      if (user != null && user.username != '') {
+        this.isLogIn = true;
+      } else {
+        this.isLogIn = false;
+      }
+    } else {
+      this.isLogIn = false;
+    }
   }
 
   openEmail(email: string) {

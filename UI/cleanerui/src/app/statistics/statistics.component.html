@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="isLogIn">
   <div class="form-group">
     <label for="selectCleaningType">Select Room:</label>
     <select id="selectCleaningType" class="form-control" [(ngModel)]="selectedCleaningType">
@@ -56,3 +56,4 @@
   <div *ngIf="apiResults.length > 0" class="chart-container">
     <canvas baseChart class="chart" [data]="lineChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
   </div>
+
