@@ -59,3 +59,23 @@
   color: #2c3e50;
   margin: 0;
 }
+
+.subsName{
+  text-align: center;
+}
+
+.card-header{
+  background-color: #007BFF;
+}
+
+
+
+.tabs{
+  text-align: center;
+}
+  
+.card-text{
+  padding: 5px;
+  margin-top: 5px !important;
+}
+

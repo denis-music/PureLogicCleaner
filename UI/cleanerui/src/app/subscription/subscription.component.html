@@ -10,26 +10,30 @@
 
   <div class="info-block" *ngIf="!loading && subscriptions.length !== 0">
     <p class="info-message">You currently have {{ userSubs?.name }} package</p>
-  </div>  
+  </div>
 
-  <div class="row" *ngIf="!loading">
+  <div class="row tabs" *ngIf="!loading">
     <div *ngFor="let subscription of subscriptions" class="col-lg-4 col-md-6 mb-4">
       <div *ngIf="!loading" class="card subscription-box shadow-lg">
         <div class="card-header" [ngClass]="'bg-package' + (subscription.name | slice:-1)">
-          <h3 class="m-0">{{ subscription.name }}</h3>
+          <h3 class="m-0 subsName">{{ subscription.name }}</h3>
         </div>
         <div class="card-body">
-          <p class="card-text mb-2">Price: ${{ subscription.price }}</p>
+
+          <h1 class="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">$
+            <span class="price">{{ subscription.price }}</span><span class="h6 text-muted ml-2">/ per month</span>
+          </h1>
+          <br>
+
           <p class="card-text mb-2">Sensor Availability:
-            <span [ngClass]="{'text-success': subscription.sensorsIncluded, 'text-danger': !subscription.sensorsIncluded}">
+            <span
+              [ngClass]="{'text-success': subscription.sensorsIncluded, 'text-danger': !subscription.sensorsIncluded}">
               {{ subscription.sensorsIncluded ? 'True' : 'False' }}
             </span>
           </p>
           <p class="card-text mb-2">Duration: {{ subscription.durationInDays }} days</p>
           <p class="card-text mb-4">Description: {{ subscription.description || 'N/A' }}</p>
-          <button class="btn btn-primary w-100" [disabled]="userId == '' || userSubId === subscription.id" (click)="subscribe(subscription)">
-            Subscribe
-          </button>
+          <button [disabled]="userId == '' || userSubId === subscription.id" (click)="subscribe(subscription)" class="btn btn-primary">Subscribe</button>
         </div>
       </div>
     </div>
