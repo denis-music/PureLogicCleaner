@@ -8,13 +8,14 @@
                 <p><i class="fas fa-birthday-cake"></i> Age: {{user.age}}</p>
             </div>
         </div>
-        <div *ngIf="futureCleaningHistoryList.length > 0" class="chart-container">
-            <canvas baseChart class="chart" 
-            [type]="'line'" 
-            [data]="pieChartData" 
-            [labels]="pieChartData.labels"
-            chartType="'pie'">
-            </canvas>
+        <div class="news-section">
+            <h2 class="section-title"><i class="fas fa-newspaper"></i> Latest News</h2>
+            <div class="news-container">
+                <div *ngFor="let newsItem of newsItems" class="news-card">
+                    <h3 class="news-title">{{ newsItem.title }}</h3>
+                    <p class="news-description">{{ newsItem.description }}</p>
+                </div>
+            </div>
         </div>
     </div>
     <div class="right-panel">
@@ -40,17 +41,17 @@
         </ng-container>
         <div class="cleaning-history" *ngIf="!showWaitingMessage && futureCleaningHistoryList.length == 0">
             <h2 class="section-title"><i class="fas fa-broom"></i> Cleaning History</h2>
-
-            <p class="mt-2">No cleaning schedules...</p>
+            <p class="no-schedules-message">Please wait, You don't have any cleaning schedules for now.</p>
         </div>
-        <div class="news-section">
-            <h2 class="section-title"><i class="fas fa-newspaper"></i> Latest News</h2>
-            <div class="news-container">
-                <div *ngFor="let newsItem of newsItems" class="news-card">
-                    <h3 class="news-title">{{ newsItem.title }}</h3>
-                    <p class="news-description">{{ newsItem.description }}</p>
-                </div>
+        <div *ngIf="futureCleaningHistoryList.length > 0" class="chart-container">
+            <canvas baseChart class="chart" [type]="'line'" [data]="pieChartData" [labels]="pieChartData.labels"
+                chartType="'pie'">
+            </canvas>
+        </div>
+        <div class="chart-container" *ngIf="!showWaitingMessage && futureCleaningHistoryList.length == 0">
+            <div clas="no-schedules-message">
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i> Cleaning History Chart Data</h2>
+                <p class="no-schedules-message">Please wait, You don't have any cleaning schedules for now.</p>
             </div>
         </div>
     </div>
-</div>

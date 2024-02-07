@@ -9,38 +9,50 @@
 
   <div class="row">
     <div class="col-md-12 button">
-      <button (click)="onButtonClick()" class="btn btn-primary">Get Cleaning Results</button>
+      <button [disabled]="selectedCleaningType == ''" (click)="onButtonClick()" class="btn btn-primary">Get Cleaning
+        Results</button>
     </div>
   </div>
 
-  <div *ngIf="apiResults.length == 0 && isDataNeverLoaded" class="loading-message">
-    <p>Loading or no results.</p>
+  <!-- <div *ngIf="apiResults.length == 0 && isDataNeverLoaded" class="loading-message"> -->
+  <ng-container *ngIf="showWaitingMessage && apiResults.length == 0">
+    <div class="message text-center mt-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <p class="mt-2">Please wait...</p>
+    </div>
+  </ng-container>
+  <!-- </div> -->
+  <div *ngIf="apiResults.length === 0 && !showWaitingMessage && buttonClicked" class="no-schedules-message">
+    <p style="margin-top: 1rem;">
+      Please wait, You don't have any cleaning schedules for now.
+    </p>
   </div>
 
-  <table *ngIf="apiResults.length > 0" class="table mt-3">
-    <thead class="thead-dark">
-      <tr>
-        <th>User Room</th>
-        <th>Completed</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let result of apiResults">
-        <td>{{ result.userRoomName }}</td>
-        <td>{{ result.completed }}</td>
-        <td>{{ result.date ? (result.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="apiResults.length > 0 && !showWaitingMessage && buttonClicked" class="scrollable-table">
+    <table class="table mt-3">
+      <thead class="thead-dark">
+        <tr>
+          <th>User Room</th>
+          <th>Completed</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of apiResults">
+          <td>{{ result.userRoomName }}</td>
+          <td>
+            <span [ngClass]="{'text-success': result.completed, 'text-danger': !result.completed}">
+              {{ result.completed ? '✔️' : '❌' }}
+            </span>
+          </td>
+          <td>{{ result.date ? (result.date | date: 'yyyy-MM-dd') : 'NAN' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div *ngIf="apiResults.length > 0" class="chart-container">
-    <canvas
-      baseChart
-      class="chart"
-      [data]="lineChartData"
-      [options]="lineChartOptions"
-      [type]="'line'"
-    ></canvas>
-</div>
-
+    <canvas baseChart class="chart" [data]="lineChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
+  </div>

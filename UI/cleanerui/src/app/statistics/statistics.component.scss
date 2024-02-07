@@ -94,3 +94,29 @@ h3 {
   padding: auto !important;
   text-align: center;
 }
+.no-schedules-message {
+  font-family: 'Arial', sans-serif;
+  color: #555;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  text-align: center;
+
+  .p {
+    margin-top: 1rem;
+  }
+}
+
+.scrollable-table {
+  padding: 3%;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  background-color: white;
+}
+
