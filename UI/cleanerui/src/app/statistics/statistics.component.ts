@@ -52,7 +52,7 @@ export class StatisticsComponent implements OnInit {
     private userRoomsService: UserRoomsService,
     private cleaningHistoryService: CleaningHistoryService,
     private roomService: RoomService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadData();
@@ -80,7 +80,7 @@ export class StatisticsComponent implements OnInit {
         }
       }
     );
-    
+
     this.cleaningHistoryService.getAll().subscribe(
       (cleaningHistory) => {
         if (cleaningHistory === null) {
@@ -118,7 +118,7 @@ export class StatisticsComponent implements OnInit {
             let completedCleanings = this.apiResults.filter(x => x.completed);
             this.lineChartData.labels = completedCleanings.map(x => new Date(x.date).toDateString());
             this.lineChartData.datasets[0].data = completedCleanings.map(x => Number(x.cleaningDurationInMins));
-              this.apiResults.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            this.apiResults.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
           }
           else {
             console.error('No cleaning history API results:');
