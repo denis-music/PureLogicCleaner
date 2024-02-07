@@ -70,11 +70,12 @@ export class UserLandingComponent implements OnInit {
     this.cleaningHistoryList = [];
     this.statisticsService.getCleaningsForMemberByMutalRoomId().subscribe(
       (data) => {
-        if (data !== null) {
+        if (data !== null && data.length != 0) {
           this.cleaningHistoryList = data;
           this.splitHistoryLists();
         } else {
           console.error('There is no data');
+          this.showWaitingMessage = false;
         }
       },
       (error) => {
@@ -83,6 +84,7 @@ export class UserLandingComponent implements OnInit {
   }
 
   futureCleaningHistoryList: CleaningHistoryWithName[] = [];
+  fullCleaningHistoryList: CleaningHistoryWithName[] = [];
 
   splitHistoryLists(): void {
     const today = new Date();
@@ -117,6 +119,7 @@ export class UserLandingComponent implements OnInit {
     forkJoin(observables).subscribe(results => {
       results.forEach(itemWName => {
         if (itemWName !== null) {
+          this.fullCleaningHistoryList.push(itemWName)
           if (new Date(itemWName.date) > today) {
             this.futureCleaningHistoryList.push(itemWName);
             this.showWaitingMessage = false;
@@ -151,18 +154,19 @@ export class UserLandingComponent implements OnInit {
   public pieChartData: any;
 
   updateChartData() {
-    const completedCount = this.futureCleaningHistoryList.filter(cleaning => cleaning.completed).length;
-    const notCompletedCount = this.futureCleaningHistoryList.length - completedCount;
+    const data = this.fullCleaningHistoryList.map(x => new Date(x.date).toDateString());
 
     this.pieChartData = {
-      labels: ['Completed', 'Not Completed'],
+      labels: data,
       datasets: [
         {
-          data: [completedCount, notCompletedCount],
           backgroundColor: ['green', 'red'],
-          label: 'Last 3 Cleaning Completion Statuses',
+          label: 'Cleaning Completion Statuses ' +
+            '(0 as Not Completed and 1 as Completed)',
         },
       ],
     };
+    this.pieChartData.datasets[0].data = this.fullCleaningHistoryList.map(x => x.completed);
+
   }
 }

@@ -23,7 +23,8 @@ export class StatisticsComponent implements OnInit {
 
   selectedCleaningType: string = '';
   optionList: StatsView[] = [];
-  isDataNeverLoaded: boolean = false;
+  showWaitingMessage: boolean = false;
+  buttonClicked: boolean = false;
   apiResults: CleaningHistoryWithName[] = [];
   cleaningHistory: any[] = [];
 
@@ -92,12 +93,13 @@ export class StatisticsComponent implements OnInit {
   }
 
   onButtonClick() {
-    this.isDataNeverLoaded = true;
+    this.showWaitingMessage = true;
+    this.buttonClicked = true;
     this.apiResults = [];
     if (this.selectedCleaningType) {
       this.statisticsService.getCleaningsForMemberByMutalRoomId().subscribe(
         (results) => {
-          if (results !== null) {
+          if (results !== null && results!.length != 0) {
             results.forEach((item) => {
               if (item.userRoomId == this.selectedCleaningType) {
                 var roomName = this.optionList.find(p => p.userRoomId == item.userRoomId)
@@ -109,17 +111,17 @@ export class StatisticsComponent implements OnInit {
                   item.createdAt, item.updatedAt
                 )
                 this.apiResults.push(model);
-                this.isDataNeverLoaded = false;
+                this.showWaitingMessage = false;
               }
             })
 
             let completedCleanings = this.apiResults.filter(x => x.completed);
-            // this.lineChartData = 
             this.lineChartData.labels = completedCleanings.map(x => new Date(x.date).toDateString());
             this.lineChartData.datasets[0].data = completedCleanings.map(x => Number(x.cleaningDurationInMins));
           }
           else {
             console.error('No cleaning history API results:');
+            this.showWaitingMessage = false;
           }
         },
         (error) => {

@@ -94,3 +94,17 @@ h3 {
   padding: auto !important;
   text-align: center;
 }
+.no-schedules-message {
+  font-family: 'Arial', sans-serif;
+  color: #555;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  text-align: center;
+
+  .p {
+    margin-top: 1rem;
+  }
+}
