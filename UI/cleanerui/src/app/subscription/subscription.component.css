@@ -59,3 +59,47 @@
   color: #2c3e50;
   margin: 0;
 }
+
+.subsName{
+  text-align: center;
+}
+
+.card-header{
+  background-color: #007BFF;
+}
+
+
+
+.tabs{
+  text-align: center;
+}
+
+/* new */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+body{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-pricing.popular {
+  z-index: 1;
+  border: 3px solid #007bff;
+}
+.card-pricing .list-unstyled li {
+  padding: .5rem 0;
+  color: #6c757d;
+}
+
+
+  
+.card-text{
+  padding: 5px;
+  margin-top: 5px !important;
+}
+

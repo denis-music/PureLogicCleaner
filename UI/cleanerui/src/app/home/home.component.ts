@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
     private alertifyService: AlertifyService) { }
 
   userHasSubsciption: boolean | null | undefined;
+
   ngOnInit(): void {
     this.sharedStateService.userWSubs.subscribe(value => {
       this.userHasSubsciption = value;
@@ -28,5 +29,10 @@ export class HomeComponent implements OnInit {
       }
     }
   }
+
+  openConfiguration(){
+    window.open("../../assets/img/User-manual-PureLogic-Cleaner.pdf",'_blank');
+  }
+
 
 }

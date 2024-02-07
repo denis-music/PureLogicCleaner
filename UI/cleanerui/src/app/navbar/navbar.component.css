@@ -1,0 +1,25 @@
+
+.test {
+
+    max-width: 250px !important;
+    max-height: 50px !important;
+    background-image: url('../../assets/img/logo.png') !important;
+    background-size: cover;
+    background-position: center;
+}
+
+.navbar{
+    padding: 0px !important;
+    height: 60px !important;
+}
+
+
+.test{
+    width: 200px !important;
+    height: 48px !important;
+    background-image: url('../../assets/img/logo.png') !important;
+}
+
+.navbar-brand{
+    padding-left: 10px;
+}
