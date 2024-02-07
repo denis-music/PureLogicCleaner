@@ -22,6 +22,7 @@ export class SubscriptionComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   userId = '';
+  isLogIn: boolean = true;
   user: User | undefined;
   userSubs: Subscription | undefined;
   ngOnInit() {
@@ -30,8 +31,10 @@ export class SubscriptionComponent implements OnInit {
       const user: User[] = JSON.parse(item);
       this.user = user[0]
       this.userId = user[0].id;
+      this.isLogIn = true;
     } else {
       this.userId = '';
+      this.isLogIn = false;
     }
     this.loadData();
     this.loadMemberSub();

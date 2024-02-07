@@ -8,6 +8,7 @@ import { SharedStateService } from '../_services/shared-state.service';
 import { getCleaningQualityName } from '../enum/cleaningQuality.enum';
 import { UserRoomsService } from '../_services/user-rooms.service';
 import { Observable, ObservableInput, forkJoin, map, of, switchMap } from 'rxjs';
+import { User } from '../model/users.model';
 
 @Component({
   selector: 'app-cleaning',
@@ -24,8 +25,21 @@ export class CleaningComponent implements OnInit {
   showWaitingMessage = false;
   cleaningHistoryList: CleaningHistory[] = [];
 
+  isLogIn: boolean = true;
   ngOnInit(): void {
     this.loadData();
+    const item = localStorage.getItem('user');
+    if (item) {
+      const users: User[] = JSON.parse(item);
+      var user = users[0];
+      if (user != null && user.username != ''){
+        this.isLogIn = true;
+      } else {
+        this.isLogIn = false;
+      }
+    } else {
+      this.isLogIn = false;
+    }
   }
 
   loadData() {
