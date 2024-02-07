@@ -118,6 +118,7 @@ export class StatisticsComponent implements OnInit {
             let completedCleanings = this.apiResults.filter(x => x.completed);
             this.lineChartData.labels = completedCleanings.map(x => new Date(x.date).toDateString());
             this.lineChartData.datasets[0].data = completedCleanings.map(x => Number(x.cleaningDurationInMins));
+              this.apiResults.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
           }
           else {
             console.error('No cleaning history API results:');
