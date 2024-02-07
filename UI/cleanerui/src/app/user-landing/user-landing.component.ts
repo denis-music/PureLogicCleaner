@@ -10,6 +10,7 @@ import { UserRoomsService } from '../_services/user-rooms.service';
 import { getCleaningQualityName } from '../enum/cleaningQuality.enum';
 import { CleaningHistoryWithName } from '../model/cleaningHistoryWithName.model';
 import { StatisticsService } from '../statistics/statistics.service';
+import { News } from '../model/news.model';
 
 @Component({
   selector: 'app-user-landing',
@@ -18,7 +19,7 @@ import { StatisticsService } from '../statistics/statistics.service';
 })
 export class UserLandingComponent implements OnInit {
 
-  newsItems: any[] = [];
+  newsItems: News[] = [];
 
   constructor(private http: HttpClient
     , private statisticsService: StatisticsService,
@@ -28,17 +29,21 @@ export class UserLandingComponent implements OnInit {
 
   ngOnInit(): void {
     const apiUrl = 'https://gnews.io/api/v4/top-headlines?country=us&token=f66fa10ebf43868c8546a4031414c928';
-    const item = localStorage.getItem('news');
-    if (item) {
-      const news: any[] = JSON.parse(item);
-      this.newsItems = news;
-    } else {
-      this.http.get(apiUrl).subscribe((data: any) => {
-        this.newsItems = this.shuffle(data.articles).slice(0, 5);
-      });
-      localStorage.removeItem('news');
-      localStorage.setItem('news', JSON.stringify(this.newsItems));
-    }
+    this.http.get(apiUrl).subscribe((data: any) => {
+      this.newsItems = this.shuffle(data.articles).slice(0, 5);
+      console.log(this.newsItems)
+      if (this.newsItems.length == 0) {
+        const item = localStorage.getItem('news');
+        if (item && item.length > 0) {
+          const news: News[] = JSON.parse(item);
+          this.newsItems = news;
+        }
+      } else {
+        localStorage.removeItem('news');
+        localStorage.setItem('news', JSON.stringify(this.newsItems));
+      }
+    });
+
     this.loadUser()
     this.loadData()
   }
@@ -139,7 +144,7 @@ export class UserLandingComponent implements OnInit {
     this.futureCleaningHistoryList.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
 
-  onCardClick(){
+  onCardClick() {
     this.router.navigate(["cleaning"])
   }
 
@@ -148,7 +153,7 @@ export class UserLandingComponent implements OnInit {
   updateChartData() {
     const completedCount = this.futureCleaningHistoryList.filter(cleaning => cleaning.completed).length;
     const notCompletedCount = this.futureCleaningHistoryList.length - completedCount;
-  
+
     this.pieChartData = {
       labels: ['Completed', 'Not Completed'],
       datasets: [

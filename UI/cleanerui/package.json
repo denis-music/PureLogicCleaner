@@ -23,7 +23,7 @@
     "@auth0/angular-jwt": "^5.0.2",
     "@syncfusion/ej2-angular-charts": "^24.1.46",
     "alertifyjs": "^1.13.1",
-    "ng2-charts": "v3.0",
+    "ng2-charts": "3.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
