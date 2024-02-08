@@ -75,7 +75,7 @@ def run_prediction():
                     "completed": False,
                     "cleaningDurationInMins": None,
                     "cleaningQuality": None,
-                    "date": adjusted_cleaning_date.strftime("%d-%m-%Y"),
+                    "date": adjusted_cleaning_date.strftime("%Y-%m-%dT%H:%M:%S"),
                     "forDays": rounded_prediction_days
                 })
             except Exception as e:
