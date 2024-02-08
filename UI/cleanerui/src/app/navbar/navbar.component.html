@@ -9,7 +9,7 @@
 
     <div *ngIf="showNavbarHabits && showNavbarLogin && showNavbarReg">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand">
+            <a class="navbar-brand" [routerLink]="['/home']">
                 <h2 class="text-black fw-bold d-block">PureLogic<span class="text-secondary">Cleaner</span> </h2>
             </a>
             <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
