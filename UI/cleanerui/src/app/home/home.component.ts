@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   openConfiguration(){
-    window.open("../../assets/img/User-manual-PureLogic-Cleaner.pdf",'_blank');
+    window.open("../../assets/img/User-manual-PureLogic-Cleaner-Final.pdf",'_blank');
   }
 
 
