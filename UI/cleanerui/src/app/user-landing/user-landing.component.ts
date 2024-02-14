@@ -31,7 +31,6 @@ export class UserLandingComponent implements OnInit {
     const apiUrl = 'https://gnews.io/api/v4/top-headlines?country=us&token=f66fa10ebf43868c8546a4031414c928';
     this.http.get(apiUrl).subscribe((data: any) => {
       this.newsItems = this.shuffle(data.articles).slice(0, 5);
-      console.log(this.newsItems)
       if (this.newsItems.length == 0) {
         const item = localStorage.getItem('news');
         if (item && item.length > 0) {
@@ -172,5 +171,8 @@ export class UserLandingComponent implements OnInit {
     };
     this.pieChartData.datasets[0].data = this.fullCleaningHistoryList.map(x => x.completed);
 
+    if (this.futureCleaningHistoryList.length == 0) {
+      this.showWaitingMessage = false;
+    }
   }
 }

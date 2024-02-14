@@ -43,12 +43,12 @@
             <h2 class="section-title"><i class="fas fa-broom"></i> Cleaning History</h2>
             <p class="no-schedules-message">Please wait, You don't have any cleaning schedules for now.</p>
         </div>
-        <div *ngIf="futureCleaningHistoryList.length > 0" class="chart-container">
+        <div *ngIf="fullCleaningHistoryList.length > 0" class="chart-container">
             <canvas baseChart class="chart" [type]="'line'" [data]="pieChartData" [labels]="pieChartData.labels"
                 chartType="'pie'">
             </canvas>
         </div>
-        <div class="chart-container" *ngIf="!showWaitingMessage && futureCleaningHistoryList.length == 0">
+        <div class="chart-container" *ngIf="!showWaitingMessage && fullCleaningHistoryList.length == 0">
             <div clas="no-schedules-message">
                 <h2 class="section-title"><i class="fas fa-chart-bar"></i> Cleaning History Chart Data</h2>
                 <p class="no-schedules-message">Please wait, You don't have any cleaning schedules for now.</p>
